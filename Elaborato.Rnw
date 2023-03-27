@@ -1,0 +1,1160 @@
+<<Library, echo=FALSE>>=
+library(gRbase)
+library(gRain)
+library(gRim)
+@
+
+\documentclass{article}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\title{NMC - Foundations of Statistical Modelling}
+\author{Lorenzo Baiardi}
+\date{28 Febbraio 2023}
+
+\begin{document}
+
+\maketitle
+
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+\section{Introduzione}
+  In questo elaborato andremo a studiare l'effeto delle attività personali di un 
+  individuo per la prevenzione di problemi cardiovascolari. Andremo a ipotizzare
+  modelli specifici, differenze che si possono verificare tra le diverse categorie
+  di persone e quanto queste categorie possono influire sulla presenza o meno
+  di un problema cardiovascolare.
+
+\section{Visualizzazione del dataset} 
+  Per lo studio di questo fenomeno utilizzeremo il dataset fornito: 
+  $\emph{Sjolander et al.(2009)}$ \par
+  Il dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
+  
+  <<Dataset>>=
+  load("nmc.RData")
+  #bmi dicotomizzata
+  nmc$bmi = as.numeric(nmc$bmi>=30) 
+  str(nmc)
+  @
+ 
+  \subsection{Variabili}
+    \begin{itemize}
+      \item CVD: variabile d'interesse.
+        \begin{enumerate}
+          \setcounter{enumi}{-1}
+          \item Nessun problema cardiovascolare
+          \item Uno o più problemi cardiovascolari
+        \end{enumerate}
+      \item Sex: rappresenta il genere dell'individuo.
+        \begin{itemize}
+          \item Male
+          \item Female
+        \end{itemize}
+      \item Age: età dell'individuo.
+      \item BMI: Body Mass Index, valore dicotomizzato.
+        \begin{enumerate}
+          \setcounter{enumi}{-1}
+          \item BMI $< 30$
+          \item BMI $\ge 30$ 
+        \end{enumerate}
+      \item Fitness: statico di salute dell'indiviudo.
+        \begin{enumerate}
+          \item Much Worse 
+          \item Little Worse
+          \item Just as good
+          \item A bit better
+          \item Much better
+        \end{enumerate}
+      \item PA: Personal Activities.
+        \begin{enumerate}
+          \setcounter{enumi}{-1}
+          \item high-level exerciser 
+          \item low-level exerciser
+        \end{enumerate}
+      \item Smoke: tipologia di fumatore.
+        \begin{itemize}
+          \item NO 
+          \item Former
+          \item Current
+        \end{itemize}
+      \item Alchol: frequenza nel consumo di alchol dell'individuo.
+        \begin{enumerate}
+          \item Never 
+          \item Low
+          \item Medium
+          \item High
+        \end{enumerate}
+    \end{itemize}
+  
+    Per una maggiore comprensione del problema, convertiremo le variabili di
+    tipo categoriale Fitness e Alchol, fornite dal dataset, in variabili di tipo        ordinale facilitando la valutazione di quest'ultime durante l'analisi. \par
+    Di seguito mostreremo la legenda utilizzata.
+    
+    <<FitnessCategoriale_SmokeOrdinale, echo=FALSE>>=
+    fitness <- nmc$fitness
+    c.smoke<- c('NO', 'Former', 'Current')
+    smoke.ord <- as.numeric(ordered(nmc$smoke, c.smoke))
+    @
+    
+    <<Legenda>>=
+    #LEGENDA:
+    #Fitness: 1-MUCH WORSE, 2-LITTLE WORSE, 3-JUST AS GOOD, 
+    #         4-A BIT BETTER, 5-MUCH BETTER
+    #Alchol: 1-NEVER, 2-LOW, 3-MEDIUM, 4-HIGH
+    
+    c.fit = c('Much Worse', 'Little Worse', 'Just as good',
+                'A bit better', 'Much better')
+    c.alc =  c('Never', 'Low', 'Medium', 'High')
+    
+    #Variabili ordinali
+    nmc$fitness = as.numeric(ordered(nmc$fitness, c.fit))
+    nmc$alc = as.numeric(ordered(nmc$alc, c.alc))
+    
+    str(nmc)
+    @
+
+  \subsection{Tabella delle Frequenze}
+    Visualizziamo la frequenza delle varie categorie all'interno del dataset.
+    <<TabellaFrequenze>>=
+    #Tabella
+    ftable(sex+bmi+pa ~ smoke+alc+fitness, nmc)
+    @
+
+\clearpage
+
+\section{Regressioni Logistiche Semplici}
+  Dato che stiamo analizzando un problema che presenta come variabile di 
+  risposta una varibile binaria (CVD), utilizzeremo la regressione logistica, 
+  implementata in R tramite la funzione glm(). \par
+  Per prima cosa analizzeremo le regressioni logistiche semplici delle singole
+  variabili presenti nel dataset, visualizzandone il loro comportamento verso la
+  nostra variabile di risposta.
+  
+  \subsection{Age}
+    <<RLS_Age>>=
+    #Age
+    fit.age <- glm(nmc$cvd ~ nmc$age, family=binomial)
+    summary(fit.age)
+    @
+    
+    \begin{itemize}
+      \item L'età influenza positivamente l'insorgenza di un problema 
+            cardiovascolare, con valore stimato: Age $\sim$ 0.092. 
+      \item La variabile Age è molto significativa secondo il \emph{p-value}.
+    \end{itemize}
+    
+    Stampiamo ora il boxplot per valutare l'età delle persone che presentano
+    o meno un problema cardiovascolare.
+    
+    <<RLS_Age_BoxPlot>>=
+    #Boxplot
+    boxplot(nmc$age~nmc$cvd, xlab="CVD", ylab="Age")
+    @
+    
+    \begin{itemize}
+      \item Il boxplot ci mostra come la media delle persone che hanno problemi
+            cardiovascolari, all'interno del dataset, è quella della fascia
+            tra i 60 e 80 anni.
+      \item La media delle persone che non hanno un problema cardiovascolare è
+            quella tra i 40 e 60 anni.
+      \item I problemi cardiovascolari sono più frequenti nella fascia anziana
+            della popolazione.
+    \end{itemize}
+    
+    Eseguiamo il plot del modello con la sola variabile Age.\par
+    Modello: CVD $\sim$ Age.
+    
+    <<RLS_Age_Plot>>=
+    #Plot
+    pstima.age <- fit.age$fitted.values
+    plot(nmc$age, nmc$cvd, xlab="Age", ylab="CVD")
+    lines(sort(nmc$age), pstima.age[order(nmc$age)], col="blue")
+    @
+    
+    Il modello e il grafico suggeriscono come, all'aumentare dell'età, ci sia un 
+    aumento esponenziale nelle probabilità nell'incorrere in un problema 
+    cardiovascolare. In particolare possiamo notare, come visulizzato anche dal
+    boxplot, che superata la soglia dei 40 anni si ha un notevole aumento nella
+    probabilità di CVD, confermando quindi come questo problema sia legato
+    principalmente ad un fattore di età.
+  
+  \clearpage
+  
+  \subsection{Sex}
+    <<RLS_Sex>>=
+    #Regressioni logistiche semplici
+    #Sex
+    fit.sex <- glm(nmc$cvd ~ nmc$sex, family=binomial)
+    summary(fit.sex)
+    @
+    
+    \begin{itemize}
+      \item Nella regressione logistica semplice, il sesso Maschile 
+            sembra aumentare notevolmente la possibilità di incorrere in un CVD 
+            rispetto al sesso Femminile, con valore stimato: 
+            SexMale $\sim$ 0.910.
+      \item La variabile Sex risulta molto significativa secondo il \emph{p-value}, 
+            superando quindi il $5\%$ di significatività.
+    \end{itemize}
+    
+    Valutiamo quanto il sesso possa influire nella presenza o meno di CVD.
+    
+    <<RLS_Sex_Plot>>=
+    #Modello per Maschio
+    fit.sex.male <- glm(nmc$cvd[nmc$sex=="Male"] ~ 
+                          nmc$age[nmc$sex=="Male"], 
+                          family=binomial)
+    pstima.sex.male <- fit.sex.male$fitted.values
+    #Modello per Femmina
+    fit.sex.female <- glm(nmc$cvd[nmc$sex=="Female"] ~ 
+                            nmc$age[nmc$sex=="Female"], 
+                            family=binomial)
+    pstima.sex.female <- fit.sex.female$fitted.values
+    #Plot
+    plot(nmc$age[nmc$sex=="Male"], nmc$cvd[nmc$sex=="Male"], 
+         xlab="Age", ylab="CVD", col="blue")
+    points(nmc$age[nmc$sex=="Female"], nmc$cvd[nmc$sex=="Female"],
+           col="red")
+    lines(nmc$age[nmc$sex=="Male"], pstima.sex.male, col="blue")
+    lines(nmc$age[nmc$sex=="Female"], pstima.sex.female, col="red")
+    legend(x="left", legend=c("Male", "Female"), lty=c(1, 1), 
+           col=c("blue","red"), lwd=1)
+    @
+  
+    Il grafico ci conferma come il sesso maschile sia più a rischio di problemi
+    cardiovascolari rispetto al sesso femminile.
+  
+  \subsection{BMI}
+    <<RLS_BMI>>=
+    #BMI
+    fit.bmi <- glm(nmc$cvd ~ nmc$bmi, family=binomial)
+    summary(fit.bmi)
+    @
+    
+    \begin{itemize}
+      \item La variabile BMI risulta positiva nell'insorgenza di un CVD con 
+            valore stimato: BMI $\sim$ 0.249.
+      \item La variabile BMI risulta significativa secondo il \emph{p-value}.
+    \end{itemize}
+    
+    Visualizziamo come il BMI possa influenzare nell'avanzamento dell'età.
+    
+    <<RLS_BMI_Plot>>=
+    #BMI 0
+    fit.bmi.0 <- glm(nmc$cvd[nmc$bmi==0] ~ nmc$age[nmc$bmi==0], 
+                     family=binomial)
+    pstima.bmi.0 <- fit.bmi.0$fitted.values
+    
+    #BMI 1
+    fit.bmi.1 <- glm(nmc$cvd[nmc$bmi==1] ~ nmc$age[nmc$bmi==1], 
+                     family=binomial)
+    pstima.bmi.1 <- fit.bmi.1$fitted.values
+    
+    #Plot
+    plot(nmc$age[nmc$bmi==0], nmc$cvd[nmc$bmi==0], 
+         xlab="Age", ylab="CVD", col="blue")
+    points(nmc$age[nmc$bmi==1], nmc$cvd[nmc$bmi==1], col="red")
+    lines(nmc$age[nmc$bmi==0], pstima.bmi.0, col="blue")
+    lines(nmc$age[nmc$bmi==1], pstima.bmi.1, col="red")
+    legend(x="left", legend=c("BMI < 30", "BMI >= 30"), lty=c(1, 1), 
+           col=c("blue","red"), lwd=1)
+    @
+  
+    Le due curve sono molto simili tra di loro, con un leggero aumento per coloro
+    che hanno un indice di massa corporea maggiore di 30.
+    
+  \clearpage
+  
+  \subsection{Fitness}
+    <<RLS_Fitness>>=
+    #Fitness
+    fit.fitness <- glm(nmc$cvd ~ nmc$fitness, family=binomial)
+    summary(fit.fitness)
+    @
+    
+    Contrariamente a quello che ci si potesse aspettare, per il solo modello di 
+    regressione logistica semplice, la variabile ordinale Fitness risulta, anche
+    se di poco, positiva e significativa per l'insorgenza di un problema 
+    cardiovascolare. \par
+    Verifichiamo quindi se ci siano delle differenze nel modello di regressione         logistica semplice 
+    con la variabile categoriale di Fitness.
+    
+    <<RLS_FitnessCategoriale>>=
+    #Fitness: Categoriale
+    fit.fitness.cat <- glm(nmc$cvd ~ fitness, family=binomial)
+    summary(fit.fitness.cat)
+    @
+    
+    \begin{itemize}
+      \item Con la variabile categoriale di Fitness notiamo come ci sia una 
+            diminuzione nell'insorgenza di CVD per tutte le categorie.
+      \item Solamente le categorie Fitness:Just as good e Fitness:Little Worse                  risultano significative.
+    \end{itemize}
+    
+    Visulizziamo il comportamento della variabile Fitness all'aumentare dell'età.
+    
+    <<RLS_Fitness_Plot>>=
+    #Fitness Much Worse
+    fit.fitness.muchworse <- glm(nmc$cvd[fitness=="Much Worse"] ~
+                                   nmc$age[fitness=="Much Worse"],
+                                   family=binomial)
+    pstima.fitness.muchworse <- fit.fitness.muchworse$fitted.values
+    
+    #Fitness LittleWorse
+    fit.fitness.littleworse <- glm(nmc$cvd[fitness=="Little Worse"] ~ 
+                                     nmc$age[fitness=="Little Worse"],
+                                     family=binomial)
+    pstima.fitness.littleworse <- fit.fitness.littleworse$fitted.values
+    
+    #Fitness Just as good
+    fit.fitness.justasgood<- glm(nmc$cvd[fitness=="Just as good"] ~ 
+                                   nmc$age[fitness=="Just as good"],
+                                   family=binomial)
+    pstima.fitness.justasgood <- fit.fitness.justasgood$fitted.values
+    
+    #Fitness A bit better
+    fit.fitness.abitbetter <- glm(nmc$cvd[fitness=="A bit better"] ~ 
+                                    nmc$age[fitness=="A bit better"],
+                                    family=binomial)
+    pstima.fitness.abitbetter <- fit.fitness.abitbetter$fitted.values
+    
+    #Fitness Much better
+    fit.fitness.muchbetter <- glm(nmc$cvd[fitness=="Much better"] ~ 
+                                    nmc$age[fitness=="Much better"],
+                                    family=binomial)
+    pstima.fitness.muchbetter <- fit.fitness.muchbetter$fitted.values
+    
+    #Plot
+    plot(nmc$age[fitness=="Much Worse"],nmc$cvd[fitness=="Much Worse"],
+         xlab="Age", ylab="CVD", col="black")
+    points(nmc$age[fitness=="Little Worse"], nmc$cvd[fitness=="Little Worse"],
+           col="red")
+    points(nmc$age[fitness=="Just as good"], nmc$cvd[fitness=="Just as good"],
+           col="yellow")
+    points(nmc$age[fitness=="A bit better"], nmc$cvd[fitness=="A bit better"],
+           col="orange")
+    points(nmc$age[fitness=="Much better"],nmc$cvd[fitness=="Much better"],
+           col="green")
+    lines(nmc$age[fitness=="Much Worse"], pstima.fitness.muchworse,  
+          col="black")
+    lines(nmc$age[fitness=="Little Worse"], pstima.fitness.littleworse, 
+          col="red")
+    lines(nmc$age[fitness=="Just as good"], pstima.fitness.justasgood,
+          col="orange")
+    lines(nmc$age[fitness=="A bit better"], pstima.fitness.abitbetter,
+          col="yellow")
+    lines(nmc$age[fitness=="Much better"], pstima.fitness.muchbetter,
+          col="green")
+    legend(x="left", 
+           legend=c("Much Worse", "Little Worse", "Just as good",
+                    "A bit better", "Much better"), 
+           lty=c(1, 1, 1, 1, 1), 
+           col=c("black","red", "orange", "yellow", "green"), lwd=1)
+    @
+    
+    Attraverso il grafico notiamo che la categoria Fitness:Much better è quella meno
+    soggetta rispetto a tutte le altre. Viceversa la categoria Fitness:Little Worse 
+    ha più probabilità di incorrere in un problema cardiovascolare. \par
+    
+    Chi è della categoria Fitness:Much Worse ha meno probabilità rispetto alla          categoria Fitness:Little Worse evidenziando come un problema cardiovascolare
+    non è associato perforza a una pessima condizione di salute. \par
+    
+    In conclusione, per il solo modello di regressione logistica semplice,
+    consideriamo la variabile ordinale Fitness come significativa.\par
+    
+    Nei successivi capitoli considereremo unicamente la variabile ordinale 
+    Fitness.
+    
+  \clearpage
+
+  \subsection{PA}
+    <<RLS_PA>>=
+    #PA
+    fit.pa <- glm(nmc$cvd ~ nmc$pa, family=binomial)
+    summary(fit.pa)
+    @
+    
+    Secondo la valutazione del \emph{p-value} la variabile PA, nonostante 
+    influisca negativamente per la CVD, non supera il $5\%$ di significatività, 
+    risultando non significativa.
+    
+  \subsection{Smoke}  
+    <<RLS_Smoke>>=
+    #Smoke
+    fit.smoke <- glm(nmc$cvd ~ nmc$smoke, family=binomial)
+    summary(fit.smoke)
+    @
+  
+    \begin{itemize}
+      \item Le categorie Smoke:Former e Smoke:NO sembrano influire positivamente
+            sull'insorgenza di CVD.
+      \item Risulta significativa solo la categoria Smoke:Former con valore stimato:
+            Smoke:Former $\sim$ 0.246.
+    \end{itemize}
+    
+    Verifichiamo ora il modello di regressione logistica semplice nel caso della 
+    variabile ordinale Smoke.
+    
+    <<RLS_SmokeOrdinale>>=
+    #Smoke: Ordinale
+    fit.smoke.ord <- glm(nmc$cvd ~ smoke.ord, family=binomial)
+    summary(fit.smoke.ord)
+    @
+    
+    \begin{itemize}
+      \item La variabile ordinale Smoke risulta positiva nell'insorgenza di CVD.
+      \item Nonostante ciò la variabile Smoke ordinale risulta non significativa
+            secondo il \emph{p-value}.
+    \end{itemize}
+    
+    Analizziamo se ci siano delle differenze tra le varie categorie di fumatori
+    con l'avanzare dell'età.
+    
+    <<RLS_Smoke_Plot>>=
+    #Smoke NO
+    fit.smoke.no <- glm(nmc$cvd[nmc$smoke=="NO"] ~ 
+                          nmc$age[nmc$smoke=="NO"],
+                          family=binomial)
+    pstima.smoke.no <- fit.smoke.no$fitted.values
+    
+    #Smoke Former
+    fit.smoke.former <- glm(nmc$cvd[nmc$smoke=="Former"] ~ 
+                              nmc$age[nmc$smoke=="Former"],
+                              family=binomial)
+    pstima.smoke.former <- fit.smoke.former$fitted.values
+
+    #Smoke Current
+    fit.smoke.current <- glm(nmc$cvd[nmc$smoke=="Current"] ~ 
+                               nmc$age[nmc$smoke=="Current"],
+                               family=binomial)
+    pstima.smoke.current <- fit.smoke.current$fitted.values
+    
+    #Plot
+    plot(nmc$age[nmc$smoke=="NO"], nmc$cvd[nmc$smoke=="NO"], 
+         xlab="Age", ylab="CVD", col="green")
+    points(nmc$age[nmc$smoke=="Former"], nmc$cvd[nmc$smoke=="Former"], 
+           col="orange")
+    points(nmc$age[nmc$smoke=="Current"], nmc$cvd[nmc$smoke=="Current"], 
+           col="red")
+    lines(nmc$age[nmc$smoke=="NO"], pstima.smoke.no, 
+          col="green")
+    lines(nmc$age[nmc$smoke=="Former"], pstima.smoke.former, 
+          col="orange")
+    lines(nmc$age[nmc$smoke=="Current"], pstima.smoke.current, 
+          col="red")
+    legend(x="left", 
+           legend=c("NO", "Former", "Current"), 
+           lty=c(1, 1, 1), 
+           col=c("green","orange", "red"), lwd=1)
+    @
+    
+    Possiamo notare come un un fumatore, rispetto alle altre categorie, abbia una       maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
+    Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie di
+    incorrere nella malattia. \par
+    Nei successivi capitoli considereremo unicamente la variabile categoriale di
+    Smoke.
+    
+  \clearpage  
+    
+  \subsection{Alchol}
+    <<RLS_Alchol>>=
+    #Alchol
+    fit.alc <- glm(nmc$cvd ~ nmc$alc, family=binomial)
+    summary(fit.alc)
+    @
+    
+    La variabile Alchol, secondo la valutazione del \emph{p-value}, non supera
+    il $5\%$ di significatività, risultando non significativa.
+  
+  \subsection{Commento}
+    Nei soli modelli con regressione logistica semplice abbiamo che:
+    \begin{itemize}
+      \item Le variabili che risultano essere significative secondo la valutazione
+            del \emph{p-value} sono: Sex, Age, BMI e Fitness.
+      \item Sempre secondo la valutazione del \emph{p-value}, le variabili che 
+            invece risultano non significative sono: PA, Smoke e Alchol.
+      \item Le variabili Sex:Male, Age e BMI aumentano il rischio di CVD.
+      \item La variabile Fitness evidenzia il fatto che chi sta bene è meno
+            soggetto alla problematica.
+      \item Il fumatore è più soggetto alla malattia rispetto alle altre categorie.
+    \end{itemize}
+  
+\clearpage
+  
+\section{Regressioni Logistiche Multiple}
+  Consideriamo ora la regressione logistica multipla includendo tutte le variabili
+  che sono presenti all'interno del dataset, verificando quali di esse sono più 
+  o meno significative per la visualizzazione di un primo modello unico.
+  
+  \subsection{Modello Completo}
+    <<RLM_ModelloCompleto>>=
+    #Regressioni logistiche multiple
+    #Modello Completo
+    #Variabili: Sex, Age, BMI, Fitness, PA, Smoke, Alchol
+    fit.all <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
+                             nmc$pa+nmc$smoke+nmc$alc, 
+                             family=binomial)
+    summary(fit.all)
+    @
+    
+    Per il modello che include tutte le variabili:\\
+    Modello: CVD $\sim$ Sex + Age + BMI + Fitness + PA + Smoke + Alchol 
+    \begin{itemize}
+      \item Risultano essere significative, secondo il \emph{p-value}, le 
+            variabili: Sex, Age, BMI, Fitness e Smoke.
+      \item Risultano essere non significative, non superando il $5\%$
+            di significatività del \emph{p-value}, le variabili: PA e Alchol.
+      \item I parametri stimati nella regressione logistica multipla differescono da             quelli presenti nelle regressioni logistiche semplici precedentemente               analizzate.
+      \item Gli errori standard non differiscono molto da quelli presenti nei                   modelli con regressione logistica semplice.
+      \item La variabile Sex mostra ancora come il sesso Maschile influisca 
+            positivamente nella presenza di CVD con valore stimato: 
+            Sex:Male $\sim$ 0.788.
+      \item Anche le variabili BMI e Smoke mostrano un aumento nelle possibilità 
+            di insorgenza di un CVD.
+      \item La variabile Fitness aumenta di significatività, rispetto
+            al modello di regressione logistica semplice, riducendo la 
+            probabilità di CVD con valore stimato: Fitness $\sim$ -0.184.
+    \end{itemize}
+  
+  \subsection{Modello Significativo}
+    Dato che nel modello completo sono presenti variabili non significative,
+    le andremo ad eliminare gradualmente dalla formula del modello fino ad 
+    ottenere un modello con solo variabili significative.\par
+    Iniziamo eliminando la variabile non significativa PA.
+    
+    <<RLM_NOPA>>=
+    #Modello senza PA
+    #Variabili: Sex, Age, BMI, Fitness, Smoke, Alchol
+    fit.npa <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
+                             nmc$smoke+nmc$alc, 
+                             family=binomial)
+    summary(fit.npa)
+    @
+    
+    Tutte le varibili che erano significative nel modello completo risultano 
+    ancora significative. \par
+    Eliminiamo la variabile Alchol, che risulta ancora non significativa,
+    all'interno della formula.
+    
+    <<RLM_ModelloSignificativo>>=
+    #Modello significativo
+    #Variabili: Sex, Age, BMI, Fitness, Smoke 
+    fit <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
+                         nmc$smoke, family=binomial)
+    summary(fit)
+    @
+    
+    Il modello risultate è: \\
+    Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke
+    \begin{itemize}
+      \item Le variabili risultato essere tutte significative secondo il 
+            $\emph{p-value}$.
+      \item I parametri stimati e gli errori standard non differiscono molto dal 
+            modello completo.
+    \end{itemize}
+    
+    Il modello con solo variabili significative sembra mostrare un buon 
+    adattamento.\par
+    Visualizziamo il grafico dell'andamento del modello stimato.
+    
+    <<RLM_Plot_ModelloSignificativo>>=
+    pstima <- fit$fitted.values
+    
+    #Plot
+    plot(nmc$age, nmc$cvd, xlab="Age", ylab="CVD")
+    points(sort(nmc$age), pstima[order(nmc$age)], col="blue")
+    @
+  
+  \subsection{Commento}
+    \begin{itemize}
+      \item Il modello risulta essere: \\
+            Modello: CVD$\sim$ Sex + Age + BMI + Fitness + Smoke
+      \item Come visto nelle regressioni logistiche semplici, le variabili
+            sexMale, Age e BMI continuano ad influenzare positivamente la 
+            comparsa di problemi cardiovascolari.
+      \item Al contrario, le variabili significative Fitness e Smoke (per la 
+            categoria "Former" e la categoria "NO") riducono la possibilità di 
+            avere un CVD.
+      \item Di conseguenza la categoria Smoke:Current ha una probabilità 
+            maggiore nell'insorgenza di CVD.
+    \end{itemize}
+  
+  \subsection{Dati di esempio}
+    Effettuiamo una valutazione della probabilità su degli individui casuali 
+    in base ai modelli precedentemente analizzati. \par
+    Visualizziamo i coefficienti del modello completo e quello significativo.
+    
+    <<Coefficenti_ModelloCompleto>>=
+    #Coefficienti Modello Completo
+    coef(fit.all)
+    @
+    
+    <<Coefficenti_ModelloSignificativo>>=
+    #Coefficienti Modello Significativo
+    coef(fit)
+    @
+    
+    Verifichiamo la probabilità di avere un CVD per un Uomo (Sex 1) di 45 anni 
+    fumatore, con BMI pari a 32 (BMI dicotomizzato a 1), che non fa consumo di 
+    alchol (Alchol 1), in ottima salute (Fitness 5) e PA=1.
+    
+    <<Stima_ModelloCompleto_Uomo45>>=
+    #Stima per il Modello Completo
+    #Dato
+    #Intercetta: 1, Sex: 1, Age: 45, BMI: 1, Fitness: 5, 
+    #PA: 1, Smoke:Former: 0, Smoke:NO: 0, Alchol: 1 
+    man45.all <- c(1, 1, 45, 1, 5, 1, 0, 0, 1)
+    stima.man45.all <- exp(coef(fit.all)%*%man45.all)/
+                           (1+exp(coef(fit.all)%*%man45.all))
+    stima.man45.all
+    @
+    
+    <<Stima_ModelloSignificativo_Uomo45>>=
+    #Stima per il Modello Significativo
+    #Dato
+    #Intercetta: 1, Sex: 1, Age: 45, BMI: 1, Fitness: 5, 
+    #Smoke:Former: 0, Smoke:NO: 0
+    man45 <- c(1, 1, 45, 1, 5, 0, 0)
+    stima.man45 <- exp(coef(fit)%*%man45)/(1+exp(coef(fit)%*%man45))
+    stima.man45
+    @
+    
+    Risulta che:
+    \begin{itemize}
+      \item per il Modello Completo: $\hat{\pi}$ = 0.0391
+      \item per il Modello Significativo: $\hat{\pi}$ = 0.0343
+    \end{itemize}
+    
+    Verifichiamo adesso la probabilità di avere un CVD per una Donna (Sex 0) di 
+    60 anni ex fumatrice, con BMI pari a 35 (BMI dicotomizzato 1), che beve 
+    alchol nella media (Alchol 4), in buona salute (Fitness 4), e PA = 1.
+    
+    <<Stima_ModelloCompleto_Donna60>>=
+    #Stima per il Modello Completo
+    #Dato
+    #Intercetta: 1, Sex: 0, Age: 60, BMI: 1, Fitness: 4, 
+    #PA: 1, Smoke:Former: 1, Smoke:NO: 0, Alchol: 4 
+    woman60.all <- c(1, 0, 60, 1, 4, 1, 1, 0, 4)
+    stima.woman60.all <- exp(coef(fit.all)%*%woman60.all)/
+                           (1+exp(coef(fit.all)%*%woman60.all))
+    stima.woman60.all
+    @
+    
+    <<Stima_ModelloSignificatico_Donna60>>=
+    #Stima per il Modello Significativo
+    #Intercetta: 1, Sex: 0, Age: 60, BMI: 1, Fitness: 4, 
+    #Smoke:Former: 1, Smoke:NO: 0
+    woman60 <- c(1, 0, 60, 1, 4, 1, 0)
+    stima.woman60 <- exp(coef(fit)%*%woman60)/(1+exp(coef(fit)%*%woman60))
+    stima.woman60
+    @
+    
+    Risulta che:
+    \begin{itemize}
+      \item Modello Completo: $\hat{\pi}$ = 0.0507
+      \item Modello Significativo: $\hat{\pi}$ = 0.0535
+    \end{itemize}
+    
+    In conclusione possiamo vedere come la probabilità del modello completo e
+    del modello con solo variabili significative si mostrino particolarmente 
+    simili.
+
+\clearpage    
+    
+\section{Considerazioni sul Modello}
+  In questo capitolo confronteremo il comportamento del modello su una specifica      categoria di invidividui.
+
+  \subsection{Maschio e Femmina} 
+    Nei precedenti capitoli, durante l'analisi delle singole variabili e dei vari 
+    modelli, abbiamo notato come ci siano stati sempre diverse probabilità 
+    tra il sesso maschile e il sesso femmile.\par
+    Valutiamo ancora all'interno di un grafico se questa nostra ipotesi si 
+    verifica in un modello più complesso di quello marginale.
+      
+    <<Analisi_ModelloSex_Maschio>>=
+    #Modello Sesso Maschile
+    #Sex: Male
+    fit.male <- glm(nmc$cvd[nmc$sex=="Male"] ~ 
+                      nmc$age[nmc$sex=="Male"]+
+                      nmc$bmi[nmc$sex=="Male"]+
+                      nmc$fitness[nmc$sex=="Male"]+
+                      nmc$smoke[nmc$sex=="Male"], 
+                      family=binomial)
+    summary(fit.male)
+    pstima.male <- fit.male$fitted.values
+    @
+    
+    <<Analisi_ModelloSex_Femmina>>=
+    #Modello Sesso Femminile
+    #Sex: Female
+    fit.female <- glm(nmc$cvd[nmc$sex=="Female"] ~ 
+                        nmc$age[nmc$sex=="Female"]+
+                        nmc$bmi[nmc$sex=="Female"]+
+                        nmc$fitness[nmc$sex=="Female"]+
+                        nmc$smoke[nmc$sex=="Female"], 
+                        family=binomial)
+    summary(fit.female)
+    pstima.female <- fit.female$fitted.values
+    @
+    
+    <<Plot_Analisi_ModelloSex>>=
+    #Plot
+    plot(nmc$age[nmc$sex=="Male"], nmc$cvd[nmc$sex=="Male"], 
+         xlab="Age", ylab="CVD", col="blue")
+    points(nmc$age[nmc$sex=="Female"], nmc$cvd[nmc$sex=="Female"], 
+           col="red")
+    points(sort(nmc$age[nmc$sex=="Male"]), 
+          pstima.male[order(nmc$age[nmc$sex=="Male"])], 
+          col="blue")
+    points(sort(nmc$age[nmc$sex=="Female"]), 
+          pstima.female[order(nmc$age[nmc$sex=="Female"])], 
+          col="red")
+    legend(x="left", legend=c("Male", "Female"), lty=c(1, 1),
+           col=c("blue","red"), lwd=1)
+    @
+    
+    Statisticamente il sesso maschile rimane il soggetto che ha più rischi di 
+    CVD rispetto al genere femminile, anche nel modello più complesso.
+  
+  \subsection{Attività Fisica}
+    Dato che la variabile PA nelle valutazione dei modelli è sempre stata 
+    scartata, verifichiamo se all'interno del nostro modello possono esserci 
+    delle differenze tra le due categorie di PA per il calcolo del CVD.
+    
+    <<Analisi_ModelloPA_0>>=
+    #Modello PA 0
+    fit.pa.0 <- glm(nmc$cvd[nmc$pa==0] ~ nmc$sex[nmc$pa==0] +
+                      nmc$age[nmc$pa==0] + nmc$bmi[nmc$pa==0] +
+                      nmc$fitness[nmc$pa==0] + nmc$smoke[nmc$pa==0],
+                    family=binomial)
+    summary(fit.pa.0)
+    pstima.pa.0 <- fit.pa.0$fitted.values
+    @
+    
+    <<Analisi_ModelloPA_1>>=
+    #Modello PA 1
+    fit.pa.1 <- glm(nmc$cvd[nmc$pa==1] ~ nmc$sex[nmc$pa==1] + 
+                      nmc$age[nmc$pa==1] + nmc$bmi[nmc$pa==1] +
+                      nmc$fitness[nmc$pa==1] + nmc$smoke[nmc$pa==1], 
+                    family=binomial)
+    summary(fit.pa.1)
+    pstima.pa.1 <- fit.pa.1$fitted.values
+    @
+    
+    <<Plot_Analisi_ModelloPA>>=
+    #Plot
+    plot(nmc$age[nmc$pa==0], nmc$cvd[nmc$pa==0], xlab="Age", ylab="CVD", col="red")
+    points(nmc$age[nmc$pa==1], nmc$cvd[nmc$pa==1], col="blue")
+    points(nmc$age[nmc$pa==0], pstima.pa.0, col="red")
+    points(nmc$age[nmc$pa==1], pstima.pa.1, col="blue")
+    @
+    
+    Il grafico non sembra mostrare differenze tra le due categorie di PA.
+
+\clearpage
+
+\section{Interazioni fra le variabili}
+  Valutiamo se all'interno del modello ci sia la possibilità di interazioni
+  fra le variabili. \par
+  Consideriamo i casi nei quali le variabili come Smoke, Alchol, PA o Sex possano 
+  interagire con le altre variabili, limitandoci unicamente nelle interazioni 
+  del secondo ordine.
+  
+  \subsection{Smoke e Alchol}
+  Analizziamo il caso nel quale il consumo di alchol, combinato con l'uso di 
+  sigaretta, possa o meno aumentare le probabilità di CVD.
+  
+  <<ModelloInterazione_SmokeAlchol>>=
+  #Modello con interazione: Smoke e Alchol
+  fit.smokealchol <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                           nmc$fitness+nmc$smoke+
+                           nmc$smoke*nmc$alc,
+                           family=binomial)
+  summary(fit.smokealchol)
+  @
+  
+  I dati sembrano non mostrare l'interazione fra Smoke e Alchol.
+  
+  \subsection{Smoke e BMI}
+  Vediamo se l'uso di sigaretta per una persona con un alto indice di massa 
+  corporea possa aumentarne le probabilità.
+  
+  <<ModelloInterazione_SmokeBMI>>=
+  #Modello con interazione: Smoke e BMI
+  fit.smokebmi <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                           nmc$fitness+nmc$smoke+
+                           nmc$smoke*nmc$bmi,
+                           family=binomial)
+  summary(fit.smokebmi)
+  @
+  
+  A differenza di Smoke e Alchol, l'interazione tra Smoke e BMI 
+  mostra un'interazione significativa, variando il valore stimato e diminuendo la 
+  significatività della variabile BMI. In questo caso la variabile BMI assume 
+  valore stimato negativo, influendo negativamente nella comparsa di CVD.
+  
+  \subsection{Alchol e BMI}
+  Come per il caso di Smoke, verifichiamo se il consumo di alchol associato ad un
+  maggior indice di massa corporea influisca nella probabilità di CVD.
+  
+  <<ModelloInterazione_AlcholBMI>>=
+  #Modello con interazione: Alchol e BMI
+  fit.alcholbmi <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                           nmc$fitness+nmc$smoke+
+                           nmc$alc*nmc$bmi,
+                           family=binomial)
+  summary(fit.alcholbmi)
+  @
+  
+  A differenza di Smoke*BMI, l'interazione tra Alchol e BMI non è supportata.
+  
+  \subsection{Sex e Smoke}
+  Verifichiamo se l'utilizzo di sigaretta sia peggiorativo in uno dei due 
+  sessi.
+  
+  <<ModelloInterazione_SexSmoke>>=
+  #Modello con interazione: Sex e Smoke
+  fit.sexsmoke <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                      nmc$fitness+nmc$smoke+
+                      nmc$sex*nmc$smoke,
+                      family=binomial)
+  summary(fit.sexsmoke)
+  @
+  
+  L'interazione fra le variabili Sex e Smoke risulta non significativa.
+  
+  \subsection{Sex e Age}
+  Analizziamo ora il caso nel quale l'aumento dell'età possa influenzare in
+  maniera differente tra i due sessi.
+  
+  <<ModelloInterazione_SexAge>>=
+  #Modello con interazione: Sex e Age
+  fit.sexage <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                      nmc$fitness+nmc$smoke+
+                      nmc$sex*nmc$age,
+                      family=binomial)
+  summary(fit.sexage)
+  @
+  
+  Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
+  significativa tra la variabile Sex e Age. Per il sesso maschile con l'aumentare
+  dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
+  Analizzeremo successivamente se questa interazione può risultare utile ai fini
+  del nostro problema.
+  
+  \subsection{PA e Age}
+  Verifichiamo se l'attività fisica di un individuo è influenzata in base
+  alla sua età.
+  <<ModelloInterazione_PAAge>>=
+  #Modello con interazione PA e Age
+  fit.sexsmoke <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                      nmc$fitness+nmc$smoke+
+                      nmc$pa*nmc$age,
+                      family=binomial)
+  summary(fit.sexsmoke)
+  @
+  
+  Non è verificata l'interazione fra le variabili PA e Age.
+  
+  \subsection{PA e Fitness}
+  Analliziamo il caso nel quale l'attività fisica e lo stato di salute di un
+  individuo possano aumentare le probabilità di CVD.
+  
+  <<ModelloInterazione_PAFitness>>=
+  #Modello con interazione PA e Fitness
+  fit.sexsmoke <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                      nmc$fitness+nmc$smoke+
+                      nmc$pa*nmc$fitness,
+                      family=binomial)
+  summary(fit.sexsmoke)
+  @
+  
+  Il modello mostra come non ci sia interazione fra le variabili PA e Fitness.
+  
+  \subsection{Modello con interazioni}
+  Analizziamo ora il modello con solo variabili significative aggiungendo
+  le interazioni che precedentemente abbiamo valutato come significative.\par
+  Il modello da valutare sarà quindi:\\
+  Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke + Sex*Age + Smoke*BMI.
+  
+  <<ModelloInterazioniSignificativo>>=
+  #Modello con interazione: Sex*Age + Smoke*BMI
+  fit.int <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
+                   nmc$fitness+nmc$smoke+
+                   nmc$sex*nmc$age+
+                   nmc$smoke*nmc$bmi,
+                   family=binomial)
+  summary(fit.int)
+  @
+
+  \subsection{Commento}
+    Nonostante il modello con le due interazioni Smoke*BMI e Sex*Age risulti
+    significativo, vediamo come questo si comporti in maniera differente dalle
+    valutazioni che abbiamo analizzato precedentemente.\par
+    Il modello con interazioni mostra una minor probabilità per un individuo che
+    fuma e con alto indice di massa corporea, o come un individuo di sesso
+    maschile abbia una minima riduzione di probabilità con l'aumentare dell'
+    età.\par
+    Inoltre il significato della variabile BMI varia rispetto al modello con 
+    solo variabili significative e al modello con la sola regressione logistica 
+    semplice, diminuendone anche la significatività. \par
+    Probabilmente la comparsa di queste interazioni potrebbero essere causate da
+    un problema di overfitting, dove il modello cerca di avvicinarsi di più ai 
+    dati del dataset e meno ad una probabilità generica nella valutazione di un 
+    CVD.\par
+    Decido quindi di non considerare questo modello perchè, oltre ad aumentarne 
+    il grado, non fornisce un contributo decisivo per il nostro problema,
+    andando contro anche alle analisi che fino a qui abbiamo valutato. \par
+
+\clearpage
+         
+\section{Selezione del Modello}
+  Utilizziamo adesso i metodi Backward, Forward e Both basati sui criteri di 
+  penalizzazione AIC e BIC per la selezione del modello.\par
+  Per eseguire le varie procedure, prenderemo in considerazione la formula base 
+  con solo l'intercetta e il modello che comprende tutte le variabili fornite 
+  dal dataset, senza interazioni.
+  
+  <<FormulaIntercetta>>=
+  #Iniziliazziamo la formula base con intercetta
+  fit.0 <- glm(nmc$cvd ~ 1, family= "binomial")
+  @
+
+   \subsection{Backward}
+      Verifichiamo le formule della procedura Backward con AIC e BIC.
+        \subsubsection{AIC}
+          <<Backward_AIC>>=
+          #Backward: AIC
+          backward.AIC <- step(fit.all, direction="backward", k=2)
+          formula(backward.AIC)
+          summary(backward.AIC)
+          @
+          
+        \subsubsection{BIC}
+          <<Backward_BIC>>=
+          #Backward: BIC 
+          backward.BIC <- step(fit.all, direction="backward", 
+                              k=log(length(nmc$cvd)))
+          formula(backward.BIC)
+          summary(backward.BIC)
+          @
+          
+    \subsection{Forward} 
+      Verifichiamo adesso le formule della procedura Forward con AIC e BIC.
+        \subsubsection{AIC}
+          <<Forward_AIC>>=
+          #Forward: AIC
+          forward.AIC <- step(fit.0, scope=formula(fit.all), 
+                             direction="forward", k=2)
+          formula(forward.AIC)
+          summary(forward.AIC)
+          @
+          
+        \subsubsection{BIC}
+          <<Forward_BIC>>=
+          #Forward: BIC
+          forward.BIC <- step(fit.0, scope=formula(fit.all), 
+                             direction="forward", 
+                             k=log(length(nmc$cvd)))
+          formula(forward.BIC)
+          summary(forward.BIC)
+          @
+          
+    \subsection{Both}
+      Infine vediamo le formule della procedura Both con AIC e BIC.
+        \subsubsection{AIC}
+          <<Both_AIC>>=
+          #Both: AIC 
+          both.AIC <- step(fit.0, scope=formula(fit.all), 
+                           direction="both", 
+                           k=2)
+          formula(both.AIC)
+          summary(both.AIC)
+          @
+          
+        \subsubsection{BIC}
+          <<Both_BIC>>=
+          #Bot: BIC
+          both.BIC <- step(fit.0, scope=formula(fit.all), 
+                           direction="both",
+                           k=log(length(nmc$cvd)))
+          formula(both.BIC)
+          summary(both.BIC)
+          @
+    
+    \subsection{Commento}
+      Le formule ottenute dalle tre procedure sono:
+        \begin{itemize}
+          \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
+                CVD $\sim$ Age + Sex + Fitness + Smoke + BMI + Alchol
+          \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
+                CVD $\sim$ Age + Sex + Fitness
+        \end{itemize}
+        
+      In questo caso, basandomi sulle procedure AIC e BIC, 
+      seleziono il risultato dalla procedura AIC ed elimino, secondo il
+      $\emph{p-value}$, la variabile non significativa Alchol, ottenendo un modello
+      che si pone in mezzo alle procedure AIC e BIC. \par
+      Il modello risultate da questa analisi risulta essere quello analizzato
+      nel capitolo delle regressioni logistiche multiple. \par
+      Modello: CVD $\sim$ Sex + Age + Fitness + Smoke + BMI. \par
+
+\clearpage
+
+\section{Test sul Modello}
+  Verifichiamo adesso come il modello tende a calcolare la probabilità per un         campione di individui.
+  
+  \subsection{Age}
+    Calcoliamo la probabilità di un ragazzo di 26 anni e di Uomo di 42 anni, 
+    entrambi fumatori (Smoke:Current), con BMI pari a 25(BMI 0) che stanno male 
+    (Fitness 2).
+      
+    <<Dato_RagazzoUomo>>=
+    #Dato ragazzo
+    #Intercetta: 1, SexMale: 1, Age: 26, BMI: 0, Fitness: 2, 
+    #Smoke:Former: 0, Smoke:NO: 0 
+    t.age.boy <- c(1, 1, 26, 0, 2, 0, 0)
+    
+    #Dato Uomo
+    #Intercetta: 1, SexMale: 1, Age: 42, BMI: 0, Fitness: 2, 
+    #Smoke:Former: 0, Smoke:NO: 0 
+    t.age.man <- c(1, 1, 42, 0, 2, 0, 0)
+    @
+    
+    <<Stima_UomoRagazzo>>=
+    #Stima per il ragazzo
+    stima.age.boy <- exp(coef(fit)%*%t.age.boy)/
+                      (1+exp(coef(fit)%*%t.age.boy))
+    stima.age.boy
+
+    #Stima per l'uomo
+    stima.age.man <- exp(coef(fit)%*%t.age.man)/
+                           (1+exp(coef(fit)%*%t.age.man))
+    stima.age.man
+    @
+    
+    \begin{itemize}
+      \item Probabilità per il ragazzo: $\hat{\pi}$ = 0.008
+      \item Probabilità per l'uomo: $\hat{\pi}$ = 0.036
+    \end{itemize}
+  
+  \subsection{Sex}
+    Calcoliamo la probabilità di una Donna e di un Uomo di 55 anni, 
+    ex-fumatori (Smoke:Former 1), con BMI pari a 32(BMI 1) che godono di
+    ottima salute(Fitness 5).
+      
+    <<Dato_UomoDonna>>=
+    #Dato Uomo
+    #Intercetta: 1, sexMale: 1, Age: 55, BMI: 1, Fitness: 5, 
+    #Smoke:Former: 1, Smoke:NO: 0 
+    t.sex.man <- c(1, 1, 55, 1, 5, 1, 0)
+    
+    #Dato Donna
+    #Intercetta: 1, sexMale: 0, Age: 55, BMI: 1, Fitness: 5, 
+    #Smoke:Former: 1, Smoke:NO: 0 
+    t.sex.woman <- c(1, 0, 55, 1, 5, 1, 0)
+    @
+    
+    <<Stima_UomoDonna>>=
+    #Stima per l'uomo
+    stima.sex.man <- exp(coef(fit)%*%t.sex.man)/
+                      (1+exp(coef(fit)%*%t.sex.man))
+    stima.sex.man
+    #Stima per la donna
+    stima.sex.woman <- exp(coef(fit)%*%t.sex.woman)/
+                           (1+exp(coef(fit)%*%t.sex.woman))
+    stima.sex.woman
+    @
+    
+    \begin{itemize}
+      \item Probabilità per l'uomo: $\hat{\pi}$ = 0.061
+      \item Probabilità per la donna: $\hat{\pi}$ = 0.029
+    \end{itemize}
+    
+  \subsection{Smoke}
+    Calcoliamo la probabilità di una Donna di 36 anni, fumatrice, ex-fumatrice 
+    e non fumatrice, con BMI pari a 25(BMI 0) che è in buona salute (Fitness 4).
+      
+    <<Dato_Fumatrice>>=
+    #Dato SmokeCurrent
+    #Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, 
+    #Smoke:Former: 0, Smoke:NO: 0 
+    t.smoke.current <- c(1, 0, 36, 0, 4, 0, 0)
+    
+    #Dato SmokeCurrent
+    #Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, 
+    #Smoke:Former: 1, Smoke:NO: 0 
+    t.smoke.former <- c(1, 0, 36, 0, 4, 1, 0)
+    
+    #Dato SmokeNO
+    #Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, 
+    #Smoke:Former: 0, Smoke:NO: 1 
+    t.smoke.no <- c(1, 0, 36, 0, 4, 0, 1)
+    @
+    
+    <<Stima_Donna_Fumatrice>>=
+    #Stima SmokeCurrent
+    stima.smoke.current <- exp(coef(fit)%*%t.smoke.current)/
+                              (1+exp(coef(fit)%*%t.smoke.current))
+    stima.smoke.current
+    
+    #Stima SmokeFormer
+    stima.smoke.former <- exp(coef(fit)%*%t.smoke.former)/
+                              (1+exp(coef(fit)%*%t.smoke.former))
+    stima.smoke.former
+    
+    #Stima SmokeNO
+    stima.smoke.no <- exp(coef(fit)%*%t.smoke.no)/
+                          (1+exp(coef(fit)%*%t.smoke.no))
+    stima.smoke.no
+    @
+    
+    \begin{itemize}
+      \item Probabilità per Fumatrice: $\hat{\pi}$ = 0.007
+      \item Probabilità per EX-Fumatrice: $\hat{\pi}$ = 0.005
+      \item Probabilità per Non Fumatrice: $\hat{\pi}$ = 0.005
+    \end{itemize}
+
+\clearpage
+
+\section{Visualizzazione del modello}
+  Visualizziamo il grafo associato al modello scelto, che risulterà
+  essere quello completamente indipendete.
+  
+  <<VisualizzazioneGrafoModello>>=
+  #Modello scelto
+  m.fit <- dmod(~sex+age+bmi+fitness+smoke, data=nmc)
+  m.fit
+  plot(m.fit)
+  @
+
+\clearpage
+
+\section{Conclusioni}
+  In conclusione, il modello scelto che più si adatta meglio al problema per il 
+  calcolo della probabilità di un problema cardiovascolare è:\\
+  Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke. \par
+  All'interno del modello sono presenti unicamente variabili significative e
+  indipendenti.\par
+  I fattori che aumentano la probabilità di CVD sono:
+  \begin{itemize}
+    \item L'aumento dell'età, con maggior evidenza superati i 40 anni.
+    \item Essere maschio.
+    \item Essere un fumatore.
+    \item Avere un alto indice di massa corporea.
+  \end{itemize}
+  I fattori che non influenzano la CVD sono:
+  \begin{itemize}
+    \item Il consumo di alchol.
+    \item La tipologia di attività fisica.
+  \end{itemize}
+  E' stato scelto questo modello a differenza di altri modelli (come il modello 
+  con interazioni) perchè rappresenta al meglio lo studio svolto sulle varie
+  categorie e contemporaneamente risulta essere un modello abbastanza semplice e
+  significativo.
+         
+\end{document}
