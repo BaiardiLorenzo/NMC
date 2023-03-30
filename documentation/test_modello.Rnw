@@ -1,0 +1,115 @@
+\section{Test sul Modello}
+  Verifichiamo adesso come il modello tende a calcolare la probabilità per un         campione di individui.
+  
+  \subsection{Age}
+    Calcoliamo la probabilità di un ragazzo di 26 anni e di Uomo di 42 anni, 
+    entrambi fumatori (Smoke:Current), con BMI pari a 25(BMI 0) che stanno male 
+    (Fitness 2).
+      
+    <<Dato_RagazzoUomo>>=
+    #Dato ragazzo
+    #Intercetta: 1, SexMale: 1, Age: 26, BMI: 0, Fitness: 2, 
+    #Smoke:Former: 0, Smoke:NO: 0 
+    t.age.boy <- c(1, 1, 26, 0, 2, 0, 0)
+    
+    #Dato Uomo
+    #Intercetta: 1, SexMale: 1, Age: 42, BMI: 0, Fitness: 2, 
+    #Smoke:Former: 0, Smoke:NO: 0 
+    t.age.man <- c(1, 1, 42, 0, 2, 0, 0)
+    @
+    
+    <<Stima_UomoRagazzo>>=
+    #Stima per il ragazzo
+    stima.age.boy <- exp(coef(fit)%*%t.age.boy)/
+                      (1+exp(coef(fit)%*%t.age.boy))
+    stima.age.boy
+
+    #Stima per l'uomo
+    stima.age.man <- exp(coef(fit)%*%t.age.man)/
+                           (1+exp(coef(fit)%*%t.age.man))
+    stima.age.man
+    @
+    
+    \begin{itemize}
+      \item Probabilità per il ragazzo: $\hat{\pi}$ = 0.008
+      \item Probabilità per l'uomo: $\hat{\pi}$ = 0.036
+    \end{itemize}
+  
+  \subsection{Sex}
+    Calcoliamo la probabilità di una Donna e di un Uomo di 55 anni, 
+    ex-fumatori (Smoke:Former 1), con BMI pari a 32(BMI 1) che godono di
+    ottima salute(Fitness 5).
+      
+    <<Dato_UomoDonna>>=
+    #Dato Uomo
+    #Intercetta: 1, sexMale: 1, Age: 55, BMI: 1, Fitness: 5, 
+    #Smoke:Former: 1, Smoke:NO: 0 
+    t.sex.man <- c(1, 1, 55, 1, 5, 1, 0)
+    
+    #Dato Donna
+    #Intercetta: 1, sexMale: 0, Age: 55, BMI: 1, Fitness: 5, 
+    #Smoke:Former: 1, Smoke:NO: 0 
+    t.sex.woman <- c(1, 0, 55, 1, 5, 1, 0)
+    @
+    
+    <<Stima_UomoDonna>>=
+    #Stima per l'uomo
+    stima.sex.man <- exp(coef(fit)%*%t.sex.man)/
+                      (1+exp(coef(fit)%*%t.sex.man))
+    stima.sex.man
+    #Stima per la donna
+    stima.sex.woman <- exp(coef(fit)%*%t.sex.woman)/
+                           (1+exp(coef(fit)%*%t.sex.woman))
+    stima.sex.woman
+    @
+    
+    \begin{itemize}
+      \item Probabilità per l'uomo: $\hat{\pi}$ = 0.061
+      \item Probabilità per la donna: $\hat{\pi}$ = 0.029
+    \end{itemize}
+    
+  \subsection{Smoke}
+    Calcoliamo la probabilità di una Donna di 36 anni, fumatrice, ex-fumatrice 
+    e non fumatrice, con BMI pari a 25(BMI 0) che è in buona salute (Fitness 4).
+      
+    <<Dato_Fumatrice>>=
+    #Dato SmokeCurrent
+    #Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, 
+    #Smoke:Former: 0, Smoke:NO: 0 
+    t.smoke.current <- c(1, 0, 36, 0, 4, 0, 0)
+    
+    #Dato SmokeCurrent
+    #Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, 
+    #Smoke:Former: 1, Smoke:NO: 0 
+    t.smoke.former <- c(1, 0, 36, 0, 4, 1, 0)
+    
+    #Dato SmokeNO
+    #Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, 
+    #Smoke:Former: 0, Smoke:NO: 1 
+    t.smoke.no <- c(1, 0, 36, 0, 4, 0, 1)
+    @
+    
+    <<Stima_Donna_Fumatrice>>=
+    #Stima SmokeCurrent
+    stima.smoke.current <- exp(coef(fit)%*%t.smoke.current)/
+                              (1+exp(coef(fit)%*%t.smoke.current))
+    stima.smoke.current
+    
+    #Stima SmokeFormer
+    stima.smoke.former <- exp(coef(fit)%*%t.smoke.former)/
+                              (1+exp(coef(fit)%*%t.smoke.former))
+    stima.smoke.former
+    
+    #Stima SmokeNO
+    stima.smoke.no <- exp(coef(fit)%*%t.smoke.no)/
+                          (1+exp(coef(fit)%*%t.smoke.no))
+    stima.smoke.no
+    @
+    
+    \begin{itemize}
+      \item Probabilità per Fumatrice: $\hat{\pi}$ = 0.007
+      \item Probabilità per EX-Fumatrice: $\hat{\pi}$ = 0.005
+      \item Probabilità per Non Fumatrice: $\hat{\pi}$ = 0.005
+    \end{itemize}
+
+\clearpage

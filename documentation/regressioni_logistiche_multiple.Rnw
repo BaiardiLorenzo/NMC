@@ -1,0 +1,179 @@
+\section{Regressioni Logistiche Multiple}
+  Consideriamo ora la regressione logistica multipla includendo tutte le variabili
+  che sono presenti all'interno del dataset, verificando quali di esse sono più 
+  o meno significative per la visualizzazione di un primo modello unico.
+  
+  \subsection{Modello Completo}
+    <<RLM_ModelloCompleto>>=
+    #Regressioni logistiche multiple
+    #Modello Completo
+    #Variabili: Sex, Age, BMI, Fitness, PA, Smoke, Alchol
+    fit.all <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
+                             nmc$pa+nmc$smoke+nmc$alc, 
+                             family=binomial)
+    summary(fit.all)
+    @
+    
+    Per il modello che include tutte le variabili:\\
+    Modello: CVD $\sim$ Sex + Age + BMI + Fitness + PA + Smoke + Alchol 
+    \begin{itemize}
+      \item Risultano essere significative, secondo il \emph{p-value}, le 
+            variabili: Sex, Age, BMI, Fitness e Smoke.
+      \item Risultano essere non significative, non superando il $5\%$
+            di significatività del \emph{p-value}, le variabili: PA e Alchol.
+      \item I parametri stimati nella regressione logistica multipla differescono da             quelli presenti nelle regressioni logistiche semplici precedentemente               analizzate.
+      \item Gli errori standard non differiscono molto da quelli presenti nei                   modelli con regressione logistica semplice.
+      \item La variabile Sex mostra ancora come il sesso Maschile influisca 
+            positivamente nella presenza di CVD con valore stimato: 
+            Sex:Male $\sim$ 0.788.
+      \item Anche le variabili BMI e Smoke mostrano un aumento nelle possibilità 
+            di insorgenza di un CVD.
+      \item La variabile Fitness aumenta di significatività, rispetto
+            al modello di regressione logistica semplice, riducendo la 
+            probabilità di CVD con valore stimato: Fitness $\sim$ -0.184.
+    \end{itemize}
+  
+  \subsection{Modello Significativo}
+    Dato che nel modello completo sono presenti variabili non significative,
+    le andremo ad eliminare gradualmente dalla formula del modello fino ad 
+    ottenere un modello con solo variabili significative.\par
+    Iniziamo eliminando la variabile non significativa PA.
+    
+    <<RLM_NOPA>>=
+    #Modello senza PA
+    #Variabili: Sex, Age, BMI, Fitness, Smoke, Alchol
+    fit.npa <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
+                             nmc$smoke+nmc$alc, 
+                             family=binomial)
+    summary(fit.npa)
+    @
+    
+    Tutte le varibili che erano significative nel modello completo risultano 
+    ancora significative. \par
+    Eliminiamo la variabile Alchol, che risulta ancora non significativa,
+    all'interno della formula.
+    
+    <<RLM_ModelloSignificativo>>=
+    #Modello significativo
+    #Variabili: Sex, Age, BMI, Fitness, Smoke 
+    fit <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
+                         nmc$smoke, family=binomial)
+    summary(fit)
+    @
+    
+    Il modello risultate è: \\
+    Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke
+    \begin{itemize}
+      \item Le variabili risultato essere tutte significative secondo il 
+            $\emph{p-value}$.
+      \item I parametri stimati e gli errori standard non differiscono molto dal 
+            modello completo.
+    \end{itemize}
+    
+    Il modello con solo variabili significative sembra mostrare un buon 
+    adattamento.\par
+    Visualizziamo il grafico dell'andamento del modello stimato.
+    
+    <<RLM_Plot_ModelloSignificativo>>=
+    pstima <- fit$fitted.values
+    
+    #Plot
+    plot(nmc$age, nmc$cvd, xlab="Age", ylab="CVD")
+    points(sort(nmc$age), pstima[order(nmc$age)], col="blue")
+    @
+  
+  \subsection{Commento}
+    \begin{itemize}
+      \item Il modello risulta essere: \\
+            Modello: CVD$\sim$ Sex + Age + BMI + Fitness + Smoke
+      \item Come visto nelle regressioni logistiche semplici, le variabili
+            sexMale, Age e BMI continuano ad influenzare positivamente la 
+            comparsa di problemi cardiovascolari.
+      \item Al contrario, le variabili significative Fitness e Smoke (per la 
+            categoria "Former" e la categoria "NO") riducono la possibilità di 
+            avere un CVD.
+      \item Di conseguenza la categoria Smoke:Current ha una probabilità 
+            maggiore nell'insorgenza di CVD.
+    \end{itemize}
+  
+  \subsection{Dati di esempio}
+    Effettuiamo una valutazione della probabilità su degli individui casuali 
+    in base ai modelli precedentemente analizzati. \par
+    Visualizziamo i coefficienti del modello completo e quello significativo.
+    
+    <<Coefficenti_ModelloCompleto>>=
+    #Coefficienti Modello Completo
+    coef(fit.all)
+    @
+    
+    <<Coefficenti_ModelloSignificativo>>=
+    #Coefficienti Modello Significativo
+    coef(fit)
+    @
+    
+    Verifichiamo la probabilità di avere un CVD per un Uomo (Sex 1) di 45 anni 
+    fumatore, con BMI pari a 32 (BMI dicotomizzato a 1), che non fa consumo di 
+    alchol (Alchol 1), in ottima salute (Fitness 5) e PA=1.
+    
+    <<Stima_ModelloCompleto_Uomo45>>=
+    #Stima per il Modello Completo
+    #Dato
+    #Intercetta: 1, Sex: 1, Age: 45, BMI: 1, Fitness: 5, 
+    #PA: 1, Smoke:Former: 0, Smoke:NO: 0, Alchol: 1 
+    man45.all <- c(1, 1, 45, 1, 5, 1, 0, 0, 1)
+    stima.man45.all <- exp(coef(fit.all)%*%man45.all)/
+                           (1+exp(coef(fit.all)%*%man45.all))
+    stima.man45.all
+    @
+    
+    <<Stima_ModelloSignificativo_Uomo45>>=
+    #Stima per il Modello Significativo
+    #Dato
+    #Intercetta: 1, Sex: 1, Age: 45, BMI: 1, Fitness: 5, 
+    #Smoke:Former: 0, Smoke:NO: 0
+    man45 <- c(1, 1, 45, 1, 5, 0, 0)
+    stima.man45 <- exp(coef(fit)%*%man45)/(1+exp(coef(fit)%*%man45))
+    stima.man45
+    @
+    
+    Risulta che:
+    \begin{itemize}
+      \item per il Modello Completo: $\hat{\pi}$ = 0.0391
+      \item per il Modello Significativo: $\hat{\pi}$ = 0.0343
+    \end{itemize}
+    
+    Verifichiamo adesso la probabilità di avere un CVD per una Donna (Sex 0) di 
+    60 anni ex fumatrice, con BMI pari a 35 (BMI dicotomizzato 1), che beve 
+    alchol nella media (Alchol 4), in buona salute (Fitness 4), e PA = 1.
+    
+    <<Stima_ModelloCompleto_Donna60>>=
+    #Stima per il Modello Completo
+    #Dato
+    #Intercetta: 1, Sex: 0, Age: 60, BMI: 1, Fitness: 4, 
+    #PA: 1, Smoke:Former: 1, Smoke:NO: 0, Alchol: 4 
+    woman60.all <- c(1, 0, 60, 1, 4, 1, 1, 0, 4)
+    stima.woman60.all <- exp(coef(fit.all)%*%woman60.all)/
+                           (1+exp(coef(fit.all)%*%woman60.all))
+    stima.woman60.all
+    @
+    
+    <<Stima_ModelloSignificatico_Donna60>>=
+    #Stima per il Modello Significativo
+    #Intercetta: 1, Sex: 0, Age: 60, BMI: 1, Fitness: 4, 
+    #Smoke:Former: 1, Smoke:NO: 0
+    woman60 <- c(1, 0, 60, 1, 4, 1, 0)
+    stima.woman60 <- exp(coef(fit)%*%woman60)/(1+exp(coef(fit)%*%woman60))
+    stima.woman60
+    @
+    
+    Risulta che:
+    \begin{itemize}
+      \item Modello Completo: $\hat{\pi}$ = 0.0507
+      \item Modello Significativo: $\hat{\pi}$ = 0.0535
+    \end{itemize}
+    
+    In conclusione possiamo vedere come la probabilità del modello completo e
+    del modello con solo variabili significative si mostrino particolarmente 
+    simili.
+
+\clearpage    

@@ -1,5 +1,3 @@
-
-
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
@@ -56,7 +54,7 @@
 
 \title{NMC - Foundations of Statistical Modelling}
 \author{Lorenzo Baiardi}
-\date{28 Febbraio 2023}
+\date{13 Aprile 2023}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -68,12 +66,14 @@
 
 \clearpage
 
+
 \section{Introduzione}
   In questo elaborato andremo a studiare l'effeto delle attività personali di un 
   individuo per la prevenzione di problemi cardiovascolari. Andremo a ipotizzare
   modelli specifici, differenze che si possono verificare tra le diverse categorie
   di persone e quanto queste categorie possono influire sulla presenza o meno
   di un problema cardiovascolare.
+
 
 \section{Visualizzazione del dataset} 
   Per lo studio di questo fenomeno utilizzeremo il dataset fornito: 
@@ -83,7 +83,7 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{load}\hlstd{(}\hlstr{"nmc.RData"}\hlstd{)}
+\hlkwd{load}\hlstd{(}\hlstr{"../nmc.RData"}\hlstd{)}
 \hlcom{#bmi dicotomizzata}
 \hlstd{nmc}\hlopt{$}\hlstd{bmi} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{>=}\hlnum{30}\hlstd{)}
 \hlkwd{str}\hlstd{(nmc)}
@@ -265,8 +265,9 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
+    
 \clearpage
+
 
 \section{Regressioni Logistiche Semplici}
   Dato che stiamo analizzando un problema che presenta come variabile di 
@@ -912,7 +913,8 @@
     \end{itemize}
   
 \clearpage
-  
+
+
 \section{Regressioni Logistiche Multiple}
   Consideriamo ora la regressione logistica multipla includendo tutte le variabili
   che sono presenti all'interno del dataset, verificando quali di esse sono più 
@@ -1254,7 +1256,8 @@
     simili.
 
 \clearpage    
-    
+
+
 \section{Considerazioni sul Modello}
   In questo capitolo confronteremo il comportamento del modello su una specifica      categoria di invidividui.
 
@@ -1502,6 +1505,7 @@
     Il grafico non sembra mostrare differenze tra le due categorie di PA.
 
 \clearpage
+
 
 \section{Interazioni fra le variabili}
   Valutiamo se all'interno del modello ci sia la possibilità di interazioni
@@ -1937,16 +1941,13 @@
     Inoltre il significato della variabile BMI varia rispetto al modello con 
     solo variabili significative e al modello con la sola regressione logistica 
     semplice, diminuendone anche la significatività. \par
-    Probabilmente la comparsa di queste interazioni potrebbero essere causate da
-    un problema di overfitting, dove il modello cerca di avvicinarsi di più ai 
-    dati del dataset e meno ad una probabilità generica nella valutazione di un 
-    CVD.\par
     Decido quindi di non considerare questo modello perchè, oltre ad aumentarne 
     il grado, non fornisce un contributo decisivo per il nostro problema,
     andando contro anche alle analisi che fino a qui abbiamo valutato. \par
 
 \clearpage
-         
+
+
 \section{Selezione del Modello}
   Utilizziamo adesso i metodi Backward, Forward e Both basati sui criteri di 
   penalizzazione AIC e BIC per la selezione del modello.\par
@@ -2635,6 +2636,7 @@
 
 \clearpage
 
+
 \section{Test sul Modello}
   Verifichiamo adesso come il modello tende a calcolare la probabilità per un         campione di individui.
   
@@ -2808,6 +2810,9 @@
 
 \clearpage
 
+
+
+
 \section{Visualizzazione del modello}
   Visualizziamo il grafo associato al modello scelto, che risulterà
   essere quello completamente indipendete.
@@ -2834,6 +2839,7 @@
 
 \clearpage
 
+
 \section{Conclusioni}
   In conclusione, il modello scelto che più si adatta meglio al problema per il 
   calcolo della probabilità di un problema cardiovascolare è:\\
@@ -2856,5 +2862,5 @@
   con interazioni) perchè rappresenta al meglio lo studio svolto sulle varie
   categorie e contemporaneamente risulta essere un modello abbastanza semplice e
   significativo.
-         
+
 \end{document}

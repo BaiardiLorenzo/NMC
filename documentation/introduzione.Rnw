@@ -1,0 +1,6 @@
+\section{Introduzione}
+  In questo elaborato andremo a studiare l'effeto delle attività personali di un 
+  individuo per la prevenzione di problemi cardiovascolari. Andremo a ipotizzare
+  modelli specifici, differenze che si possono verificare tra le diverse categorie
+  di persone e quanto queste categorie possono influire sulla presenza o meno
+  di un problema cardiovascolare.

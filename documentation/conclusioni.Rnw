@@ -1,0 +1,22 @@
+\section{Conclusioni}
+  In conclusione, il modello scelto che più si adatta meglio al problema per il 
+  calcolo della probabilità di un problema cardiovascolare è:\\
+  Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke. \par
+  All'interno del modello sono presenti unicamente variabili significative e
+  indipendenti.\par
+  I fattori che aumentano la probabilità di CVD sono:
+  \begin{itemize}
+    \item L'aumento dell'età, con maggior evidenza superati i 40 anni.
+    \item Essere maschio.
+    \item Essere un fumatore.
+    \item Avere un alto indice di massa corporea.
+  \end{itemize}
+  I fattori che non influenzano la CVD sono:
+  \begin{itemize}
+    \item Il consumo di alchol.
+    \item La tipologia di attività fisica.
+  \end{itemize}
+  E' stato scelto questo modello a differenza di altri modelli (come il modello 
+  con interazioni) perchè rappresenta al meglio lo studio svolto sulle varie
+  categorie e contemporaneamente risulta essere un modello abbastanza semplice e
+  significativo.

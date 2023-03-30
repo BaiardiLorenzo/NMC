@@ -1,0 +1,96 @@
+\section{Visualizzazione del dataset} 
+  Per lo studio di questo fenomeno utilizzeremo il dataset fornito: 
+  $\emph{Sjolander et al.(2009)}$ \par
+  Il dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
+  
+  <<Dataset>>=
+  load("../nmc.RData")
+  #bmi dicotomizzata
+  nmc$bmi = as.numeric(nmc$bmi>=30) 
+  str(nmc)
+  @
+ 
+  \subsection{Variabili}
+    \begin{itemize}
+      \item CVD: variabile d'interesse.
+        \begin{enumerate}
+          \setcounter{enumi}{-1}
+          \item Nessun problema cardiovascolare
+          \item Uno o più problemi cardiovascolari
+        \end{enumerate}
+      \item Sex: rappresenta il genere dell'individuo.
+        \begin{itemize}
+          \item Male
+          \item Female
+        \end{itemize}
+      \item Age: età dell'individuo.
+      \item BMI: Body Mass Index, valore dicotomizzato.
+        \begin{enumerate}
+          \setcounter{enumi}{-1}
+          \item BMI $< 30$
+          \item BMI $\ge 30$ 
+        \end{enumerate}
+      \item Fitness: statico di salute dell'indiviudo.
+        \begin{enumerate}
+          \item Much Worse 
+          \item Little Worse
+          \item Just as good
+          \item A bit better
+          \item Much better
+        \end{enumerate}
+      \item PA: Personal Activities.
+        \begin{enumerate}
+          \setcounter{enumi}{-1}
+          \item high-level exerciser 
+          \item low-level exerciser
+        \end{enumerate}
+      \item Smoke: tipologia di fumatore.
+        \begin{itemize}
+          \item NO 
+          \item Former
+          \item Current
+        \end{itemize}
+      \item Alchol: frequenza nel consumo di alchol dell'individuo.
+        \begin{enumerate}
+          \item Never 
+          \item Low
+          \item Medium
+          \item High
+        \end{enumerate}
+    \end{itemize}
+  
+    Per una maggiore comprensione del problema, convertiremo le variabili di
+    tipo categoriale Fitness e Alchol, fornite dal dataset, in variabili di tipo        ordinale facilitando la valutazione di quest'ultime durante l'analisi. \par
+    Di seguito mostreremo la legenda utilizzata.
+    
+    <<FitnessCategoriale_SmokeOrdinale, echo=FALSE>>=
+    fitness <- nmc$fitness
+    c.smoke<- c('NO', 'Former', 'Current')
+    smoke.ord <- as.numeric(ordered(nmc$smoke, c.smoke))
+    @
+    
+    <<Legenda>>=
+    #LEGENDA:
+    #Fitness: 1-MUCH WORSE, 2-LITTLE WORSE, 3-JUST AS GOOD, 
+    #         4-A BIT BETTER, 5-MUCH BETTER
+    #Alchol: 1-NEVER, 2-LOW, 3-MEDIUM, 4-HIGH
+    
+    c.fit = c('Much Worse', 'Little Worse', 'Just as good',
+                'A bit better', 'Much better')
+    c.alc =  c('Never', 'Low', 'Medium', 'High')
+    
+    #Variabili ordinali
+    nmc$fitness = as.numeric(ordered(nmc$fitness, c.fit))
+    nmc$alc = as.numeric(ordered(nmc$alc, c.alc))
+    
+    str(nmc)
+    @
+
+  \subsection{Tabella delle Frequenze}
+    Visualizziamo la frequenza delle varie categorie all'interno del dataset.
+    <<TabellaFrequenze>>=
+    #Tabella
+    ftable(sex+bmi+pa ~ smoke+alc+fitness, nmc)
+    @
+    
+\clearpage

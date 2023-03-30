@@ -1,0 +1,91 @@
+\section{Considerazioni sul Modello}
+  In questo capitolo confronteremo il comportamento del modello su una specifica      categoria di invidividui.
+
+  \subsection{Maschio e Femmina} 
+    Nei precedenti capitoli, durante l'analisi delle singole variabili e dei vari 
+    modelli, abbiamo notato come ci siano stati sempre diverse probabilità 
+    tra il sesso maschile e il sesso femmile.\par
+    Valutiamo ancora all'interno di un grafico se questa nostra ipotesi si 
+    verifica in un modello più complesso di quello marginale.
+      
+    <<Analisi_ModelloSex_Maschio>>=
+    #Modello Sesso Maschile
+    #Sex: Male
+    fit.male <- glm(nmc$cvd[nmc$sex=="Male"] ~ 
+                      nmc$age[nmc$sex=="Male"]+
+                      nmc$bmi[nmc$sex=="Male"]+
+                      nmc$fitness[nmc$sex=="Male"]+
+                      nmc$smoke[nmc$sex=="Male"], 
+                      family=binomial)
+    summary(fit.male)
+    pstima.male <- fit.male$fitted.values
+    @
+    
+    <<Analisi_ModelloSex_Femmina>>=
+    #Modello Sesso Femminile
+    #Sex: Female
+    fit.female <- glm(nmc$cvd[nmc$sex=="Female"] ~ 
+                        nmc$age[nmc$sex=="Female"]+
+                        nmc$bmi[nmc$sex=="Female"]+
+                        nmc$fitness[nmc$sex=="Female"]+
+                        nmc$smoke[nmc$sex=="Female"], 
+                        family=binomial)
+    summary(fit.female)
+    pstima.female <- fit.female$fitted.values
+    @
+    
+    <<Plot_Analisi_ModelloSex>>=
+    #Plot
+    plot(nmc$age[nmc$sex=="Male"], nmc$cvd[nmc$sex=="Male"], 
+         xlab="Age", ylab="CVD", col="blue")
+    points(nmc$age[nmc$sex=="Female"], nmc$cvd[nmc$sex=="Female"], 
+           col="red")
+    points(sort(nmc$age[nmc$sex=="Male"]), 
+          pstima.male[order(nmc$age[nmc$sex=="Male"])], 
+          col="blue")
+    points(sort(nmc$age[nmc$sex=="Female"]), 
+          pstima.female[order(nmc$age[nmc$sex=="Female"])], 
+          col="red")
+    legend(x="left", legend=c("Male", "Female"), lty=c(1, 1),
+           col=c("blue","red"), lwd=1)
+    @
+    
+    Statisticamente il sesso maschile rimane il soggetto che ha più rischi di 
+    CVD rispetto al genere femminile, anche nel modello più complesso.
+  
+  \subsection{Attività Fisica}
+    Dato che la variabile PA nelle valutazione dei modelli è sempre stata 
+    scartata, verifichiamo se all'interno del nostro modello possono esserci 
+    delle differenze tra le due categorie di PA per il calcolo del CVD.
+    
+    <<Analisi_ModelloPA_0>>=
+    #Modello PA 0
+    fit.pa.0 <- glm(nmc$cvd[nmc$pa==0] ~ nmc$sex[nmc$pa==0] +
+                      nmc$age[nmc$pa==0] + nmc$bmi[nmc$pa==0] +
+                      nmc$fitness[nmc$pa==0] + nmc$smoke[nmc$pa==0],
+                    family=binomial)
+    summary(fit.pa.0)
+    pstima.pa.0 <- fit.pa.0$fitted.values
+    @
+    
+    <<Analisi_ModelloPA_1>>=
+    #Modello PA 1
+    fit.pa.1 <- glm(nmc$cvd[nmc$pa==1] ~ nmc$sex[nmc$pa==1] + 
+                      nmc$age[nmc$pa==1] + nmc$bmi[nmc$pa==1] +
+                      nmc$fitness[nmc$pa==1] + nmc$smoke[nmc$pa==1], 
+                    family=binomial)
+    summary(fit.pa.1)
+    pstima.pa.1 <- fit.pa.1$fitted.values
+    @
+    
+    <<Plot_Analisi_ModelloPA>>=
+    #Plot
+    plot(nmc$age[nmc$pa==0], nmc$cvd[nmc$pa==0], xlab="Age", ylab="CVD", col="red")
+    points(nmc$age[nmc$pa==1], nmc$cvd[nmc$pa==1], col="blue")
+    points(nmc$age[nmc$pa==0], pstima.pa.0, col="red")
+    points(nmc$age[nmc$pa==1], pstima.pa.1, col="blue")
+    @
+    
+    Il grafico non sembra mostrare differenze tra le due categorie di PA.
+
+\clearpage
