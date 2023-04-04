@@ -35,7 +35,7 @@
           <<Forward_AIC>>=
           #Forward: AIC
           forward.AIC <- step(fit.0, scope=formula(fit.all), 
-                             direction="forward", k=2)
+                             direction="forward", k=2, trace=FALSE)
           formula(forward.AIC)
           summary(forward.AIC)
           @
@@ -45,7 +45,8 @@
           #Forward: BIC
           forward.BIC <- step(fit.0, scope=formula(fit.all), 
                              direction="forward", 
-                             k=log(length(nmc$cvd)))
+                             k=log(length(nmc$cvd)),
+                             trace=FALSE)
           formula(forward.BIC)
           summary(forward.BIC)
           @
@@ -57,7 +58,7 @@
           #Both: AIC 
           both.AIC <- step(fit.0, scope=formula(fit.all), 
                            direction="both", 
-                           k=2)
+                           k=2, trace=FALSE)
           formula(both.AIC)
           summary(both.AIC)
           @
@@ -67,7 +68,8 @@
           #Bot: BIC
           both.BIC <- step(fit.0, scope=formula(fit.all), 
                            direction="both",
-                           k=log(length(nmc$cvd)))
+                           k=log(length(nmc$cvd)),
+                           trace=FALSE)
           formula(both.BIC)
           summary(both.BIC)
           @

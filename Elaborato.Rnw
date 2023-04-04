@@ -34,6 +34,8 @@
 
 \Sexpr{knit_child("documentation/visualizzazione_modello.Rnw")}
 
+\Sexpr{knit_child("documentation/modelli_grafici.Rnw")}
+
 \Sexpr{knit_child("documentation/conclusioni.Rnw")}
 
 \end{document}

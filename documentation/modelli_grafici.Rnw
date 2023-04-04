@@ -1,0 +1,60 @@
+\clearpage
+
+\section{Modelli Grafi}
+  \subsection{Tabella Frequenze}
+    <<Tabella frequenze>>=
+    #Tabella
+    ftable(sex+bmi+pa ~ smoke+alc+fitness, nmc)
+    @
+    
+    <<>>=
+    #Dataset per grafi
+    nmc.nocvd <- nmc[c(1:3, 5:8)]
+    nmc.cvd0 <- nmc[(nmc$cvd==0),c(1:3, 5:8)]
+    nmc.cvd1 <- nmc[(nmc$cvd==1),c(1:3, 5:8)]
+    @
+    
+  \subsection{Grafi}
+    <<Modello scelto>>=
+    #Modello scelto
+    m.fit <- dmod(~sex+age+bmi+fitness+smoke, data=nmc, fit=TRUE)
+    m.fit
+    plot(m.fit)
+    @
+    
+    <<Formula modello saturo>>=
+    #Formula modello saturo
+    sat.nmc.cvd0 <- dmod(~.^., data=nmc.cvd0)
+    sat.nmc.cvd1 <- dmod(~.^., data=nmc.cvd1)
+    @
+    <<Formula modello indipendenza completa>>=
+    #Formula modello indipendenza completa
+    ind.nmc.cvd0 <- dmod(~.^1, data=nmc.cvd0)
+    ind.nmc.cvd1 <- dmod(~.^1, data=nmc.cvd1)
+    @
+    
+    <<Grafo_AIC_CVD0>>=
+    #AIC
+    m.sat.cvd0 <- stepwise(sat.nmc.cvd0)
+    plot(m.sat.cvd0)
+    @
+    
+    <<Grafo_AIC_CVD1>>=
+    #AIC
+    m.sat.cvd1 <- stepwise(sat.nmc.cvd1)
+    plot(m.sat.cvd1)
+    @
+    
+    <<Grafo_BIC_CVD0>>=
+    #BIC
+    m.ind.cvd0 <- stepwise(ind.nmc.cvd0, k=log(length(nmc$cvd)),
+                           direction="forward")
+    plot(m.ind.cvd0)
+    @
+    
+    <<Grafo_BIC_CVD1>>=
+    #BIC
+    m.ind.cvd1 <- stepwise(ind.nmc.cvd1, k=log(length(nmc$cvd)),
+                           direction="forward")
+    plot(m.ind.cvd1)
+    @
