@@ -16,8 +16,6 @@
 
 \clearpage
 
-CIAO PROVA PROVA
-
 \Sexpr{knit_child("documentation/introduzione.Rnw")}
 
 \Sexpr{knit_child("documentation/visualizzazione_dataset.Rnw")}
@@ -27,6 +25,8 @@ CIAO PROVA PROVA
 \Sexpr{knit_child("documentation/regressioni_logistiche_multiple.Rnw")}
 
 \Sexpr{knit_child("documentation/considerazioni_modello.Rnw")}
+
+AGGIUNGI MODELLO POLINOMIALE VARIABILI
 
 \Sexpr{knit_child("documentation/interazione_variabili.Rnw")}
 
