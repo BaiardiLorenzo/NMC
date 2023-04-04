@@ -16,6 +16,8 @@
 
 \clearpage
 
+CIAO PROVA PROVA
+
 \Sexpr{knit_child("documentation/introduzione.Rnw")}
 
 \Sexpr{knit_child("documentation/visualizzazione_dataset.Rnw")}
