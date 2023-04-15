@@ -87,5 +87,23 @@
     @
     
     Il grafico non sembra mostrare differenze tra le due categorie di PA.
+    
+    \subsection{Visualizzazione Fitness e PA}
+    Andiamo a visualizzare il legame tra la variabile Fitness e Pa per la loro
+    valutazione all'interno di un modello.
+    
+    <<Istogramma Fitness PA>>=
+    barplot(table(nmc$fitness, nmc$pa), 
+            names.arg=c("Molta attività fisica", "Poca attività fisica"),
+            legend.text=c("Much Worse", "Little Worse","Just as good",
+                    "A bit better", "Much better"),
+            col=c("black","red", "orange", "yellow", "green"), beside=TRUE)
+    @
+      
+    Come possiamo vedere, la variabile FITNESS e PA risultano connesse anche 
+    all'interno dell'istogramma, mostrandoci come l'attività fisica induca
+    maggiormente ad una miglior condizione di salute rispetto a chi non la
+    pratica.
+    
 
 \clearpage

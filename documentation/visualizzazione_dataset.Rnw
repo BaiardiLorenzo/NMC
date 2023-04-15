@@ -5,8 +5,6 @@
   
   <<Dataset>>=
   load("../nmc.RData")
-  #bmi dicotomizzata
-  nmc$bmi = as.numeric(nmc$bmi>=30) 
   str(nmc)
   @
  
@@ -59,38 +57,40 @@
         \end{enumerate}
     \end{itemize}
   
-    Per una maggiore comprensione del problema, convertiremo le variabili di
-    tipo categoriale Fitness e Alchol, fornite dal dataset, in variabili di tipo        ordinale facilitando la valutazione di quest'ultime durante l'analisi. \par
+    Per una maggiore comprensione del problema, convertiremo alcune variabili di
+    tipo categoriale in variabili di tipo ordinale per la valutazione di 
+    quest'ultime durante l'analisi. \par
     Di seguito mostreremo la legenda utilizzata.
-    
-    <<FitnessCategoriale_SmokeOrdinale, echo=FALSE>>=
-    fitness <- nmc$fitness
-    c.smoke<- c('NO', 'Former', 'Current')
-    smoke.ord <- as.numeric(ordered(nmc$smoke, c.smoke))
-    @
     
     <<Legenda>>=
     #LEGENDA:
     #Fitness: 1-MUCH WORSE, 2-LITTLE WORSE, 3-JUST AS GOOD, 
     #         4-A BIT BETTER, 5-MUCH BETTER
     #Alchol: 1-NEVER, 2-LOW, 3-MEDIUM, 4-HIGH
+    #Smoke: 1-NO, 2-FORMER, 3-CURRENT
+    #BMI: 0-<30, 1->=30
     
     c.fit = c('Much Worse', 'Little Worse', 'Just as good',
                 'A bit better', 'Much better')
     c.alc =  c('Never', 'Low', 'Medium', 'High')
+    c.smoke<- c('NO', 'Former', 'Current')
     
+    #bmi dicotomizzata
+    bmi = nmc$bmi
+    nmc$bmi = as.numeric(nmc$bmi>=30) 
     #Variabili ordinali
+    fitness <- nmc$fitness
     nmc$fitness = as.numeric(ordered(nmc$fitness, c.fit))
     nmc$alc = as.numeric(ordered(nmc$alc, c.alc))
+    smoke.ord <- as.numeric(ordered(nmc$smoke, c.smoke))
     
     str(nmc)
     @
-
-  \subsection{Tabella delle Frequenze}
-    Visualizziamo la frequenza delle varie categorie all'interno del dataset.
-    <<TabellaFrequenze>>=
+    
+  \subsection{Tabella Frequenze}
+    <<Tabella frequenze>>=
     #Tabella
-    ftable(sex+bmi+pa ~ smoke+alc+fitness, nmc)
+    ftable(sex+bmi+pa ~ cvd+smoke+alc+fitness, nmc)
     @
     
 \clearpage

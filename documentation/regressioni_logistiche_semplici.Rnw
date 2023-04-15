@@ -93,8 +93,7 @@
            col="red")
     lines(nmc$age[nmc$sex=="Male"], pstima.sex.male, col="blue")
     lines(nmc$age[nmc$sex=="Female"], pstima.sex.female, col="red")
-    legend(x="left", legend=c("Male", "Female"), lty=c(1, 1), 
-           col=c("blue","red"), lwd=1)
+    legend(x="left", legend=c("Male", "Female"), fill=c("blue","red"))
     @
   
     Il grafico ci conferma come il sesso maschile sia più a rischio di problemi
@@ -224,8 +223,7 @@
     legend(x="left", 
            legend=c("Much Worse", "Little Worse", "Just as good",
                     "A bit better", "Much better"), 
-           lty=c(1, 1, 1, 1, 1), 
-           col=c("black","red", "orange", "yellow", "green"), lwd=1)
+           fill=c("black","red", "orange", "yellow", "green"))
     @
     
     Attraverso il grafico notiamo che la categoria Fitness:Much better è quella meno

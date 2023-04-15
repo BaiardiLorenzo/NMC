@@ -4,7 +4,7 @@
 
 \title{NMC - Foundations of Statistical Modelling}
 \author{Lorenzo Baiardi}
-\date{13 Aprile 2023}
+\date{19 Aprile 2023}
 
 \begin{document}
 
@@ -24,19 +24,17 @@
 
 \Sexpr{knit_child("documentation/regressioni_logistiche_multiple.Rnw")}
 
-\Sexpr{knit_child("documentation/considerazioni_modello.Rnw")}
-
-AGGIUNGI MODELLO POLINOMIALE VARIABILI
-
 \Sexpr{knit_child("documentation/interazione_variabili.Rnw")}
 
 \Sexpr{knit_child("documentation/selezione_modello.Rnw")}
 
+\Sexpr{knit_child("documentation/grafi_non_orientati.Rnw")}
+
+\Sexpr{knit_child("documentation/reti_bayesiane.Rnw")}
+
+\Sexpr{knit_child("documentation/considerazioni_modello.Rnw")}
+
 \Sexpr{knit_child("documentation/test_modello.Rnw")}
-
-\Sexpr{knit_child("documentation/visualizzazione_modello.Rnw")}
-
-\Sexpr{knit_child("documentation/modelli_grafici.Rnw")}
 
 \Sexpr{knit_child("documentation/conclusioni.Rnw")}
 

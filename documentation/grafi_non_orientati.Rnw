@@ -1,0 +1,105 @@
+<<Library, echo=FALSE, warning=FALSE, message=FALSE, results='hide'>>=
+library(gRbase)
+library(gRain)
+library(gRim)
+library(bnlearn)
+library(igraph)
+@
+
+\section{Grafi non orientati}
+  <<Formula modello saturo e indipendente>>=
+  #Formula modello saturo e indipidente
+  sat <- dmod(~.^., data=nmc)
+  ind <- dmod(~.^1, data=nmc)
+  @
+  
+  \subsection{Backward}
+    Utilizziamo la procedura di Backward con criterio di selezione AIC e BIC.
+  
+    \subsubsection{AIC}
+      <<Grafo_AIC_Backward>>=
+      #AIC Backward
+      m.aic.backward <- stepwise(sat, direction="backward")
+      m.aic.backward
+      plot(as(m.aic.backward, "graphNEL"), "fdp")
+      @
+      
+      In questo primo grafo, la variabile di risposta CVD risulta essere
+      direttamente connessa con le variabili BMI, SMOKE, AGE, ALC e SEX mentre
+      risulta indipendente dalle variabili FITNESS e PA condizionatamente alle
+      altre.
+      
+    \subsection{BIC}
+      <<Grafo_BIC_Backward>>=
+      #BIC Backward
+      m.bic.backward <- stepwise(sat, k=log(length(nmc$cvd)),
+                        direction="backward")
+      m.bic.backward
+      plot(as(m.bic.backward, "graphNEL"), "fdp")
+      @
+      
+      Con il criterio il BIC, la variabile CVD rimane direttamente dipendente
+      con le variabili SMOKE, SEX e AGE.
+      
+  \subsection{Forward}
+    Utilizziamo la procedura di Forward con criterio di selezione AIC e BIC.
+
+    \subsubsection{AIC}
+      <<Grafo_AIC_Forward>>=
+      #AIC Forward
+      m.aic.forward <- stepwise(ind, direction="forward")
+      m.aic.forward
+      plot(as(m.aic.forward, "graphNEL"), "fdp")
+      @
+     
+      Nella procedura AIC con criterio di selezione AIC, la variabile CVD
+      è connessa con le sole variabili SEX e AGE.
+      
+    \subsubsection{BIC}
+      <<Grafo_BIC_Forward>>=
+      #BIC Forward
+      m.bic.forward <- stepwise(ind, k=log(length(nmc$cvd)),
+                        direction="forward")
+      m.bic.forward
+      plot(as(m.bic.forward, "graphNEL"), "fdp")
+      @
+      
+      Con il criterio di selezione BIC, la variabile CVD è direttamente connessa
+      solo con la variabile AGE.
+      
+  \subsection{Commento}
+    \begin{itemize}
+      \item In tutte le procedure, la variabile di risposta CVD risulta
+            sempre direttamente connessa con la variabile AGE e in modo molto
+            forte con la variabile SEX.
+      \item In tutte le procedure, le variabili PA e FITNESS risultano
+            direttamente connesse e legate alla variabile SEX.
+    
+    \end{itemize}
+      
+  \subsection{Sotto problema CVD}
+    <<Sottoproblema_CVD>>=
+    #Dataset: sotto-problema CVD
+    cvd0 <- (nmc$cvd==0)
+    cvd1 <- (nmc$cvd==1)
+    nmc.cvd0 <- nmc[cvd0, c(1:3, 5:8)]
+    nmc.cvd1 <- nmc[cvd1, c(1:3, 5:8)]
+    @
+    
+    <<Grafo_CVD0>>=
+    #Grafo per CVD0
+    sat.cvd0 <- dmod(~.^., data=nmc.cvd0)
+    m.cvd0 <- stepwise(sat.cvd0)
+    plot(as(m.cvd0, "graphNEL"), "fdp")
+    @
+    
+    
+    <<Grafo_CVD1>>=
+    #Grafo per CVD1
+    sat.cvd1 <- dmod(~.^., data=nmc.cvd1)
+    m.cvd1 <- stepwise(sat.cvd1)
+    plot(as(m.cvd1, "graphNEL"), "fdp")
+    @
+    
+    
+\clearpage

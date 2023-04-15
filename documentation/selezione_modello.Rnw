@@ -3,7 +3,7 @@
   penalizzazione AIC e BIC per la selezione del modello.\par
   Per eseguire le varie procedure, prenderemo in considerazione la formula base 
   con solo l'intercetta e il modello che comprende tutte le variabili fornite 
-  dal dataset, senza interazioni.
+  dal dataset.
   
   <<FormulaIntercetta>>=
   #Iniziliazziamo la formula base con intercetta
@@ -15,7 +15,8 @@
         \subsubsection{AIC}
           <<Backward_AIC>>=
           #Backward: AIC
-          backward.AIC <- step(fit.all, direction="backward", k=2)
+          backward.AIC <- step(fit.all, direction="backward", 
+                               k=2, trace=FALSE)
           formula(backward.AIC)
           summary(backward.AIC)
           @
@@ -24,7 +25,7 @@
           <<Backward_BIC>>=
           #Backward: BIC 
           backward.BIC <- step(fit.all, direction="backward", 
-                              k=log(length(nmc$cvd)))
+                              k=log(length(nmc$cvd)), trace=FALSE)
           formula(backward.BIC)
           summary(backward.BIC)
           @

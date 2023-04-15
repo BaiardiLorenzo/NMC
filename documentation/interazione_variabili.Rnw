@@ -146,5 +146,5 @@
     Decido quindi di non considerare questo modello perchè, oltre ad aumentarne 
     il grado, non fornisce un contributo decisivo per il nostro problema,
     andando contro anche alle analisi che fino a qui abbiamo valutato. \par
-
+    
 \clearpage

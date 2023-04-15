@@ -1,0 +1,79 @@
+  \section{Reti Bayesiane}
+    Prima di poter individuare una prima rete Bayesiana dobbiamo adattare i
+    numeri affinchè la funzione hc possa essere eseguita.
+    
+    <<Adattamento dataset per reti bayesiane>>=
+    nmc.bn <- nmc
+    nmc.bn$sex = as.numeric(nmc.bn$sex == "Male")
+    nmc.bn$age = as.numeric(nmc.bn$age)
+    nmc.bn$cvd = as.numeric(nmc.bn$cvd)
+    nmc.bn$pa = as.numeric(nmc.bn$pa)
+    nmc.bn$smoke = smoke.ord
+    str(nmc.bn)
+    @
+    
+    Ora visualizziamo la prima rete bayesiana tramite la funzione hc. 
+    <<Bayesian Network>>=
+    #Bayesian Network
+    bn <- hc(nmc.bn)
+    plot(as(amat(bn), "graphNEL"))
+    @
+    
+    Questa prima rete mostra delle dipendenze non realistiche, come ad esempio
+    l'influenza che ha il FITNESS e il PA (Attività Fisica) nella determinazione
+    del SEX. Per questo motivo dobbiamo dare un ordinamento alle variabili
+    permettendo di non avere incoerenze tra i vari archi. \par
+    Nonostante questo modello risulta non coerente, può essere utile per delle
+    ulteriori analisi sulla variabile di risposta.
+    
+    \subsection{Ordinamento delle Variabili}
+      L'ordinamento che andrò ad utilizzare sarà:
+      \begin{itemize}
+        \item variabili di background: SEX, AGE
+        \item BMI: Body Mass Index
+        \item attività che influenzano CVD: ALCHOL, SMOKE, PA, FITNESS
+        \item CVD
+      \end{itemize}
+      
+      <<Ordinamento variabili reti bayesiane>>=
+      #Ordinamento delle variabili
+      #1-SEx, 1-AGE, 3-BMI, 4-CVD, 2-FITNESS, 2-PA, 2-SMOKE, 2-ALC
+      block<-c(1, 1, 2, 4, 3, 3, 3, 3)
+      blnmc.bn <- matrix(0, nrow=8, ncol=8)
+      rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
+      for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+      blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
+      names(blackL) <- c("from", "to")
+      @
+      
+      <<Bayesian Network con ordinamento>>=
+      #Bayesian Network con ordinamento
+      bn.o <- hc(nmc.bn, blacklist=blackL)
+      plot(as(amat(bn.o), "graphNEL"))
+      @
+      
+      Anche in questo caso la rete risultante mostra un incongruenza nell'arco
+      tra SEX e AGE (il Sesso non può essere condizionata dall'età della persona).
+      Rimuoviamo allora l'arco e rieseguiamo la funzione hc.
+      
+      <<Rimozione arco SEX e AGE>>=
+      #Rimozione arco tra SEX e AGE
+      block<-c(1, 1, 2, 4, 3, 3, 3, 3)
+      blnmc.bn <- matrix(0, nrow=8, ncol=8)
+      rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
+      for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+      blnmc.bn[1,2] = 1
+      blnmc.bn[2,1] = 1
+      blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
+      names(blackL) <- c("from", "to")
+      @
+
+      
+      <<Bayesian Network finale>>=
+      #Bayesian Network finale
+      m.bn <- hc(nmc.bn, blacklist=blackL)
+      plot(as(amat(m.bn), "graphNEL"))
+      @
+      
+    
+  \clearpage

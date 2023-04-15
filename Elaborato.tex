@@ -54,7 +54,7 @@
 
 \title{NMC - Foundations of Statistical Modelling}
 \author{Lorenzo Baiardi}
-\date{13 Aprile 2023}
+\date{19 Aprile 2023}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -84,15 +84,13 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{load}\hlstd{(}\hlstr{"../nmc.RData"}\hlstd{)}
-\hlcom{#bmi dicotomizzata}
-\hlstd{nmc}\hlopt{$}\hlstd{bmi} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{>=}\hlnum{30}\hlstd{)}
 \hlkwd{str}\hlstd{(nmc)}
 \end{alltt}
 \begin{verbatim}
 ## 'data.frame':	33327 obs. of  8 variables:
 ##  $ sex    : chr  "Male" "Female" "Male" "Female" ...
 ##  $ age    : int  94 93 92 92 91 90 89 89 89 89 ...
-##  $ bmi    : num  0 0 0 0 0 0 0 0 1 0 ...
+##  $ bmi    : num  25.6 22.9 22.9 22 24.4 ...
 ##  $ cvd    : int  0 0 0 1 0 0 0 1 0 1 ...
 ##  $ fitness: chr  "Just as good" "Much Worse" "A bit better" "Just as good" ...
 ##  $ pa     : int  0 1 1 0 0 0 0 0 0 0 ...
@@ -151,11 +149,10 @@
         \end{enumerate}
     \end{itemize}
   
-    Per una maggiore comprensione del problema, convertiremo le variabili di
-    tipo categoriale Fitness e Alchol, fornite dal dataset, in variabili di tipo        ordinale facilitando la valutazione di quest'ultime durante l'analisi. \par
+    Per una maggiore comprensione del problema, convertiremo alcune variabili di
+    tipo categoriale in variabili di tipo ordinale per la valutazione di 
+    quest'ultime durante l'analisi. \par
     Di seguito mostreremo la legenda utilizzata.
-    
-
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -164,14 +161,22 @@
 \hlcom{#Fitness: 1-MUCH WORSE, 2-LITTLE WORSE, 3-JUST AS GOOD, }
 \hlcom{#         4-A BIT BETTER, 5-MUCH BETTER}
 \hlcom{#Alchol: 1-NEVER, 2-LOW, 3-MEDIUM, 4-HIGH}
+\hlcom{#Smoke: 1-NO, 2-FORMER, 3-CURRENT}
+\hlcom{#BMI: 0-<30, 1->=30}
 
 \hlstd{c.fit} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{'Much Worse'}\hlstd{,} \hlstr{'Little Worse'}\hlstd{,} \hlstr{'Just as good'}\hlstd{,}
             \hlstr{'A bit better'}\hlstd{,} \hlstr{'Much better'}\hlstd{)}
 \hlstd{c.alc} \hlkwb{=}  \hlkwd{c}\hlstd{(}\hlstr{'Never'}\hlstd{,} \hlstr{'Low'}\hlstd{,} \hlstr{'Medium'}\hlstd{,} \hlstr{'High'}\hlstd{)}
+\hlstd{c.smoke}\hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'NO'}\hlstd{,} \hlstr{'Former'}\hlstd{,} \hlstr{'Current'}\hlstd{)}
 
+\hlcom{#bmi dicotomizzata}
+\hlstd{bmi} \hlkwb{=} \hlstd{nmc}\hlopt{$}\hlstd{bmi}
+\hlstd{nmc}\hlopt{$}\hlstd{bmi} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{>=}\hlnum{30}\hlstd{)}
 \hlcom{#Variabili ordinali}
+\hlstd{fitness} \hlkwb{<-} \hlstd{nmc}\hlopt{$}\hlstd{fitness}
 \hlstd{nmc}\hlopt{$}\hlstd{fitness} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(}\hlkwd{ordered}\hlstd{(nmc}\hlopt{$}\hlstd{fitness, c.fit))}
 \hlstd{nmc}\hlopt{$}\hlstd{alc} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(}\hlkwd{ordered}\hlstd{(nmc}\hlopt{$}\hlstd{alc, c.alc))}
+\hlstd{smoke.ord} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{ordered}\hlstd{(nmc}\hlopt{$}\hlstd{smoke, c.smoke))}
 
 \hlkwd{str}\hlstd{(nmc)}
 \end{alltt}
@@ -188,80 +193,139 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
-  \subsection{Tabella delle Frequenze}
-    Visualizziamo la frequenza delle varie categorie all'interno del dataset.
+    
+  \subsection{Tabella Frequenze}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Tabella}
-\hlkwd{ftable}\hlstd{(sex}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{pa} \hlopt{~} \hlstd{smoke}\hlopt{+}\hlstd{alc}\hlopt{+}\hlstd{fitness, nmc)}
+\hlkwd{ftable}\hlstd{(sex}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{pa} \hlopt{~} \hlstd{cvd}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{alc}\hlopt{+}\hlstd{fitness, nmc)}
 \end{alltt}
 \begin{verbatim}
-##                     sex Female                Male               
-##                     bmi      0         1         0         1     
-##                     pa       0    1    0    1    0    1    0    1
-## smoke   alc fitness                                              
-## Current 1   1                4    1    1    0    2    1    0    1
-##             2               11    6    6    0    3    2    2    0
-##             3               31    1    3    0    8    2    1    0
-##             4                6    1    0    0    3    0    0    0
-##             5                5    0    0    0    4    0    0    0
-##         2   1               26    8   12    3    6    3    4    2
-##             2              166   44   25    9   26    6    2    1
-##             3              449   37   21    1   94   10    5    1
-##             4              193    4    8    1   52    1    1    0
-##             5               55    0    2    0   18    1    0    0
-##         3   1               11    8    6    2   10    6    2    1
-##             2               74   21   16    3   49   15    2    2
-##             3              287   32   14    3  156   24   11    0
-##             4              200    8    5    0  129    4    3    0
-##             5               49    0    2    0   32    0    0    0
-##         4   1                0    0    0    2    0    2    0    0
-##             2                4    1    0    0    5    0    1    0
-##             3               12    3    1    0   17    0    1    0
-##             4                9    1    1    0    7    0    1    0
-##             5                8    0    0    0    6    1    0    0
-## Former  1   1                2    4    6    3    2    2    0    1
-##             2               16    5   10    2    7    4    0    2
-##             3               83   14   17    1   42    1    6    0
-##             4               63    0    8    0   32    5    3    0
-##             5               35    0    0    0   15    0    0    0
-##         2   1               35   18   17   12    9    8    8    4
-##             2              185   41   70   12   39   16   12    3
-##             3             1005   70  124    8  279   40   27    5
-##             4              799   24   33    0  348   14   16    0
-##             5              290    1    3    1  140    0    4    1
-##         3   1               11    7    9    8    9    5    6    5
-##             2              132   26   27    8   94   34   30   14
-##             3              846   81   57    6  563   57   47   11
-##             4              829   15   22    2  740   24   34    2
-##             5              281    2    3    0  308    2    6    0
-##         4   1                3    0    0    0    2    1    0    0
-##             2                4    0    0    0    3    2    0    0
-##             3               39    2    3    0   45    7    6    2
-##             4               28    2    1    0   60    2    5    0
-##             5               14    0    0    0   24    0    0    0
-## NO      1   1               30   13   21   10   10    3    1    1
-##             2              209   38   49   10   68   22   10    1
-##             3             1024   83  111    9  272   30   15    1
-##             4              704   19   44    0  386   21    6    1
-##             5              255    1    9    0  194    4    2    0
-##         2   1               81   28   38   13   29    8    9    6
-##             2              624  132  139   20  192   55   26   14
-##             3             3169  258  246   18  805   92   48    4
-##             4             2549   49   80    3 1059   36   19    1
-##             5              876    6   21    0  628   12    3    1
-##         3   1               24    9   14    4   21   10    7    3
-##             2              212   42   41    9  124   48   23    5
-##             3             1288  109   82   11  715  101   40    9
-##             4             1326   29   36    2 1093   35   29    0
-##             5              441    4    4    0  577    6    6    0
-##         4   1                3    0    0    0    3    2    0    0
-##             2                1    2    2    0    9    5    4    0
-##             3               35    5    2    0   45    5    5    0
-##             4               48    0    1    0   53    6    4    0
-##             5               14    0    0    0   47    0    1    0
+##                         sex Female                Male               
+##                         bmi      0         1         0         1     
+##                         pa       0    1    0    1    0    1    0    1
+## cvd smoke   alc fitness                                              
+## 0   Current 1   1                4    1    1    0    2    1    0    1
+##                 2               11    6    6    0    2    2    2    0
+##                 3               30    1    3    0    5    1    1    0
+##                 4                6    1    0    0    3    0    0    0
+##                 5                5    0    0    0    4    0    0    0
+##             2   1               25    8   12    3    6    2    4    2
+##                 2              163   43   25    9   25    4    2    1
+##                 3              438   36   21    1   84    9    5    1
+##                 4              188    4    8    1   48    1    1    0
+##                 5               52    0    2    0   18    0    0    0
+##             3   1                9    8    6    2   10    6    2    1
+##                 2               72   20   16    3   46   15    1    2
+##                 3              279   30   14    3  139   24   11    0
+##                 4              198    8    5    0  115    4    3    0
+##                 5               48    0    2    0   28    0    0    0
+##             4   1                0    0    0    1    0    2    0    0
+##                 2                4    1    0    0    5    0    1    0
+##                 3               11    3    1    0   13    0    1    0
+##                 4                9    1    1    0    4    0    1    0
+##                 5                7    0    0    0    5    1    0    0
+##     Former  1   1                2    4    5    3    2    2    0    1
+##                 2               16    5   10    2    5    3    0    1
+##                 3               79   14   17    1   31    1    6    0
+##                 4               61    0    8    0   27    4    3    0
+##                 5               34    0    0    0   12    0    0    0
+##             2   1               34   17   16   10    9    7    8    4
+##                 2              180   40   66   12   37   16   12    2
+##                 3              982   67  122    8  243   37   26    5
+##                 4              777   23   28    0  302   13   14    0
+##                 5              282    1    3    1  122    0    4    1
+##             3   1               10    5    9    7    8    5    6    3
+##                 2              128   26   25    8   82   32   27   10
+##                 3              830   80   56    5  505   53   45    9
+##                 4              802   14   22    2  668   23   30    2
+##                 5              276    2    3    0  290    2    4    0
+##             4   1                3    0    0    0    2    1    0    0
+##                 2                4    0    0    0    2    2    0    0
+##                 3               38    2    3    0   41    6    5    1
+##                 4               28    2    1    0   54    2    5    0
+##                 5               12    0    0    0   21    0    0    0
+##     NO      1   1               26   11   19   10   10    3    1    0
+##                 2              203   36   42   10   63   21   10    1
+##                 3              974   77  100    8  244   30   12    1
+##                 4              657   19   41    0  336   18    5    1
+##                 5              237    1    9    0  180    4    2    0
+##             2   1               79   26   37   13   29    7    9    6
+##                 2              600  129  133   18  183   52   23   13
+##                 3             3073  254  231   16  755   87   46    4
+##                 4             2467   47   78    3  991   34   19    1
+##                 5              842    6   20    0  603   12    3    1
+##             3   1               24    9   14    4   19   10    7    3
+##                 2              202   42   38    9  120   47   20    5
+##                 3             1254  105   76   11  671   94   36    8
+##                 4             1281   29   32    2 1003   33   24    0
+##                 5              424    3    2    0  526    6    5    0
+##             4   1                2    0    0    0    3    2    0    0
+##                 2                1    2    2    0    8    4    4    0
+##                 3               30    5    1    0   41    5    4    0
+##                 4               43    0    1    0   49    5    3    0
+##                 5               12    0    0    0   42    0    1    0
+## 1   Current 1   1                0    0    0    0    0    0    0    0
+##                 2                0    0    0    0    1    0    0    0
+##                 3                1    0    0    0    3    1    0    0
+##                 4                0    0    0    0    0    0    0    0
+##                 5                0    0    0    0    0    0    0    0
+##             2   1                1    0    0    0    0    1    0    0
+##                 2                3    1    0    0    1    2    0    0
+##                 3               11    1    0    0   10    1    0    0
+##                 4                5    0    0    0    4    0    0    0
+##                 5                3    0    0    0    0    1    0    0
+##             3   1                2    0    0    0    0    0    0    0
+##                 2                2    1    0    0    3    0    1    0
+##                 3                8    2    0    0   17    0    0    0
+##                 4                2    0    0    0   14    0    0    0
+##                 5                1    0    0    0    4    0    0    0
+##             4   1                0    0    0    1    0    0    0    0
+##                 2                0    0    0    0    0    0    0    0
+##                 3                1    0    0    0    4    0    0    0
+##                 4                0    0    0    0    3    0    0    0
+##                 5                1    0    0    0    1    0    0    0
+##     Former  1   1                0    0    1    0    0    0    0    0
+##                 2                0    0    0    0    2    1    0    1
+##                 3                4    0    0    0   11    0    0    0
+##                 4                2    0    0    0    5    1    0    0
+##                 5                1    0    0    0    3    0    0    0
+##             2   1                1    1    1    2    0    1    0    0
+##                 2                5    1    4    0    2    0    0    1
+##                 3               23    3    2    0   36    3    1    0
+##                 4               22    1    5    0   46    1    2    0
+##                 5                8    0    0    0   18    0    0    0
+##             3   1                1    2    0    1    1    0    0    2
+##                 2                4    0    2    0   12    2    3    4
+##                 3               16    1    1    1   58    4    2    2
+##                 4               27    1    0    0   72    1    4    0
+##                 5                5    0    0    0   18    0    2    0
+##             4   1                0    0    0    0    0    0    0    0
+##                 2                0    0    0    0    1    0    0    0
+##                 3                1    0    0    0    4    1    1    1
+##                 4                0    0    0    0    6    0    0    0
+##                 5                2    0    0    0    3    0    0    0
+##     NO      1   1                4    2    2    0    0    0    0    1
+##                 2                6    2    7    0    5    1    0    0
+##                 3               50    6   11    1   28    0    3    0
+##                 4               47    0    3    0   50    3    1    0
+##                 5               18    0    0    0   14    0    0    0
+##             2   1                2    2    1    0    0    1    0    0
+##                 2               24    3    6    2    9    3    3    1
+##                 3               96    4   15    2   50    5    2    0
+##                 4               82    2    2    0   68    2    0    0
+##                 5               34    0    1    0   25    0    0    0
+##             3   1                0    0    0    0    2    0    0    0
+##                 2               10    0    3    0    4    1    3    0
+##                 3               34    4    6    0   44    7    4    1
+##                 4               45    0    4    0   90    2    5    0
+##                 5               17    1    2    0   51    0    1    0
+##             4   1                1    0    0    0    0    0    0    0
+##                 2                0    0    0    0    1    1    0    0
+##                 3                5    0    1    0    4    0    1    0
+##                 4                5    0    0    0    4    1    1    0
+##                 5                2    0    0    0    5    0    0    0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -432,8 +496,7 @@
        \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], pstima.sex.male,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], pstima.sex.female,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,} \hlstr{"Female"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
-       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,} \hlstr{"Female"}\hlstd{),} \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Sex_Plot-1} 
@@ -660,8 +723,7 @@
 \hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}
        \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,} \hlstr{"Little Worse"}\hlstd{,} \hlstr{"Just as good"}\hlstd{,}
                 \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
-       \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
-       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,}\hlstr{"red"}\hlstd{,} \hlstr{"orange"}\hlstd{,} \hlstr{"yellow"}\hlstd{,} \hlstr{"green"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
+       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,}\hlstr{"red"}\hlstd{,} \hlstr{"orange"}\hlstd{,} \hlstr{"yellow"}\hlstd{,} \hlstr{"green"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Fitness_Plot-1} 
@@ -1258,255 +1320,6 @@
 \clearpage    
 
 
-\section{Considerazioni sul Modello}
-  In questo capitolo confronteremo il comportamento del modello su una specifica      categoria di invidividui.
-
-  \subsection{Maschio e Femmina} 
-    Nei precedenti capitoli, durante l'analisi delle singole variabili e dei vari 
-    modelli, abbiamo notato come ci siano stati sempre diverse probabilità 
-    tra il sesso maschile e il sesso femmile.\par
-    Valutiamo ancora all'interno di un grafico se questa nostra ipotesi si 
-    verifica in un modello più complesso di quello marginale.
-      
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello Sesso Maschile}
-\hlcom{#Sex: Male}
-\hlstd{fit.male} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]} \hlopt{~}
-                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-                  \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.male)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$sex == "Male"] ~ nmc$age[nmc$sex == 
-##     "Male"] + nmc$bmi[nmc$sex == "Male"] + nmc$fitness[nmc$sex == 
-##     "Male"] + nmc$smoke[nmc$sex == "Male"], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.5009  -0.4634  -0.2744  -0.1136   3.4503  
-## 
-## Coefficients:
-##                                     Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                        -6.310134   0.257771 -24.480  < 2e-16 ***
-## nmc$age[nmc$sex == "Male"]          0.086098   0.003316  25.968  < 2e-16 ***
-## nmc$bmi[nmc$sex == "Male"]          0.135192   0.157317   0.859 0.390142    
-## nmc$fitness[nmc$sex == "Male"]     -0.156521   0.042188  -3.710 0.000207 ***
-## nmc$smoke[nmc$sex == "Male"]Former -0.472766   0.146244  -3.233 0.001226 ** 
-## nmc$smoke[nmc$sex == "Male"]NO     -0.579023   0.142624  -4.060 4.91e-05 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 6344.1  on 11129  degrees of freedom
-## Residual deviance: 5297.3  on 11124  degrees of freedom
-## AIC: 5309.3
-## 
-## Number of Fisher Scoring iterations: 6
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.male} \hlkwb{<-} \hlstd{fit.male}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello Sesso Femminile}
-\hlcom{#Sex: Female}
-\hlstd{fit.female} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]} \hlopt{~}
-                    \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-                    \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.female)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$sex == "Female"] ~ nmc$age[nmc$sex == 
-##     "Female"] + nmc$bmi[nmc$sex == "Female"] + nmc$fitness[nmc$sex == 
-##     "Female"] + nmc$smoke[nmc$sex == "Female"], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.5166  -0.2829  -0.1632  -0.0847   3.7175  
-## 
-## Coefficients:
-##                                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                          -8.132620   0.277110 -29.348  < 2e-16 ***
-## nmc$age[nmc$sex == "Female"]          0.099409   0.003598  27.630  < 2e-16 ***
-## nmc$bmi[nmc$sex == "Female"]          0.284497   0.123459   2.304   0.0212 *  
-## nmc$fitness[nmc$sex == "Female"]     -0.210839   0.043547  -4.842 1.29e-06 ***
-## nmc$smoke[nmc$sex == "Female"]Former -0.182839   0.174076  -1.050   0.2936    
-## nmc$smoke[nmc$sex == "Female"]NO     -0.132124   0.160494  -0.823   0.4104    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 6729.3  on 22196  degrees of freedom
-## Residual deviance: 5573.1  on 22191  degrees of freedom
-## AIC: 5585.1
-## 
-## Number of Fisher Scoring iterations: 7
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.female} \hlkwb{<-} \hlstd{fit.female}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]),}
-      \hlstd{pstima.male[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{])],}
-      \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]),}
-      \hlstd{pstima.female[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{])],}
-      \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,} \hlstr{"Female"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
-       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Plot_Analisi_ModelloSex-1} 
-\end{knitrout}
-    
-    Statisticamente il sesso maschile rimane il soggetto che ha più rischi di 
-    CVD rispetto al genere femminile, anche nel modello più complesso.
-  
-  \subsection{Attività Fisica}
-    Dato che la variabile PA nelle valutazione dei modelli è sempre stata 
-    scartata, verifichiamo se all'interno del nostro modello possono esserci 
-    delle differenze tra le due categorie di PA per il calcolo del CVD.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello PA 0}
-\hlstd{fit.pa.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{],}
-                \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.pa.0)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$pa == 0] ~ nmc$sex[nmc$pa == 0] + nmc$age[nmc$pa == 
-##     0] + nmc$bmi[nmc$pa == 0] + nmc$fitness[nmc$pa == 0] + nmc$smoke[nmc$pa == 
-##     0], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.6202  -0.3396  -0.1936  -0.0931   3.6511  
-## 
-## Coefficients:
-##                               Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                  -7.644393   0.199721 -38.275  < 2e-16 ***
-## nmc$sex[nmc$pa == 0]Male      0.782201   0.055911  13.990  < 2e-16 ***
-## nmc$age[nmc$pa == 0]          0.092985   0.002545  36.533  < 2e-16 ***
-## nmc$bmi[nmc$pa == 0]          0.187919   0.104915   1.791  0.07327 .  
-## nmc$fitness[nmc$pa == 0]     -0.175433   0.032345  -5.424 5.84e-08 ***
-## nmc$smoke[nmc$pa == 0]Former -0.346614   0.116950  -2.964  0.00304 ** 
-## nmc$smoke[nmc$pa == 0]NO     -0.353123   0.111011  -3.181  0.00147 ** 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 12486  on 30907  degrees of freedom
-## Residual deviance: 10141  on 30901  degrees of freedom
-## AIC: 10155
-## 
-## Number of Fisher Scoring iterations: 7
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.pa.0} \hlkwb{<-} \hlstd{fit.pa.0}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello PA 1}
-\hlstd{fit.pa.1} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{],}
-                \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.pa.1)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$pa == 1] ~ nmc$sex[nmc$pa == 1] + nmc$age[nmc$pa == 
-##     1] + nmc$bmi[nmc$pa == 1] + nmc$fitness[nmc$pa == 1] + nmc$smoke[nmc$pa == 
-##     1], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.4512  -0.3135  -0.1902  -0.1060   2.9592  
-## 
-## Coefficients:
-##                               Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                  -7.463732   0.614386 -12.148  < 2e-16 ***
-## nmc$sex[nmc$pa == 1]Male      0.833173   0.210572   3.957  7.6e-05 ***
-## nmc$age[nmc$pa == 1]          0.093239   0.008655  10.773  < 2e-16 ***
-## nmc$bmi[nmc$pa == 1]          0.543559   0.264374   2.056   0.0398 *  
-## nmc$fitness[nmc$pa == 1]     -0.284719   0.111611  -2.551   0.0107 *  
-## nmc$smoke[nmc$pa == 1]Former -0.184548   0.359510  -0.513   0.6077    
-## nmc$smoke[nmc$pa == 1]NO     -0.347033   0.343785  -1.009   0.3128    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 913.04  on 2418  degrees of freedom
-## Residual deviance: 740.78  on 2412  degrees of freedom
-## AIC: 754.78
-## 
-## Number of Fisher Scoring iterations: 7
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.pa.1} \hlkwb{<-} \hlstd{fit.pa.1}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{], pstima.pa.0,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{], pstima.pa.1,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Plot_Analisi_ModelloPA-1} 
-\end{knitrout}
-    
-    Il grafico non sembra mostrare differenze tra le due categorie di PA.
-
-\clearpage
-
-
 \section{Interazioni fra le variabili}
   Valutiamo se all'interno del modello ci sia la possibilità di interazioni
   fra le variabili. \par
@@ -1944,7 +1757,7 @@
     Decido quindi di non considerare questo modello perchè, oltre ad aumentarne 
     il grado, non fornisce un contributo decisivo per il nostro problema,
     andando contro anche alle analisi che fino a qui abbiamo valutato. \par
-
+    
 \clearpage
 
 
@@ -1953,7 +1766,7 @@
   penalizzazione AIC e BIC per la selezione del modello.\par
   Per eseguire le varie procedure, prenderemo in considerazione la formula base 
   con solo l'intercetta e il modello che comprende tutte le variabili fornite 
-  dal dataset, senza interazioni.
+  dal dataset.
   
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -1971,37 +1784,8 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Backward: AIC}
-\hlstd{backward.AIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.all,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{,} \hlkwc{k}\hlstd{=}\hlnum{2}\hlstd{)}
-\end{alltt}
-\begin{verbatim}
-## Start:  AIC=10901.21
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + nmc$pa + 
-##     nmc$smoke + nmc$alc
-## 
-##               Df Deviance   AIC
-## - nmc$pa       1    10883 10899
-## <none>              10883 10901
-## - nmc$alc      1    10886 10902
-## - nmc$bmi      1    10889 10905
-## - nmc$smoke    2    10895 10909
-## - nmc$fitness  1    10917 10933
-## - nmc$sex      1    11097 11113
-## - nmc$age      1    13043 13059
-## 
-## Step:  AIC=10899.32
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + nmc$smoke + 
-##     nmc$alc
-## 
-##               Df Deviance   AIC
-## <none>              10883 10899
-## - nmc$alc      1    10886 10900
-## - nmc$bmi      1    10889 10903
-## - nmc$smoke    2    10895 10907
-## - nmc$fitness  1    10920 10934
-## - nmc$sex      1    11098 11112
-## - nmc$age      1    13045 13059
-\end{verbatim}
-\begin{alltt}
+\hlstd{backward.AIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.all,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{,}
+                     \hlkwc{k}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(backward.AIC)}
 \end{alltt}
 \begin{verbatim}
@@ -2051,67 +1835,7 @@
 \begin{alltt}
 \hlcom{#Backward: BIC }
 \hlstd{backward.BIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.all,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{,}
-                    \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)))}
-\end{alltt}
-\begin{verbatim}
-## Start:  AIC=10976.94
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + nmc$pa + 
-##     nmc$smoke + nmc$alc
-## 
-##               Df Deviance   AIC
-## - nmc$pa       1    10883 10967
-## - nmc$smoke    2    10895 10968
-## - nmc$alc      1    10886 10969
-## - nmc$bmi      1    10889 10972
-## <none>              10883 10977
-## - nmc$fitness  1    10917 11001
-## - nmc$sex      1    11097 11180
-## - nmc$age      1    13043 13127
-## 
-## Step:  AIC=10966.63
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + nmc$smoke + 
-##     nmc$alc
-## 
-##               Df Deviance   AIC
-## - nmc$smoke    2    10895 10957
-## - nmc$alc      1    10886 10959
-## - nmc$bmi      1    10889 10962
-## <none>              10883 10967
-## - nmc$fitness  1    10920 10993
-## - nmc$sex      1    11098 11170
-## - nmc$age      1    13045 13118
-## 
-## Step:  AIC=10957.36
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + nmc$alc
-## 
-##               Df Deviance   AIC
-## - nmc$alc      1    10896 10948
-## - nmc$bmi      1    10900 10952
-## <none>              10895 10957
-## - nmc$fitness  1    10936 10988
-## - nmc$sex      1    11114 11167
-## - nmc$age      1    13050 13102
-## 
-## Step:  AIC=10948.37
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness
-## 
-##               Df Deviance   AIC
-## - nmc$bmi      1    10902 10943
-## <none>              10896 10948
-## - nmc$fitness  1    10938 10979
-## - nmc$sex      1    11117 11159
-## - nmc$age      1    13059 13100
-## 
-## Step:  AIC=10943.43
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$fitness
-## 
-##               Df Deviance   AIC
-## <none>              10902 10943
-## - nmc$fitness  1    10952 10983
-## - nmc$sex      1    11120 11151
-## - nmc$age      1    13073 13104
-\end{verbatim}
-\begin{alltt}
+                    \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(backward.BIC)}
 \end{alltt}
 \begin{verbatim}
@@ -2366,6 +2090,568 @@
 \clearpage
 
 
+
+
+\section{Grafi non orientati}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Formula modello saturo e indipidente}
+\hlstd{sat} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc)}
+\hlstd{ind} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlnum{1}\hlstd{,} \hlkwc{data}\hlstd{=nmc)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+  \subsection{Backward}
+    Utilizziamo la procedura di Backward con criterio di selezione AIC e BIC.
+  
+    \subsubsection{AIC}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#AIC Backward}
+\hlstd{m.aic.backward} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{)}
+\hlstd{m.aic.backward}
+\end{alltt}
+\begin{verbatim}
+## Model: A dModel with 8 variables
+##  -2logL    :      548496.14 mdim : 3705 aic :    555906.14 
+##  ideviance :       19336.00 idf  : 3618 bic :    587080.46 
+##  deviance  :       16793.15 df   : 68294
+\end{verbatim}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.aic.backward,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Grafo_AIC_Backward-1} 
+\end{knitrout}
+      
+      In questo primo grafo, la variabile di risposta CVD risulta essere
+      direttamente connessa con le variabili BMI, SMOKE, AGE, ALC e SEX mentre
+      risulta indipendente dalle variabili FITNESS e PA condizionatamente alle
+      altre.
+      
+    \subsection{BIC}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#BIC Backward}
+\hlstd{m.bic.backward} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat,} \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
+                  \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{)}
+\hlstd{m.bic.backward}
+\end{alltt}
+\begin{verbatim}
+## Model: A dModel with 8 variables
+##  -2logL    :      557579.16 mdim :  209 aic :    557997.16 
+##  ideviance :       10252.97 idf  :  122 bic :    559755.72 
+##  deviance  :       25876.18 df   : 71790
+\end{verbatim}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.bic.backward,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Grafo_BIC_Backward-1} 
+\end{knitrout}
+      
+      Con il criterio il BIC, la variabile CVD rimane direttamente dipendente
+      con le variabili SMOKE, SEX e AGE.
+      
+  \subsection{Forward}
+    Utilizziamo la procedura di Forward con criterio di selezione AIC e BIC.
+
+    \subsubsection{AIC}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#AIC Forward}
+\hlstd{m.aic.forward} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(ind,} \hlkwc{direction}\hlstd{=}\hlstr{"forward"}\hlstd{)}
+\hlstd{m.aic.forward}
+\end{alltt}
+\begin{verbatim}
+## Model: A dModel with 8 variables
+##  -2logL    :      547503.08 mdim : 2934 aic :    553371.08 
+##  ideviance :       20329.06 idf  : 2847 bic :    578058.12 
+##  deviance  :       15800.09 df   : 69065
+\end{verbatim}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.aic.forward,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Grafo_AIC_Forward-1} 
+\end{knitrout}
+     
+      Nella procedura AIC con criterio di selezione AIC, la variabile CVD
+      è connessa con le sole variabili SEX e AGE.
+      
+    \subsubsection{BIC}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#BIC Forward}
+\hlstd{m.bic.forward} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(ind,} \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
+                  \hlkwc{direction}\hlstd{=}\hlstr{"forward"}\hlstd{)}
+\hlstd{m.bic.forward}
+\end{alltt}
+\begin{verbatim}
+## Model: A dModel with 8 variables
+##  -2logL    :      555553.98 mdim :  335 aic :    556223.98 
+##  ideviance :       12278.15 idf  :  248 bic :    559042.71 
+##  deviance  :       23851.00 df   : 71664
+\end{verbatim}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.bic.forward,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Grafo_BIC_Forward-1} 
+\end{knitrout}
+      
+      Con il criterio di selezione BIC, la variabile CVD è direttamente connessa
+      solo con la variabile AGE.
+      
+  \subsection{Commento}
+    \begin{itemize}
+      \item In tutte le procedure, la variabile di risposta CVD risulta
+            sempre direttamente connessa con la variabile AGE e in modo molto
+            forte con la variabile SEX.
+      \item In tutte le procedure, le variabili PA e FITNESS risultano
+            direttamente connesse e legate alla variabile SEX.
+    
+    \end{itemize}
+      
+  \subsection{Sotto problema CVD}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Dataset: sotto-problema CVD}
+\hlstd{cvd0} \hlkwb{<-} \hlstd{(nmc}\hlopt{$}\hlstd{cvd}\hlopt{==}\hlnum{0}\hlstd{)}
+\hlstd{cvd1} \hlkwb{<-} \hlstd{(nmc}\hlopt{$}\hlstd{cvd}\hlopt{==}\hlnum{1}\hlstd{)}
+\hlstd{nmc.cvd0} \hlkwb{<-} \hlstd{nmc[cvd0,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
+\hlstd{nmc.cvd1} \hlkwb{<-} \hlstd{nmc[cvd1,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Grafo per CVD0}
+\hlstd{sat.cvd0} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc.cvd0)}
+\hlstd{m.cvd0} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat.cvd0)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.cvd0,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Grafo_CVD0-1} 
+\end{knitrout}
+    
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Grafo per CVD1}
+\hlstd{sat.cvd1} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc.cvd1)}
+\hlstd{m.cvd1} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat.cvd1)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.cvd1,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Grafo_CVD1-1} 
+\end{knitrout}
+    
+    
+\clearpage
+
+
+  \section{Reti Bayesiane}
+    Prima di poter individuare una prima rete Bayesiana dobbiamo adattare i
+    numeri affinchè la funzione hc possa essere eseguita.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{nmc.bn} \hlkwb{<-} \hlstd{nmc}
+\hlstd{nmc.bn}\hlopt{$}\hlstd{sex} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{sex} \hlopt{==} \hlstr{"Male"}\hlstd{)}
+\hlstd{nmc.bn}\hlopt{$}\hlstd{age} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{age)}
+\hlstd{nmc.bn}\hlopt{$}\hlstd{cvd} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{cvd)}
+\hlstd{nmc.bn}\hlopt{$}\hlstd{pa} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{pa)}
+\hlstd{nmc.bn}\hlopt{$}\hlstd{smoke} \hlkwb{=} \hlstd{smoke.ord}
+\hlkwd{str}\hlstd{(nmc.bn)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	33327 obs. of  8 variables:
+##  $ sex    : num  1 0 1 0 1 0 1 1 1 1 ...
+##  $ age    : num  94 93 92 92 91 90 89 89 89 89 ...
+##  $ bmi    : num  0 0 0 0 0 0 0 0 1 0 ...
+##  $ cvd    : num  0 0 0 1 0 0 0 1 0 1 ...
+##  $ fitness: num  3 1 4 3 4 4 4 4 4 4 ...
+##  $ pa     : num  0 1 1 0 0 0 0 0 0 0 ...
+##  $ smoke  : num  1 1 2 2 2 2 1 2 1 1 ...
+##  $ alc    : num  3 2 1 1 3 2 1 3 3 1 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+    Ora visualizziamo la prima rete bayesiana tramite la funzione hc. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Bayesian Network}
+\hlstd{bn} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(bn),} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Bayesian_Network-1} 
+\end{knitrout}
+    
+    Questa prima rete mostra delle dipendenze non realistiche, come ad esempio
+    l'influenza che ha il FITNESS e il PA (Attività Fisica) nella determinazione
+    del SEX. Per questo motivo dobbiamo dare un ordinamento alle variabili
+    permettendo di non avere incoerenze tra i vari archi. \par
+    Nonostante questo modello risulta non coerente, può essere utile per delle
+    ulteriori analisi sulla variabile di risposta.
+    
+    \subsection{Ordinamento delle Variabili}
+      L'ordinamento che andrò ad utilizzare sarà:
+      \begin{itemize}
+        \item variabili di background: SEX, AGE
+        \item BMI: Body Mass Index
+        \item attività che influenzano CVD: ALCHOL, SMOKE, PA, FITNESS
+        \item CVD
+      \end{itemize}
+      
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Ordinamento delle variabili}
+\hlcom{#1-SEx, 1-AGE, 3-BMI, 4-CVD, 2-FITNESS, 2-PA, 2-SMOKE, 2-ALC}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{8}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{8}\hlstd{)}
+\hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn)}
+\hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
+\hlstd{blackL} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwd{get.edgelist}\hlstd{(}\hlkwd{as}\hlstd{(blnmc.bn,} \hlstr{"igraph"}\hlstd{)))}
+\hlkwd{names}\hlstd{(blackL)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"from"}\hlstd{,} \hlstr{"to"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+      
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Bayesian Network con ordinamento}
+\hlstd{bn.o} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn,} \hlkwc{blacklist}\hlstd{=blackL)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(bn.o),} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Bayesian_Network_con_ordinamento-1} 
+\end{knitrout}
+      
+      Anche in questo caso la rete risultante mostra un incongruenza nell'arco
+      tra SEX e AGE (il Sesso non può essere condizionata dall'età della persona).
+      Rimuoviamo allora l'arco e rieseguiamo la funzione hc.
+      
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Rimozione arco tra SEX e AGE}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{8}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{8}\hlstd{)}
+\hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn)}
+\hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blackL} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwd{get.edgelist}\hlstd{(}\hlkwd{as}\hlstd{(blnmc.bn,} \hlstr{"igraph"}\hlstd{)))}
+\hlkwd{names}\hlstd{(blackL)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"from"}\hlstd{,} \hlstr{"to"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+      
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Bayesian Network finale}
+\hlstd{m.bn} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn,} \hlkwc{blacklist}\hlstd{=blackL)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(m.bn),} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Bayesian_Network_finale-1} 
+\end{knitrout}
+      
+    
+  \clearpage
+
+
+\section{Considerazioni sul Modello}
+  In questo capitolo confronteremo il comportamento del modello su una specifica      categoria di invidividui.
+
+  \subsection{Maschio e Femmina} 
+    Nei precedenti capitoli, durante l'analisi delle singole variabili e dei vari 
+    modelli, abbiamo notato come ci siano stati sempre diverse probabilità 
+    tra il sesso maschile e il sesso femmile.\par
+    Valutiamo ancora all'interno di un grafico se questa nostra ipotesi si 
+    verifica in un modello più complesso di quello marginale.
+      
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Modello Sesso Maschile}
+\hlcom{#Sex: Male}
+\hlstd{fit.male} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]} \hlopt{~}
+                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
+                  \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.male)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = nmc$cvd[nmc$sex == "Male"] ~ nmc$age[nmc$sex == 
+##     "Male"] + nmc$bmi[nmc$sex == "Male"] + nmc$fitness[nmc$sex == 
+##     "Male"] + nmc$smoke[nmc$sex == "Male"], family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.5009  -0.4634  -0.2744  -0.1136   3.4503  
+## 
+## Coefficients:
+##                                     Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                        -6.310134   0.257771 -24.480  < 2e-16 ***
+## nmc$age[nmc$sex == "Male"]          0.086098   0.003316  25.968  < 2e-16 ***
+## nmc$bmi[nmc$sex == "Male"]          0.135192   0.157317   0.859 0.390142    
+## nmc$fitness[nmc$sex == "Male"]     -0.156521   0.042188  -3.710 0.000207 ***
+## nmc$smoke[nmc$sex == "Male"]Former -0.472766   0.146244  -3.233 0.001226 ** 
+## nmc$smoke[nmc$sex == "Male"]NO     -0.579023   0.142624  -4.060 4.91e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 6344.1  on 11129  degrees of freedom
+## Residual deviance: 5297.3  on 11124  degrees of freedom
+## AIC: 5309.3
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+\begin{alltt}
+\hlstd{pstima.male} \hlkwb{<-} \hlstd{fit.male}\hlopt{$}\hlstd{fitted.values}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Modello Sesso Femminile}
+\hlcom{#Sex: Female}
+\hlstd{fit.female} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]} \hlopt{~}
+                    \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
+                    \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
+                    \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
+                    \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
+                    \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.female)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = nmc$cvd[nmc$sex == "Female"] ~ nmc$age[nmc$sex == 
+##     "Female"] + nmc$bmi[nmc$sex == "Female"] + nmc$fitness[nmc$sex == 
+##     "Female"] + nmc$smoke[nmc$sex == "Female"], family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.5166  -0.2829  -0.1632  -0.0847   3.7175  
+## 
+## Coefficients:
+##                                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                          -8.132620   0.277110 -29.348  < 2e-16 ***
+## nmc$age[nmc$sex == "Female"]          0.099409   0.003598  27.630  < 2e-16 ***
+## nmc$bmi[nmc$sex == "Female"]          0.284497   0.123459   2.304   0.0212 *  
+## nmc$fitness[nmc$sex == "Female"]     -0.210839   0.043547  -4.842 1.29e-06 ***
+## nmc$smoke[nmc$sex == "Female"]Former -0.182839   0.174076  -1.050   0.2936    
+## nmc$smoke[nmc$sex == "Female"]NO     -0.132124   0.160494  -0.823   0.4104    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 6729.3  on 22196  degrees of freedom
+## Residual deviance: 5573.1  on 22191  degrees of freedom
+## AIC: 5585.1
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+\begin{alltt}
+\hlstd{pstima.female} \hlkwb{<-} \hlstd{fit.female}\hlopt{$}\hlstd{fitted.values}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Plot}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
+       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]),}
+      \hlstd{pstima.male[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{])],}
+      \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]),}
+      \hlstd{pstima.female[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{])],}
+      \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,} \hlstr{"Female"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
+       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Plot_Analisi_ModelloSex-1} 
+\end{knitrout}
+    
+    Statisticamente il sesso maschile rimane il soggetto che ha più rischi di 
+    CVD rispetto al genere femminile, anche nel modello più complesso.
+  
+  \subsection{Attività Fisica}
+    Dato che la variabile PA nelle valutazione dei modelli è sempre stata 
+    scartata, verifichiamo se all'interno del nostro modello possono esserci 
+    delle differenze tra le due categorie di PA per il calcolo del CVD.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Modello PA 0}
+\hlstd{fit.pa.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{],}
+                \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.pa.0)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = nmc$cvd[nmc$pa == 0] ~ nmc$sex[nmc$pa == 0] + nmc$age[nmc$pa == 
+##     0] + nmc$bmi[nmc$pa == 0] + nmc$fitness[nmc$pa == 0] + nmc$smoke[nmc$pa == 
+##     0], family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.6202  -0.3396  -0.1936  -0.0931   3.6511  
+## 
+## Coefficients:
+##                               Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                  -7.644393   0.199721 -38.275  < 2e-16 ***
+## nmc$sex[nmc$pa == 0]Male      0.782201   0.055911  13.990  < 2e-16 ***
+## nmc$age[nmc$pa == 0]          0.092985   0.002545  36.533  < 2e-16 ***
+## nmc$bmi[nmc$pa == 0]          0.187919   0.104915   1.791  0.07327 .  
+## nmc$fitness[nmc$pa == 0]     -0.175433   0.032345  -5.424 5.84e-08 ***
+## nmc$smoke[nmc$pa == 0]Former -0.346614   0.116950  -2.964  0.00304 ** 
+## nmc$smoke[nmc$pa == 0]NO     -0.353123   0.111011  -3.181  0.00147 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 12486  on 30907  degrees of freedom
+## Residual deviance: 10141  on 30901  degrees of freedom
+## AIC: 10155
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+\begin{alltt}
+\hlstd{pstima.pa.0} \hlkwb{<-} \hlstd{fit.pa.0}\hlopt{$}\hlstd{fitted.values}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Modello PA 1}
+\hlstd{fit.pa.1} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+}
+                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{],}
+                \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.pa.1)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = nmc$cvd[nmc$pa == 1] ~ nmc$sex[nmc$pa == 1] + nmc$age[nmc$pa == 
+##     1] + nmc$bmi[nmc$pa == 1] + nmc$fitness[nmc$pa == 1] + nmc$smoke[nmc$pa == 
+##     1], family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.4512  -0.3135  -0.1902  -0.1060   2.9592  
+## 
+## Coefficients:
+##                               Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                  -7.463732   0.614386 -12.148  < 2e-16 ***
+## nmc$sex[nmc$pa == 1]Male      0.833173   0.210572   3.957  7.6e-05 ***
+## nmc$age[nmc$pa == 1]          0.093239   0.008655  10.773  < 2e-16 ***
+## nmc$bmi[nmc$pa == 1]          0.543559   0.264374   2.056   0.0398 *  
+## nmc$fitness[nmc$pa == 1]     -0.284719   0.111611  -2.551   0.0107 *  
+## nmc$smoke[nmc$pa == 1]Former -0.184548   0.359510  -0.513   0.6077    
+## nmc$smoke[nmc$pa == 1]NO     -0.347033   0.343785  -1.009   0.3128    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 913.04  on 2418  degrees of freedom
+## Residual deviance: 740.78  on 2412  degrees of freedom
+## AIC: 754.78
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+\begin{alltt}
+\hlstd{pstima.pa.1} \hlkwb{<-} \hlstd{fit.pa.1}\hlopt{$}\hlstd{fitted.values}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Plot}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{], pstima.pa.0,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{], pstima.pa.1,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Plot_Analisi_ModelloPA-1} 
+\end{knitrout}
+    
+    Il grafico non sembra mostrare differenze tra le due categorie di PA.
+    
+    \subsection{Visualizzazione Fitness e PA}
+    Andiamo a visualizzare il legame tra la variabile Fitness e Pa per la loro
+    valutazione all'interno di un modello.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(nmc}\hlopt{$}\hlstd{fitness, nmc}\hlopt{$}\hlstd{pa),}
+        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Molta attività fisica"}\hlstd{,} \hlstr{"Poca attività fisica"}\hlstd{),}
+        \hlkwc{legend.text}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,} \hlstr{"Little Worse"}\hlstd{,}\hlstr{"Just as good"}\hlstd{,}
+                \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
+        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,}\hlstr{"red"}\hlstd{,} \hlstr{"orange"}\hlstd{,} \hlstr{"yellow"}\hlstd{,} \hlstr{"green"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Istogramma_Fitness_PA-1} 
+\end{knitrout}
+      
+    Come possiamo vedere, la variabile FITNESS e PA risultano connesse anche 
+    all'interno dell'istogramma, mostrandoci come l'attività fisica induca
+    maggiormente ad una miglior condizione di salute rispetto a chi non la
+    pratica.
+    
+
+\clearpage
+
+
 \section{Test sul Modello}
   Verifichiamo adesso come il modello tende a calcolare la probabilità per un         campione di individui.
   
@@ -2538,212 +2824,6 @@
     \end{itemize}
 
 \clearpage
-
-
-
-
-\section{Visualizzazione del modello}
-  Visualizziamo il grafo associato al modello scelto, che risulterà
-  essere quello completamente indipendete.
-  
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello scelto}
-\hlstd{m.fit} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke,} \hlkwc{data}\hlstd{=nmc)}
-\hlstd{m.fit}
-\end{alltt}
-\begin{verbatim}
-## Model: A dModel with 5 variables
-##  -2logL    :      466894.73 mdim :   82 aic :    467058.73 
-##  ideviance :           0.00 idf  :    0 bic :    467748.69 
-##  deviance  :       11626.84 df   : 4417
-\end{verbatim}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(m.fit)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/VisualizzazioneGrafoModello-1} 
-\end{knitrout}
-
-\clearpage
-
-
-\clearpage
-
-\section{Modelli Grafi}
-  \subsection{Tabella Frequenze}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Tabella}
-\hlkwd{ftable}\hlstd{(sex}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{pa} \hlopt{~} \hlstd{smoke}\hlopt{+}\hlstd{alc}\hlopt{+}\hlstd{fitness, nmc)}
-\end{alltt}
-\begin{verbatim}
-##                     sex Female                Male               
-##                     bmi      0         1         0         1     
-##                     pa       0    1    0    1    0    1    0    1
-## smoke   alc fitness                                              
-## Current 1   1                4    1    1    0    2    1    0    1
-##             2               11    6    6    0    3    2    2    0
-##             3               31    1    3    0    8    2    1    0
-##             4                6    1    0    0    3    0    0    0
-##             5                5    0    0    0    4    0    0    0
-##         2   1               26    8   12    3    6    3    4    2
-##             2              166   44   25    9   26    6    2    1
-##             3              449   37   21    1   94   10    5    1
-##             4              193    4    8    1   52    1    1    0
-##             5               55    0    2    0   18    1    0    0
-##         3   1               11    8    6    2   10    6    2    1
-##             2               74   21   16    3   49   15    2    2
-##             3              287   32   14    3  156   24   11    0
-##             4              200    8    5    0  129    4    3    0
-##             5               49    0    2    0   32    0    0    0
-##         4   1                0    0    0    2    0    2    0    0
-##             2                4    1    0    0    5    0    1    0
-##             3               12    3    1    0   17    0    1    0
-##             4                9    1    1    0    7    0    1    0
-##             5                8    0    0    0    6    1    0    0
-## Former  1   1                2    4    6    3    2    2    0    1
-##             2               16    5   10    2    7    4    0    2
-##             3               83   14   17    1   42    1    6    0
-##             4               63    0    8    0   32    5    3    0
-##             5               35    0    0    0   15    0    0    0
-##         2   1               35   18   17   12    9    8    8    4
-##             2              185   41   70   12   39   16   12    3
-##             3             1005   70  124    8  279   40   27    5
-##             4              799   24   33    0  348   14   16    0
-##             5              290    1    3    1  140    0    4    1
-##         3   1               11    7    9    8    9    5    6    5
-##             2              132   26   27    8   94   34   30   14
-##             3              846   81   57    6  563   57   47   11
-##             4              829   15   22    2  740   24   34    2
-##             5              281    2    3    0  308    2    6    0
-##         4   1                3    0    0    0    2    1    0    0
-##             2                4    0    0    0    3    2    0    0
-##             3               39    2    3    0   45    7    6    2
-##             4               28    2    1    0   60    2    5    0
-##             5               14    0    0    0   24    0    0    0
-## NO      1   1               30   13   21   10   10    3    1    1
-##             2              209   38   49   10   68   22   10    1
-##             3             1024   83  111    9  272   30   15    1
-##             4              704   19   44    0  386   21    6    1
-##             5              255    1    9    0  194    4    2    0
-##         2   1               81   28   38   13   29    8    9    6
-##             2              624  132  139   20  192   55   26   14
-##             3             3169  258  246   18  805   92   48    4
-##             4             2549   49   80    3 1059   36   19    1
-##             5              876    6   21    0  628   12    3    1
-##         3   1               24    9   14    4   21   10    7    3
-##             2              212   42   41    9  124   48   23    5
-##             3             1288  109   82   11  715  101   40    9
-##             4             1326   29   36    2 1093   35   29    0
-##             5              441    4    4    0  577    6    6    0
-##         4   1                3    0    0    0    3    2    0    0
-##             2                1    2    2    0    9    5    4    0
-##             3               35    5    2    0   45    5    5    0
-##             4               48    0    1    0   53    6    4    0
-##             5               14    0    0    0   47    0    1    0
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Dataset per grafi}
-\hlstd{nmc.nocvd} \hlkwb{<-} \hlstd{nmc[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
-\hlstd{nmc.cvd0} \hlkwb{<-} \hlstd{nmc[(nmc}\hlopt{$}\hlstd{cvd}\hlopt{==}\hlnum{0}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
-\hlstd{nmc.cvd1} \hlkwb{<-} \hlstd{nmc[(nmc}\hlopt{$}\hlstd{cvd}\hlopt{==}\hlnum{1}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-  \subsection{Grafi}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello scelto}
-\hlstd{m.fit} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke,} \hlkwc{data}\hlstd{=nmc,} \hlkwc{fit}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-\hlstd{m.fit}
-\end{alltt}
-\begin{verbatim}
-## Model: A dModel with 5 variables
-##  -2logL    :      466894.73 mdim :   82 aic :    467058.73 
-##  ideviance :           0.00 idf  :    0 bic :    467748.69 
-##  deviance  :       11626.84 df   : 4417
-\end{verbatim}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(m.fit)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Modello_scelto-1} 
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Formula modello saturo}
-\hlstd{sat.nmc.cvd0} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc.cvd0)}
-\hlstd{sat.nmc.cvd1} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc.cvd1)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Formula modello indipendenza completa}
-\hlstd{ind.nmc.cvd0} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlnum{1}\hlstd{,} \hlkwc{data}\hlstd{=nmc.cvd0)}
-\hlstd{ind.nmc.cvd1} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlnum{1}\hlstd{,} \hlkwc{data}\hlstd{=nmc.cvd1)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#AIC}
-\hlstd{m.sat.cvd0} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat.nmc.cvd0)}
-\hlkwd{plot}\hlstd{(m.sat.cvd0)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Grafo_AIC_CVD0-1} 
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#AIC}
-\hlstd{m.sat.cvd1} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat.nmc.cvd1)}
-\hlkwd{plot}\hlstd{(m.sat.cvd1)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Grafo_AIC_CVD1-1} 
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#BIC}
-\hlstd{m.ind.cvd0} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(ind.nmc.cvd0,} \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
-                       \hlkwc{direction}\hlstd{=}\hlstr{"forward"}\hlstd{)}
-\hlkwd{plot}\hlstd{(m.ind.cvd0)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Grafo_BIC_CVD0-1} 
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#BIC}
-\hlstd{m.ind.cvd1} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(ind.nmc.cvd1,} \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
-                       \hlkwc{direction}\hlstd{=}\hlstr{"forward"}\hlstd{)}
-\hlkwd{plot}\hlstd{(m.ind.cvd1)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Grafo_BIC_CVD1-1} 
-\end{knitrout}
 
 
 \section{Conclusioni}
