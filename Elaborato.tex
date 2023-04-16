@@ -68,17 +68,17 @@
 
 
 \section{Introduzione}
-  In questo elaborato andremo a studiare l'effeto delle attività personali di un 
+  In questo elaborato andremo a studiare l'effetto delle attività personali di un 
   individuo per la prevenzione di problemi cardiovascolari. Andremo a ipotizzare
   modelli specifici, differenze che si possono verificare tra le diverse categorie
   di persone e quanto queste categorie possono influire sulla presenza o meno
   di un problema cardiovascolare.
 
 
-\section{Visualizzazione del dataset} 
-  Per lo studio di questo fenomeno utilizzeremo il dataset fornito: 
+\section{Visualizzazione del Dataset} 
+  Per lo studio di questo fenomeno utilizzeremo il Dataset fornito: 
   $\emph{Sjolander et al.(2009)}$ \par
-  Il dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
+  Il Dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
   
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -108,19 +108,19 @@
           \item Nessun problema cardiovascolare
           \item Uno o più problemi cardiovascolari
         \end{enumerate}
-      \item Sex: rappresenta il genere dell'individuo.
+      \item SEX: rappresenta il genere dell'individuo.
         \begin{itemize}
           \item Male
           \item Female
         \end{itemize}
-      \item Age: età dell'individuo.
+      \item AGE: età dell'individuo.
       \item BMI: Body Mass Index, valore dicotomizzato.
         \begin{enumerate}
           \setcounter{enumi}{-1}
           \item BMI $< 30$
           \item BMI $\ge 30$ 
         \end{enumerate}
-      \item Fitness: statico di salute dell'indiviudo.
+      \item FITNESS: statico di salute dell'individuo.
         \begin{enumerate}
           \item Much Worse 
           \item Little Worse
@@ -134,13 +134,13 @@
           \item high-level exerciser 
           \item low-level exerciser
         \end{enumerate}
-      \item Smoke: tipologia di fumatore.
+      \item SMOKE: tipologia di fumatore.
         \begin{itemize}
           \item NO 
           \item Former
           \item Current
         \end{itemize}
-      \item Alchol: frequenza nel consumo di alchol dell'individuo.
+      \item ALCHOL: frequenza nel consumo di alchol dell'individuo.
         \begin{enumerate}
           \item Never 
           \item Low
@@ -151,7 +151,7 @@
   
     Per una maggiore comprensione del problema, convertiremo alcune variabili di
     tipo categoriale in variabili di tipo ordinale per la valutazione di 
-    quest'ultime durante l'analisi. \par
+    quest ultime durante l'analisi. \par
     Di seguito mostreremo la legenda utilizzata.
     
 \begin{knitrout}
@@ -169,7 +169,7 @@
 \hlstd{c.alc} \hlkwb{=}  \hlkwd{c}\hlstd{(}\hlstr{'Never'}\hlstd{,} \hlstr{'Low'}\hlstd{,} \hlstr{'Medium'}\hlstd{,} \hlstr{'High'}\hlstd{)}
 \hlstd{c.smoke}\hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'NO'}\hlstd{,} \hlstr{'Former'}\hlstd{,} \hlstr{'Current'}\hlstd{)}
 
-\hlcom{#bmi dicotomizzata}
+\hlcom{#BMI dicotomizzata}
 \hlstd{bmi} \hlkwb{=} \hlstd{nmc}\hlopt{$}\hlstd{bmi}
 \hlstd{nmc}\hlopt{$}\hlstd{bmi} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{>=}\hlnum{30}\hlstd{)}
 \hlcom{#Variabili ordinali}
@@ -194,11 +194,11 @@
 \end{kframe}
 \end{knitrout}
     
-  \subsection{Tabella Frequenze}
+  \subsection{Tabella delle Frequenze}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Tabella}
+\hlcom{#Tabella delle Frequenze del Dataset}
 \hlkwd{ftable}\hlstd{(sex}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{pa} \hlopt{~} \hlstd{cvd}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{alc}\hlopt{+}\hlstd{fitness, nmc)}
 \end{alltt}
 \begin{verbatim}
@@ -335,10 +335,10 @@
 
 \section{Regressioni Logistiche Semplici}
   Dato che stiamo analizzando un problema che presenta come variabile di 
-  risposta una varibile binaria (CVD), utilizzeremo la regressione logistica, 
+  risposta una variabile binaria (CVD), utilizzeremo la regressione logistica, 
   implementata in R tramite la funzione glm(). \par
   Per prima cosa analizzeremo le regressioni logistiche semplici delle singole
-  variabili presenti nel dataset, visualizzandone il loro comportamento verso la
+  variabili presenti nel Dataset, visualizzandone il loro comportamento verso la
   nostra variabile di risposta.
   
   \subsection{Age}
@@ -382,22 +382,22 @@
       \item La variabile Age è molto significativa secondo il \emph{p-value}.
     \end{itemize}
     
-    Stampiamo ora il boxplot per valutare l'età delle persone che presentano
+    Stampiamo ora il Boxplot per valutare l'età delle persone che presentano
     o meno un problema cardiovascolare.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Boxplot}
-\hlkwd{boxplot}\hlstd{(nmc}\hlopt{$}\hlstd{age}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Age"}\hlstd{)}
+\hlkwd{boxplot}\hlstd{(nmc}\hlopt{$}\hlstd{age}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"AGE"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/RLS_Age_BoxPlot-1} 
+\includegraphics[width=\maxwidth]{figure/RLS_Age_Boxplot-1} 
 \end{knitrout}
     
     \begin{itemize}
-      \item Il boxplot ci mostra come la media delle persone che hanno problemi
-            cardiovascolari, all'interno del dataset, è quella della fascia
+      \item Il Boxplot ci mostra come la media delle persone che hanno problemi
+            cardiovascolari, all'interno del Dataset, è quella della fascia
             tra i 60 e 80 anni.
       \item La media delle persone che non hanno un problema cardiovascolare è
             quella tra i 40 e 60 anni.
@@ -405,16 +405,16 @@
             della popolazione.
     \end{itemize}
     
-    Eseguiamo il plot del modello con la sola variabile Age.\par
-    Modello: CVD $\sim$ Age.
+    Eseguiamo il plot del modello con la sola variabile AGE.\par
+    Modello: CVD $\sim$ AGE.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Plot}
 \hlstd{pstima.age} \hlkwb{<-} \hlstd{fit.age}\hlopt{$}\hlstd{fitted.values}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age, nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{)}
-\hlkwd{lines}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age), pstima.age[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age, nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{)}
+\hlkwd{lines}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age), pstima.age[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#123ba3"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Age_Plot-1} 
@@ -422,8 +422,8 @@
     
     Il modello e il grafico suggeriscono come, all'aumentare dell'età, ci sia un 
     aumento esponenziale nelle probabilità nell'incorrere in un problema 
-    cardiovascolare. In particolare possiamo notare, come visulizzato anche dal
-    boxplot, che superata la soglia dei 40 anni si ha un notevole aumento nella
+    cardiovascolare. In particolare possiamo notare, come visualizzato anche dal
+    BoxPlot, che superata la soglia dei 40 anni si ha un notevole aumento nella
     probabilità di CVD, confermando quindi come questo problema sia legato
     principalmente ad un fattore di età.
   
@@ -469,9 +469,9 @@
       \item Nella regressione logistica semplice, il sesso Maschile 
             sembra aumentare notevolmente la possibilità di incorrere in un CVD 
             rispetto al sesso Femminile, con valore stimato: 
-            SexMale $\sim$ 0.910.
-      \item La variabile Sex risulta molto significativa secondo il \emph{p-value}, 
-            superando quindi il $5\%$ di significatività.
+            SEX:MALE $\sim$ 0.910.
+      \item La variabile SEX risulta molto significativa secondo 
+            il \emph{p-value}, superando quindi il $5\%$ di significatività.
     \end{itemize}
     
     Valutiamo quanto il sesso possa influire nella presenza o meno di CVD.
@@ -491,12 +491,12 @@
 \hlstd{pstima.sex.female} \hlkwb{<-} \hlstd{fit.sex.female}\hlopt{$}\hlstd{fitted.values}
 \hlcom{#Plot}
 \hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#2291ba"}\hlstd{)}
 \hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], pstima.sex.male,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], pstima.sex.female,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,} \hlstr{"Female"}\hlstd{),} \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{))}
+       \hlkwc{col}\hlstd{=}\hlstr{"#a566ad"}\hlstd{)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],pstima.sex.male,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{"#2291ba"}\hlstd{)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],pstima.sex.female,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{"#a566ad"}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}\hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,}\hlstr{"Female"}\hlstd{),}\hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#2291ba"}\hlstd{,}\hlstr{"#a566ad"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Sex_Plot-1} 
@@ -563,12 +563,12 @@
 
 \hlcom{#Plot}
 \hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{], pstima.bmi.0,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{], pstima.bmi.1,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"BMI < 30"}\hlstd{,} \hlstr{"BMI >= 30"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
-       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{], pstima.bmi.0,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{], pstima.bmi.1,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"BMI < 30"}\hlstd{,} \hlstr{"BMI >= 30"}\hlstd{),}
+       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#408552"}\hlstd{,}\hlstr{"#912933"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_BMI_Plot-1} 
@@ -615,11 +615,11 @@
 \end{knitrout}
     
     Contrariamente a quello che ci si potesse aspettare, per il solo modello di 
-    regressione logistica semplice, la variabile ordinale Fitness risulta, anche
+    regressione logistica semplice, la variabile ordinale FITNESS risulta, anche
     se di poco, positiva e significativa per l'insorgenza di un problema 
     cardiovascolare. \par
-    Verifichiamo quindi se ci siano delle differenze nel modello di regressione         logistica semplice 
-    con la variabile categoriale di Fitness.
+    Verifichiamo quindi se ci siano delle differenze nel modello di regressione 
+    logistica semplice con la variabile categoriale di FITNESS.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -659,41 +659,42 @@
 \end{knitrout}
     
     \begin{itemize}
-      \item Con la variabile categoriale di Fitness notiamo come ci sia una 
+      \item Con la variabile categoriale di FITNESS notiamo come ci sia una 
             diminuzione nell'insorgenza di CVD per tutte le categorie.
-      \item Solamente le categorie Fitness:Just as good e Fitness:Little Worse                  risultano significative.
+      \item Solamente le categorie FITNESS:JUSTASGOOD e FITNESS:LITTLEWORSE
+            risultano significative.
     \end{itemize}
     
-    Visulizziamo il comportamento della variabile Fitness all'aumentare dell'età.
+    Visualizziamo il comportamento della variabile FITNESS all'aumentare dell'età.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Fitness Much Worse}
+\hlcom{#Fitness:MuchWorse}
 \hlstd{fit.fitness.muchworse} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{]} \hlopt{~}
                                \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{],}
                                \hlkwc{family}\hlstd{=binomial)}
 \hlstd{pstima.fitness.muchworse} \hlkwb{<-} \hlstd{fit.fitness.muchworse}\hlopt{$}\hlstd{fitted.values}
 
-\hlcom{#Fitness LittleWorse}
+\hlcom{#Fitness:LittleWorse}
 \hlstd{fit.fitness.littleworse} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{]} \hlopt{~}
                                  \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],}
                                  \hlkwc{family}\hlstd{=binomial)}
 \hlstd{pstima.fitness.littleworse} \hlkwb{<-} \hlstd{fit.fitness.littleworse}\hlopt{$}\hlstd{fitted.values}
 
-\hlcom{#Fitness Just as good}
+\hlcom{#Fitness:Justasgood}
 \hlstd{fit.fitness.justasgood}\hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{]} \hlopt{~}
                                \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],}
                                \hlkwc{family}\hlstd{=binomial)}
 \hlstd{pstima.fitness.justasgood} \hlkwb{<-} \hlstd{fit.fitness.justasgood}\hlopt{$}\hlstd{fitted.values}
 
-\hlcom{#Fitness A bit better}
+\hlcom{#Fitness:Abitbetter}
 \hlstd{fit.fitness.abitbetter} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{]} \hlopt{~}
                                 \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],}
                                 \hlkwc{family}\hlstd{=binomial)}
 \hlstd{pstima.fitness.abitbetter} \hlkwb{<-} \hlstd{fit.fitness.abitbetter}\hlopt{$}\hlstd{fitted.values}
 
-\hlcom{#Fitness Much better}
+\hlcom{#Fitness:Muchbetter}
 \hlstd{fit.fitness.muchbetter} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{]} \hlopt{~}
                                 \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],}
                                 \hlkwc{family}\hlstd{=binomial)}
@@ -701,46 +702,44 @@
 
 \hlcom{#Plot}
 \hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{],nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"black"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"yellow"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"orange"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#36352e"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],}
+       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],}
+       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#e3dc76"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],}
+       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],}
+       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{], pstima.fitness.muchworse,}
-      \hlkwc{col}\hlstd{=}\hlstr{"black"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#36352e"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{], pstima.fitness.littleworse,}
-      \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{], pstima.fitness.justasgood,}
-      \hlkwc{col}\hlstd{=}\hlstr{"orange"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{], pstima.fitness.abitbetter,}
-      \hlkwc{col}\hlstd{=}\hlstr{"yellow"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#e3dc76"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{], pstima.fitness.muchbetter,}
-      \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
 \hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}
        \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,} \hlstr{"Little Worse"}\hlstd{,} \hlstr{"Just as good"}\hlstd{,}
                 \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
-       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,}\hlstr{"red"}\hlstd{,} \hlstr{"orange"}\hlstd{,} \hlstr{"yellow"}\hlstd{,} \hlstr{"green"}\hlstd{))}
+       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#36352e"}\hlstd{,}\hlstr{"#912933"}\hlstd{,}\hlstr{"#c9723c"}\hlstd{,}\hlstr{"#e3dc76"}\hlstd{,}\hlstr{"#408552"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Fitness_Plot-1} 
 \end{knitrout}
     
-    Attraverso il grafico notiamo che la categoria Fitness:Much better è quella meno
-    soggetta rispetto a tutte le altre. Viceversa la categoria Fitness:Little Worse 
+    Attraverso il grafico notiamo che la categoria FITNESS:MUCHBETTER è quella meno
+    soggetta rispetto a tutte le altre. Viceversa la categoria FITNESS:LITTLEWORSE 
     ha più probabilità di incorrere in un problema cardiovascolare. \par
     
-    Chi è della categoria Fitness:Much Worse ha meno probabilità rispetto alla          categoria Fitness:Little Worse evidenziando come un problema cardiovascolare
-    non è associato perforza a una pessima condizione di salute. \par
+    Chi è della categoria FITNESS:MUCHWORSE ha meno probabilità rispetto alla 
+    categoria FITNESS:LITTLEWORSE evidenziando come un problema cardiovascolare
+    non è associato per forza a una pessima condizione di salute. \par
     
     In conclusione, per il solo modello di regressione logistica semplice,
-    consideriamo la variabile ordinale Fitness come significativa.\par
-    
-    Nei successivi capitoli considereremo unicamente la variabile ordinale 
-    Fitness.
+    consideriamo la variabile FITNESS come significativa.
     
   \clearpage
 
@@ -820,19 +819,19 @@
 \end{knitrout}
   
     \begin{itemize}
-      \item Le categorie Smoke:Former e Smoke:NO sembrano influire positivamente
+      \item Le categorie SMOKE:FORMER e SMOKE:NO sembrano influire positivamente
             sull'insorgenza di CVD.
-      \item Risulta significativa solo la categoria Smoke:Former con valore stimato:
-            Smoke:Former $\sim$ 0.246.
+      \item Risulta significativa solo la categoria SMOKE:FORMER con valore stimato:
+            SMOKE:FORMER $\sim$ 0.246.
     \end{itemize}
     
     Verifichiamo ora il modello di regressione logistica semplice nel caso della 
-    variabile ordinale Smoke.
+    variabile ordinale SMOKE.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Smoke: Ordinale}
+\hlcom{#Smoke Ordinale}
 \hlstd{fit.smoke.ord} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{smoke.ord,} \hlkwc{family}\hlstd{=binomial)}
 \hlkwd{summary}\hlstd{(fit.smoke.ord)}
 \end{alltt}
@@ -864,8 +863,8 @@
 \end{knitrout}
     
     \begin{itemize}
-      \item La variabile ordinale Smoke risulta positiva nell'insorgenza di CVD.
-      \item Nonostante ciò la variabile Smoke ordinale risulta non significativa
+      \item La variabile ordinale SMOKE risulta positiva nell'insorgenza di CVD.
+      \item Nonostante ciò la variabile SMOKE ordinale risulta non significativa
             secondo il \emph{p-value}.
     \end{itemize}
     
@@ -875,19 +874,19 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Smoke NO}
+\hlcom{#Smoke:NO}
 \hlstd{fit.smoke.no} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{]} \hlopt{~}
                       \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{],}
                       \hlkwc{family}\hlstd{=binomial)}
 \hlstd{pstima.smoke.no} \hlkwb{<-} \hlstd{fit.smoke.no}\hlopt{$}\hlstd{fitted.values}
 
-\hlcom{#Smoke Former}
+\hlcom{#Smoke:Former}
 \hlstd{fit.smoke.former} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{]} \hlopt{~}
                           \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{],}
                           \hlkwc{family}\hlstd{=binomial)}
 \hlstd{pstima.smoke.former} \hlkwb{<-} \hlstd{fit.smoke.former}\hlopt{$}\hlstd{fitted.values}
 
-\hlcom{#Smoke Current}
+\hlcom{#Smoke:Current}
 \hlstd{fit.smoke.current} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{]} \hlopt{~}
                            \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{],}
                            \hlkwc{family}\hlstd{=binomial)}
@@ -895,31 +894,28 @@
 
 \hlcom{#Plot}
 \hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
 \hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"orange"}\hlstd{)}
+       \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
 \hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+       \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{], pstima.smoke.no,}
-      \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{], pstima.smoke.former,}
-      \hlkwc{col}\hlstd{=}\hlstr{"orange"}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
 \hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{], pstima.smoke.current,}
-      \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}
-       \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"NO"}\hlstd{,} \hlstr{"Former"}\hlstd{,} \hlstr{"Current"}\hlstd{),}
-       \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
-       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"green"}\hlstd{,}\hlstr{"orange"}\hlstd{,} \hlstr{"red"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
+      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"NO"}\hlstd{,} \hlstr{"Former"}\hlstd{,} \hlstr{"Current"}\hlstd{),}
+       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#408552"}\hlstd{,}\hlstr{"#c9723c"}\hlstd{,} \hlstr{"#912933"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Smoke_Plot-1} 
 \end{knitrout}
     
-    Possiamo notare come un un fumatore, rispetto alle altre categorie, abbia una       maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
+    Possiamo notare come un fumatore, rispetto alle altre categorie, abbia una
+    maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
     Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie di
-    incorrere nella malattia. \par
-    Nei successivi capitoli considereremo unicamente la variabile categoriale di
-    Smoke.
+    incorrere nella malattia.
     
   \clearpage  
     
@@ -958,20 +954,20 @@
 \end{kframe}
 \end{knitrout}
     
-    La variabile Alchol, secondo la valutazione del \emph{p-value}, non supera
+    La variabile ALCHOL, secondo la valutazione del \emph{p-value}, non supera
     il $5\%$ di significatività, risultando non significativa.
   
   \subsection{Commento}
     Nei soli modelli con regressione logistica semplice abbiamo che:
     \begin{itemize}
       \item Le variabili che risultano essere significative secondo la valutazione
-            del \emph{p-value} sono: Sex, Age, BMI e Fitness.
+            del \emph{p-value} sono: SEX, AGE, BMI e FITNESS.
       \item Sempre secondo la valutazione del \emph{p-value}, le variabili che 
-            invece risultano non significative sono: PA, Smoke e Alchol.
-      \item Le variabili Sex:Male, Age e BMI aumentano il rischio di CVD.
+            invece risultano non significative sono: PA, SMOKE e ALCHOL.
+      \item Le variabili SEX:MALE, AGE e BMI aumentano il rischio di CVD.
       \item La variabile Fitness evidenzia il fatto che chi sta bene è meno
             soggetto alla problematica.
-      \item Il fumatore è più soggetto alla malattia rispetto alle altre categorie.
+      \item Un fumatore è più soggetto alla malattia rispetto alle altre categorie.
     \end{itemize}
   
 \clearpage
@@ -979,7 +975,7 @@
 
 \section{Regressioni Logistiche Multiple}
   Consideriamo ora la regressione logistica multipla includendo tutte le variabili
-  che sono presenti all'interno del dataset, verificando quali di esse sono più 
+  che sono presenti all'interno del Dataset, verificando quali di esse sono più 
   o meno significative per la visualizzazione di un primo modello unico.
   
   \subsection{Modello Completo}
@@ -1030,22 +1026,25 @@
 \end{knitrout}
     
     Per il modello che include tutte le variabili:\\
-    Modello: CVD $\sim$ Sex + Age + BMI + Fitness + PA + Smoke + Alchol 
+    Modello: CVD $\sim$ SEX + AGE + BMI + FITNESS + PA + SMOKE + ALCHOL 
     \begin{itemize}
       \item Risultano essere significative, secondo il \emph{p-value}, le 
-            variabili: Sex, Age, BMI, Fitness e Smoke.
+            variabili: SEX, AGE, BMI, FITNESS e SMOKE.
       \item Risultano essere non significative, non superando il $5\%$
-            di significatività del \emph{p-value}, le variabili: PA e Alchol.
-      \item I parametri stimati nella regressione logistica multipla differescono da             quelli presenti nelle regressioni logistiche semplici precedentemente               analizzate.
-      \item Gli errori standard non differiscono molto da quelli presenti nei                   modelli con regressione logistica semplice.
-      \item La variabile Sex mostra ancora come il sesso Maschile influisca 
+            di significatività del \emph{p-value}, le variabili: PA e ALCHOL.
+      \item I parametri stimati nella regressione logistica multipla differiscono
+            da quelli presenti nelle regressioni logistiche semplici precedentemente
+            analizzate.
+      \item Gli errori standard non differiscono molto da quelli presenti nei
+            modelli con regressione logistica semplice.
+      \item La variabile SEX mostra ancora come il sesso maschile influisca 
             positivamente nella presenza di CVD con valore stimato: 
-            Sex:Male $\sim$ 0.788.
-      \item Anche le variabili BMI e Smoke mostrano un aumento nelle possibilità 
+            SEX:MALE $\sim$ 0.788.
+      \item Anche le variabili BMI e SMOKE mostrano un aumento nelle possibilità 
             di insorgenza di un CVD.
-      \item La variabile Fitness aumenta di significatività, rispetto
+      \item La variabile FITNESS aumenta di significatività, rispetto
             al modello di regressione logistica semplice, riducendo la 
-            probabilità di CVD con valore stimato: Fitness $\sim$ -0.184.
+            probabilità di CVD con valore stimato: FITNESS $\sim$ -0.184.
     \end{itemize}
   
   \subsection{Modello Significativo}
@@ -1098,9 +1097,9 @@
 \end{kframe}
 \end{knitrout}
     
-    Tutte le varibili che erano significative nel modello completo risultano 
+    Tutte le variabili che erano significative nel modello completo risultano 
     ancora significative. \par
-    Eliminiamo la variabile Alchol, che risulta ancora non significativa,
+    Eliminiamo la variabile ALCHOL, che risulta ancora non significativa,
     all'interno della formula.
     
 \begin{knitrout}
@@ -1146,7 +1145,7 @@
 \end{knitrout}
     
     Il modello risultate è: \\
-    Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke
+    Modello: CVD $\sim$ SEX + AGE + BMI + FITNES + SMOKE
     \begin{itemize}
       \item Le variabili risultato essere tutte significative secondo il 
             $\emph{p-value}$.
@@ -1164,8 +1163,8 @@
 \hlstd{pstima} \hlkwb{<-} \hlstd{fit}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age, nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{)}
-\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age), pstima[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age, nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{)}
+\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age), pstima[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],} \hlkwc{col}\hlstd{=}\hlstr{"#123ba3"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLM_Plot_ModelloSignificativo-1} 
@@ -1174,161 +1173,28 @@
   \subsection{Commento}
     \begin{itemize}
       \item Il modello risulta essere: \\
-            Modello: CVD$\sim$ Sex + Age + BMI + Fitness + Smoke
+            Modello: CVD$\sim$ SEX + AGE + BMI + FITNESS + SMOKE
       \item Come visto nelle regressioni logistiche semplici, le variabili
-            sexMale, Age e BMI continuano ad influenzare positivamente la 
+            SEX:MALE, AGE e BMI continuano ad influenzare positivamente la 
             comparsa di problemi cardiovascolari.
-      \item Al contrario, le variabili significative Fitness e Smoke (per la 
-            categoria "Former" e la categoria "NO") riducono la possibilità di 
-            avere un CVD.
-      \item Di conseguenza la categoria Smoke:Current ha una probabilità 
+      \item Al contrario, le variabili significative FITNESS, SMOKE:FORMER e
+            SMOKE:NO riducono la possibilità di avere un CVD.
+      \item Di conseguenza la categoria SMOKE:CURRENT ha una probabilità 
             maggiore nell'insorgenza di CVD.
     \end{itemize}
   
-  \subsection{Dati di esempio}
-    Effettuiamo una valutazione della probabilità su degli individui casuali 
-    in base ai modelli precedentemente analizzati. \par
-    Visualizziamo i coefficienti del modello completo e quello significativo.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Coefficienti Modello Completo}
-\hlkwd{coef}\hlstd{(fit.all)}
-\end{alltt}
-\begin{verbatim}
-##     (Intercept)     nmc$sexMale         nmc$age         nmc$bmi     nmc$fitness 
-##     -7.47566727      0.79913169      0.09267966      0.23512007     -0.18174054 
-##          nmc$pa nmc$smokeFormer     nmc$smokeNO         nmc$alc 
-##      0.03556271     -0.33215760     -0.37400050     -0.05640352
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Coefficienti Modello Significativo}
-\hlkwd{coef}\hlstd{(fit)}
-\end{alltt}
-\begin{verbatim}
-##     (Intercept)     nmc$sexMale         nmc$age         nmc$bmi     nmc$fitness 
-##     -7.61472806      0.78641659      0.09298766      0.24020007     -0.18621360 
-## nmc$smokeFormer     nmc$smokeNO 
-##     -0.33187854     -0.35197684
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-    Verifichiamo la probabilità di avere un CVD per un Uomo (Sex 1) di 45 anni 
-    fumatore, con BMI pari a 32 (BMI dicotomizzato a 1), che non fa consumo di 
-    alchol (Alchol 1), in ottima salute (Fitness 5) e PA=1.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Stima per il Modello Completo}
-\hlcom{#Dato}
-\hlcom{#Intercetta: 1, Sex: 1, Age: 45, BMI: 1, Fitness: 5, }
-\hlcom{#PA: 1, Smoke:Former: 0, Smoke:NO: 0, Alchol: 1 }
-\hlstd{man45.all} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{45}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{)}
-\hlstd{stima.man45.all} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit.all)}\hlopt{%*%}\hlstd{man45.all)}\hlopt{/}
-                       \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit.all)}\hlopt{%*%}\hlstd{man45.all))}
-\hlstd{stima.man45.all}
-\end{alltt}
-\begin{verbatim}
-##            [,1]
-## [1,] 0.03915164
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Stima per il Modello Significativo}
-\hlcom{#Dato}
-\hlcom{#Intercetta: 1, Sex: 1, Age: 45, BMI: 1, Fitness: 5, }
-\hlcom{#Smoke:Former: 0, Smoke:NO: 0}
-\hlstd{man45} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{45}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{)}
-\hlstd{stima.man45} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{man45)}\hlopt{/}\hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{man45))}
-\hlstd{stima.man45}
-\end{alltt}
-\begin{verbatim}
-##            [,1]
-## [1,] 0.03439862
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-    Risulta che:
-    \begin{itemize}
-      \item per il Modello Completo: $\hat{\pi}$ = 0.0391
-      \item per il Modello Significativo: $\hat{\pi}$ = 0.0343
-    \end{itemize}
-    
-    Verifichiamo adesso la probabilità di avere un CVD per una Donna (Sex 0) di 
-    60 anni ex fumatrice, con BMI pari a 35 (BMI dicotomizzato 1), che beve 
-    alchol nella media (Alchol 4), in buona salute (Fitness 4), e PA = 1.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Stima per il Modello Completo}
-\hlcom{#Dato}
-\hlcom{#Intercetta: 1, Sex: 0, Age: 60, BMI: 1, Fitness: 4, }
-\hlcom{#PA: 1, Smoke:Former: 1, Smoke:NO: 0, Alchol: 4 }
-\hlstd{woman60.all} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{4}\hlstd{)}
-\hlstd{stima.woman60.all} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit.all)}\hlopt{%*%}\hlstd{woman60.all)}\hlopt{/}
-                       \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit.all)}\hlopt{%*%}\hlstd{woman60.all))}
-\hlstd{stima.woman60.all}
-\end{alltt}
-\begin{verbatim}
-##            [,1]
-## [1,] 0.05074142
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Stima per il Modello Significativo}
-\hlcom{#Intercetta: 1, Sex: 0, Age: 60, BMI: 1, Fitness: 4, }
-\hlcom{#Smoke:Former: 1, Smoke:NO: 0}
-\hlstd{woman60} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-\hlstd{stima.woman60} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{woman60)}\hlopt{/}\hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{woman60))}
-\hlstd{stima.woman60}
-\end{alltt}
-\begin{verbatim}
-##            [,1]
-## [1,] 0.05355512
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-    Risulta che:
-    \begin{itemize}
-      \item Modello Completo: $\hat{\pi}$ = 0.0507
-      \item Modello Significativo: $\hat{\pi}$ = 0.0535
-    \end{itemize}
-    
-    In conclusione possiamo vedere come la probabilità del modello completo e
-    del modello con solo variabili significative si mostrino particolarmente 
-    simili.
-
 \clearpage    
 
 
 \section{Interazioni fra le variabili}
   Valutiamo se all'interno del modello ci sia la possibilità di interazioni
   fra le variabili. \par
-  Consideriamo i casi nei quali le variabili come Smoke, Alchol, PA o Sex possano 
+  Consideriamo i casi nei quali le variabili come SMOKE, ALCHOL, PA o SEX possano 
   interagire con le altre variabili, limitandoci unicamente nelle interazioni 
   del secondo ordine.
   
   \subsection{Smoke e Alchol}
-  Analizziamo il caso nel quale il consumo di alchol, combinato con l'uso di 
+  Analizziamo il caso nel quale il consumo di ALCHOL, combinato con l'uso di 
   sigaretta, possa o meno aumentare le probabilità di CVD.
   
 \begin{knitrout}
@@ -1377,7 +1243,7 @@
 \end{kframe}
 \end{knitrout}
   
-  I dati sembrano non mostrare l'interazione fra Smoke e Alchol.
+  I dati sembrano non mostrare l'interazione fra SMOKE e ALCHOL.
   
   \subsection{Smoke e BMI}
   Vediamo se l'uso di sigaretta per una persona con un alto indice di massa 
@@ -1428,13 +1294,13 @@
 \end{kframe}
 \end{knitrout}
   
-  A differenza di Smoke e Alchol, l'interazione tra Smoke e BMI 
+  A differenza di SMOKE e ALCHOL, l'interazione tra SMOKE e BMI 
   mostra un'interazione significativa, variando il valore stimato e diminuendo la 
   significatività della variabile BMI. In questo caso la variabile BMI assume 
   valore stimato negativo, influendo negativamente nella comparsa di CVD.
   
   \subsection{Alchol e BMI}
-  Come per il caso di Smoke, verifichiamo se il consumo di alchol associato ad un
+  Come per il caso di SMOKE, verifichiamo se il consumo di ALCHOL associato ad un
   maggior indice di massa corporea influisca nella probabilità di CVD.
   
 \begin{knitrout}
@@ -1482,7 +1348,7 @@
 \end{kframe}
 \end{knitrout}
   
-  A differenza di Smoke*BMI, l'interazione tra Alchol e BMI non è supportata.
+  A differenza di SMOKE*BMI, l'interazione tra ALCHOL e BMI non è supportata.
   
   \subsection{Sex e Smoke}
   Verifichiamo se l'utilizzo di sigaretta sia peggiorativo in uno dei due 
@@ -1533,7 +1399,7 @@
 \end{kframe}
 \end{knitrout}
   
-  L'interazione fra le variabili Sex e Smoke risulta non significativa.
+  L'interazione fra le variabili SEX e SMOKE risulta non significativa.
   
   \subsection{Sex e Age}
   Analizziamo ora il caso nel quale l'aumento dell'età possa influenzare in
@@ -1584,7 +1450,7 @@
 \end{knitrout}
   
   Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
-  significativa tra la variabile Sex e Age. Per il sesso maschile con l'aumentare
+  significativa tra la variabile SEX e AGE. Per il sesso maschile con l'aumentare
   dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
   Analizzeremo successivamente se questa interazione può risultare utile ai fini
   del nostro problema.
@@ -1637,10 +1503,10 @@
 \end{kframe}
 \end{knitrout}
   
-  Non è verificata l'interazione fra le variabili PA e Age.
+  Non è verificata l'interazione fra le variabili PA e AGE.
   
   \subsection{PA e Fitness}
-  Analliziamo il caso nel quale l'attività fisica e lo stato di salute di un
+  Analizziamo il caso nel quale l'attività fisica e lo stato di salute di un
   individuo possano aumentare le probabilità di CVD.
   
 \begin{knitrout}
@@ -1688,14 +1554,14 @@
 \end{kframe}
 \end{knitrout}
   
-  Il modello mostra come non ci sia interazione fra le variabili PA e Fitness.
+  Il modello mostra come non ci sia interazione fra le variabili PA e FITNESS.
   
   \subsection{Modello con interazioni}
-  Analizziamo ora il modello con solo variabili significative aggiungendo
-  le interazioni che precedentemente abbiamo valutato come significative.\par
-  Il modello da valutare sarà quindi:\\
-  Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke + Sex*Age + Smoke*BMI.
-  
+    Analizziamo ora il modello con solo variabili significative aggiungendo
+    le interazioni che precedentemente abbiamo valutato come significative.\par
+    Il modello da valutare sarà quindi:\\
+    Modello: CVD $\sim$ SEX + AGE + BMI + FITNESS + SMOKE + SEX*AGE + SMOKE*BMI.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1744,34 +1610,34 @@
 \end{knitrout}
 
   \subsection{Commento}
-    Nonostante il modello con le due interazioni Smoke*BMI e Sex*Age risulti
+    Nonostante il modello con le due interazioni SMOKE*BMI e SEX*AGE risulti
     significativo, vediamo come questo si comporti in maniera differente dalle
     valutazioni che abbiamo analizzato precedentemente.\par
     Il modello con interazioni mostra una minor probabilità per un individuo che
-    fuma e con alto indice di massa corporea, o come un individuo di sesso
-    maschile abbia una minima riduzione di probabilità con l'aumentare dell'
-    età.\par
+    fuma e con alto indice di massa corporea (SMOKE x BMI) non risultando 
+    veritiero dato che esistono molti studi che affermano come l'utilizzo della 
+    sigaretta possa far rallentare il metabolismo.\par
     Inoltre il significato della variabile BMI varia rispetto al modello con 
     solo variabili significative e al modello con la sola regressione logistica 
     semplice, diminuendone anche la significatività. \par
-    Decido quindi di non considerare questo modello perchè, oltre ad aumentarne 
-    il grado, non fornisce un contributo decisivo per il nostro problema,
-    andando contro anche alle analisi che fino a qui abbiamo valutato. \par
+    Decido quindi di non considerare questo modello perché non fornisce alcun 
+    contributo decisivo per il nostro problema, andando contro anche alle 
+    analisi che fino a qui abbiamo valutato.
     
 \clearpage
 
 
 \section{Selezione del Modello}
   Utilizziamo adesso i metodi Backward, Forward e Both basati sui criteri di 
-  penalizzazione AIC e BIC per la selezione del modello.\par
+  penalizzazione AIC e BIC per un'ulteriore selezione del modello.\par
   Per eseguire le varie procedure, prenderemo in considerazione la formula base 
   con solo l'intercetta e il modello che comprende tutte le variabili fornite 
-  dal dataset.
+  dal Dataset.
   
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Iniziliazziamo la formula base con intercetta}
+\hlcom{#Inizializziamo la formula base con intercetta}
 \hlstd{fit.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlnum{1}\hlstd{,} \hlkwc{family}\hlstd{=} \hlstr{"binomial"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -2028,7 +1894,7 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Bot: BIC}
+\hlcom{#Both: BIC}
 \hlstd{both.BIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.0,} \hlkwc{scope}\hlstd{=}\hlkwd{formula}\hlstd{(fit.all),}
                  \hlkwc{direction}\hlstd{=}\hlstr{"both"}\hlstd{,}
                  \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
@@ -2070,22 +1936,16 @@
 \end{kframe}
 \end{knitrout}
     
+    \clearpage
+    
     \subsection{Commento}
       Le formule ottenute dalle tre procedure sono:
         \begin{itemize}
           \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
-                CVD $\sim$ Age + Sex + Fitness + Smoke + BMI + Alchol
+                CVD $\sim$ AGE + SEX + FITNESS + SMOKE + BMI + ALCHOL
           \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
-                CVD $\sim$ Age + Sex + Fitness
+                CVD $\sim$ AGE + SEX + FITNESS
         \end{itemize}
-        
-      In questo caso, basandomi sulle procedure AIC e BIC, 
-      seleziono il risultato dalla procedura AIC ed elimino, secondo il
-      $\emph{p-value}$, la variabile non significativa Alchol, ottenendo un modello
-      che si pone in mezzo alle procedure AIC e BIC. \par
-      Il modello risultate da questa analisi risulta essere quello analizzato
-      nel capitolo delle regressioni logistiche multiple. \par
-      Modello: CVD $\sim$ Sex + Age + Fitness + Smoke + BMI. \par
 
 \clearpage
 
@@ -2093,10 +1953,14 @@
 
 
 \section{Grafi non orientati}
+  Analizziamo adesso lo spazio dei modelli da un punto di vista grafico attraverso la 
+  visualizzazione di grafi associati al Dataset. Utilizzeremo anche qui
+  procedure di Backward e Forward con metodi di penalizzazione AIC e BIC.
+  
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Formula modello saturo e indipidente}
+\hlcom{#Formula modello saturo e indipendente}
 \hlstd{sat} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc)}
 \hlstd{ind} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlnum{1}\hlstd{,} \hlkwc{data}\hlstd{=nmc)}
 \end{alltt}
@@ -2104,13 +1968,12 @@
 \end{knitrout}
   
   \subsection{Backward}
-    Utilizziamo la procedura di Backward con criterio di selezione AIC e BIC.
   
     \subsubsection{AIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#AIC Backward}
+\hlcom{#Backward:AIC}
 \hlstd{m.aic.backward} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{)}
 \hlstd{m.aic.backward}
 \end{alltt}
@@ -2132,11 +1995,11 @@
       risulta indipendente dalle variabili FITNESS e PA condizionatamente alle
       altre.
       
-    \subsection{BIC}
+    \subsubsection{BIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#BIC Backward}
+\hlcom{#Backward:BIC}
 \hlstd{m.bic.backward} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat,} \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
                   \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{)}
 \hlstd{m.bic.backward}
@@ -2154,12 +2017,11 @@
 \includegraphics[width=\maxwidth]{figure/Grafo_BIC_Backward-1} 
 \end{knitrout}
       
-      Con il criterio il BIC, la variabile CVD rimane direttamente dipendente
-      con le variabili SMOKE, SEX e AGE.
+      Con il criterio BIC invece la variabile CVD rimane direttamente connesse
+      con le variabili SMOKE, SEX e AGE e non direttamente connesse con le altre.
       
   \subsection{Forward}
-    Utilizziamo la procedura di Forward con criterio di selezione AIC e BIC.
-
+  
     \subsubsection{AIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -2216,58 +2078,19 @@
             forte con la variabile SEX.
       \item In tutte le procedure, le variabili PA e FITNESS risultano
             direttamente connesse e legate alla variabile SEX.
-    
     \end{itemize}
-      
-  \subsection{Sotto problema CVD}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Dataset: sotto-problema CVD}
-\hlstd{cvd0} \hlkwb{<-} \hlstd{(nmc}\hlopt{$}\hlstd{cvd}\hlopt{==}\hlnum{0}\hlstd{)}
-\hlstd{cvd1} \hlkwb{<-} \hlstd{(nmc}\hlopt{$}\hlstd{cvd}\hlopt{==}\hlnum{1}\hlstd{)}
-\hlstd{nmc.cvd0} \hlkwb{<-} \hlstd{nmc[cvd0,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
-\hlstd{nmc.cvd1} \hlkwb{<-} \hlstd{nmc[cvd1,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlnum{5}\hlopt{:}\hlnum{8}\hlstd{)]}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Grafo per CVD0}
-\hlstd{sat.cvd0} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc.cvd0)}
-\hlstd{m.cvd0} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat.cvd0)}
-\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.cvd0,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Grafo_CVD0-1} 
-\end{knitrout}
-    
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Grafo per CVD1}
-\hlstd{sat.cvd1} \hlkwb{<-} \hlkwd{dmod}\hlstd{(}\hlopt{~}\hlstd{.}\hlopt{^}\hlstd{.,} \hlkwc{data}\hlstd{=nmc.cvd1)}
-\hlstd{m.cvd1} \hlkwb{<-} \hlkwd{stepwise}\hlstd{(sat.cvd1)}
-\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.cvd1,} \hlstr{"graphNEL"}\hlstd{),} \hlstr{"fdp"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Grafo_CVD1-1} 
-\end{knitrout}
-    
     
 \clearpage
 
 
   \section{Reti Bayesiane}
-    Prima di poter individuare una prima rete Bayesiana dobbiamo adattare i
-    numeri affinchè la funzione hc possa essere eseguita.
+    Prima di poter individuare una prima rete bayesiana dobbiamo adattare i
+    numeri affinché la funzione hc possa essere eseguita.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{#Adattamento del dataset}
 \hlstd{nmc.bn} \hlkwb{<-} \hlstd{nmc}
 \hlstd{nmc.bn}\hlopt{$}\hlstd{sex} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{sex} \hlopt{==} \hlstr{"Male"}\hlstd{)}
 \hlstd{nmc.bn}\hlopt{$}\hlstd{age} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{age)}
@@ -2290,31 +2113,29 @@
 \end{kframe}
 \end{knitrout}
     
-    Ora visualizziamo la prima rete bayesiana tramite la funzione hc. 
+    Visualizziamo la prima rete bayesiana tramite la funzione hc. 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Bayesian Network}
+\hlcom{#Rete Bayesiana}
 \hlstd{bn} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn)}
 \hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(bn),} \hlstr{"graphNEL"}\hlstd{))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/Bayesian_Network-1} 
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana-1} 
 \end{knitrout}
     
     Questa prima rete mostra delle dipendenze non realistiche, come ad esempio
     l'influenza che ha il FITNESS e il PA (Attività Fisica) nella determinazione
     del SEX. Per questo motivo dobbiamo dare un ordinamento alle variabili
-    permettendo di non avere incoerenze tra i vari archi. \par
-    Nonostante questo modello risulta non coerente, può essere utile per delle
-    ulteriori analisi sulla variabile di risposta.
+    permettendo di non avere incoerenze tra i vari archi.
     
     \subsection{Ordinamento delle Variabili}
       L'ordinamento che andrò ad utilizzare sarà:
       \begin{itemize}
-        \item variabili di background: SEX, AGE
-        \item BMI: Body Mass Index
-        \item attività che influenzano CVD: ALCHOL, SMOKE, PA, FITNESS
+        \item Variabili di background: SEX, AGE
+        \item Attività che influenzano il CVD: ALCHOL, SMOKE, PA
+        \item Condizione fisica del paziente: BMI, FITNESS
         \item CVD
       \end{itemize}
       
@@ -2322,8 +2143,8 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Ordinamento delle variabili}
-\hlcom{#1-SEx, 1-AGE, 3-BMI, 4-CVD, 2-FITNESS, 2-PA, 2-SMOKE, 2-ALC}
-\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlcom{#1-SEX, 1-AGE, 3-BMI, 4-CVD, 3-FITNESS, 2-PA, 2-SMOKE, 2-ALC}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
 \hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{8}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{8}\hlstd{)}
 \hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn)}
 \hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
@@ -2336,12 +2157,12 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Bayesian Network con ordinamento}
+\hlcom{#Rete Bayesiana con ordinamento}
 \hlstd{bn.o} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn,} \hlkwc{blacklist}\hlstd{=blackL)}
 \hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(bn.o),} \hlstr{"graphNEL"}\hlstd{))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/Bayesian_Network_con_ordinamento-1} 
+\includegraphics[width=\maxwidth]{figure/Rete_bayesiana_con_ordinamento-1} 
 \end{knitrout}
       
       Anche in questo caso la rete risultante mostra un incongruenza nell'arco
@@ -2352,7 +2173,7 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Rimozione arco tra SEX e AGE}
-\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
 \hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{8}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{8}\hlstd{)}
 \hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn)}
 \hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
@@ -2364,7 +2185,6 @@
 \end{kframe}
 \end{knitrout}
 
-      
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2376,408 +2196,365 @@
 \includegraphics[width=\maxwidth]{figure/Bayesian_Network_finale-1} 
 \end{knitrout}
       
+      In questo ultimo grafo, possiamo notare come ci sia una relazione diretta
+      tra le variabili AGE, SEX, FITNESS e ALCHOL. Viceversa la variabile di 
+      risposta CVD risulta indipendente dalle variabili SMOKE, PA e BMI.
     
   \clearpage
 
 
 \section{Considerazioni sul Modello}
-  In questo capitolo confronteremo il comportamento del modello su una specifica      categoria di invidividui.
-
-  \subsection{Maschio e Femmina} 
-    Nei precedenti capitoli, durante l'analisi delle singole variabili e dei vari 
-    modelli, abbiamo notato come ci siano stati sempre diverse probabilità 
-    tra il sesso maschile e il sesso femmile.\par
-    Valutiamo ancora all'interno di un grafico se questa nostra ipotesi si 
-    verifica in un modello più complesso di quello marginale.
-      
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello Sesso Maschile}
-\hlcom{#Sex: Male}
-\hlstd{fit.male} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]} \hlopt{~}
-                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]}\hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-                  \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.male)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$sex == "Male"] ~ nmc$age[nmc$sex == 
-##     "Male"] + nmc$bmi[nmc$sex == "Male"] + nmc$fitness[nmc$sex == 
-##     "Male"] + nmc$smoke[nmc$sex == "Male"], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.5009  -0.4634  -0.2744  -0.1136   3.4503  
-## 
-## Coefficients:
-##                                     Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                        -6.310134   0.257771 -24.480  < 2e-16 ***
-## nmc$age[nmc$sex == "Male"]          0.086098   0.003316  25.968  < 2e-16 ***
-## nmc$bmi[nmc$sex == "Male"]          0.135192   0.157317   0.859 0.390142    
-## nmc$fitness[nmc$sex == "Male"]     -0.156521   0.042188  -3.710 0.000207 ***
-## nmc$smoke[nmc$sex == "Male"]Former -0.472766   0.146244  -3.233 0.001226 ** 
-## nmc$smoke[nmc$sex == "Male"]NO     -0.579023   0.142624  -4.060 4.91e-05 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 6344.1  on 11129  degrees of freedom
-## Residual deviance: 5297.3  on 11124  degrees of freedom
-## AIC: 5309.3
-## 
-## Number of Fisher Scoring iterations: 6
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.male} \hlkwb{<-} \hlstd{fit.male}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello Sesso Femminile}
-\hlcom{#Sex: Female}
-\hlstd{fit.female} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]} \hlopt{~}
-                    \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-                    \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.female)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$sex == "Female"] ~ nmc$age[nmc$sex == 
-##     "Female"] + nmc$bmi[nmc$sex == "Female"] + nmc$fitness[nmc$sex == 
-##     "Female"] + nmc$smoke[nmc$sex == "Female"], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.5166  -0.2829  -0.1632  -0.0847   3.7175  
-## 
-## Coefficients:
-##                                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                          -8.132620   0.277110 -29.348  < 2e-16 ***
-## nmc$age[nmc$sex == "Female"]          0.099409   0.003598  27.630  < 2e-16 ***
-## nmc$bmi[nmc$sex == "Female"]          0.284497   0.123459   2.304   0.0212 *  
-## nmc$fitness[nmc$sex == "Female"]     -0.210839   0.043547  -4.842 1.29e-06 ***
-## nmc$smoke[nmc$sex == "Female"]Former -0.182839   0.174076  -1.050   0.2936    
-## nmc$smoke[nmc$sex == "Female"]NO     -0.132124   0.160494  -0.823   0.4104    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 6729.3  on 22196  degrees of freedom
-## Residual deviance: 5573.1  on 22191  degrees of freedom
-## AIC: 5585.1
-## 
-## Number of Fisher Scoring iterations: 7
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.female} \hlkwb{<-} \hlstd{fit.female}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]),}
-      \hlstd{pstima.male[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{])],}
-      \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]),}
-      \hlstd{pstima.female[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{])],}
-      \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,} \hlstr{"Female"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
-       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"red"}\hlstd{),} \hlkwc{lwd}\hlstd{=}\hlnum{1}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Plot_Analisi_ModelloSex-1} 
-\end{knitrout}
-    
-    Statisticamente il sesso maschile rimane il soggetto che ha più rischi di 
-    CVD rispetto al genere femminile, anche nel modello più complesso.
+  Effuiamo qualche considerazione su un possibile modello finale.
   
-  \subsection{Attività Fisica}
-    Dato che la variabile PA nelle valutazione dei modelli è sempre stata 
-    scartata, verifichiamo se all'interno del nostro modello possono esserci 
-    delle differenze tra le due categorie di PA per il calcolo del CVD.
+  \subsection{Fitness e PA}
+    Durante l'analisi abbiamo visto come le variabili FITNESS e PA fossero 
+    direttamente connessa tra di loro. Valutiamo questa connessione tramite
+    un Barplot per la visualizzazione tra le varie categorie di FITNESS e la 
+    loro attività fisica.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Modello PA 0}
-\hlstd{fit.pa.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{],}
-                \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.pa.0)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$pa == 0] ~ nmc$sex[nmc$pa == 0] + nmc$age[nmc$pa == 
-##     0] + nmc$bmi[nmc$pa == 0] + nmc$fitness[nmc$pa == 0] + nmc$smoke[nmc$pa == 
-##     0], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.6202  -0.3396  -0.1936  -0.0931   3.6511  
-## 
-## Coefficients:
-##                               Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                  -7.644393   0.199721 -38.275  < 2e-16 ***
-## nmc$sex[nmc$pa == 0]Male      0.782201   0.055911  13.990  < 2e-16 ***
-## nmc$age[nmc$pa == 0]          0.092985   0.002545  36.533  < 2e-16 ***
-## nmc$bmi[nmc$pa == 0]          0.187919   0.104915   1.791  0.07327 .  
-## nmc$fitness[nmc$pa == 0]     -0.175433   0.032345  -5.424 5.84e-08 ***
-## nmc$smoke[nmc$pa == 0]Former -0.346614   0.116950  -2.964  0.00304 ** 
-## nmc$smoke[nmc$pa == 0]NO     -0.353123   0.111011  -3.181  0.00147 ** 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 12486  on 30907  degrees of freedom
-## Residual deviance: 10141  on 30901  degrees of freedom
-## AIC: 10155
-## 
-## Number of Fisher Scoring iterations: 7
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.pa.0} \hlkwb{<-} \hlstd{fit.pa.0}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Modello PA 1}
-\hlstd{fit.pa.1} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{bmi[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+}
-                  \hlstd{nmc}\hlopt{$}\hlstd{fitness[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{nmc}\hlopt{$}\hlstd{smoke[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{],}
-                \hlkwc{family}\hlstd{=binomial)}
-\hlkwd{summary}\hlstd{(fit.pa.1)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## glm(formula = nmc$cvd[nmc$pa == 1] ~ nmc$sex[nmc$pa == 1] + nmc$age[nmc$pa == 
-##     1] + nmc$bmi[nmc$pa == 1] + nmc$fitness[nmc$pa == 1] + nmc$smoke[nmc$pa == 
-##     1], family = binomial)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.4512  -0.3135  -0.1902  -0.1060   2.9592  
-## 
-## Coefficients:
-##                               Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                  -7.463732   0.614386 -12.148  < 2e-16 ***
-## nmc$sex[nmc$pa == 1]Male      0.833173   0.210572   3.957  7.6e-05 ***
-## nmc$age[nmc$pa == 1]          0.093239   0.008655  10.773  < 2e-16 ***
-## nmc$bmi[nmc$pa == 1]          0.543559   0.264374   2.056   0.0398 *  
-## nmc$fitness[nmc$pa == 1]     -0.284719   0.111611  -2.551   0.0107 *  
-## nmc$smoke[nmc$pa == 1]Former -0.184548   0.359510  -0.513   0.6077    
-## nmc$smoke[nmc$pa == 1]NO     -0.347033   0.343785  -1.009   0.3128    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 913.04  on 2418  degrees of freedom
-## Residual deviance: 740.78  on 2412  degrees of freedom
-## AIC: 754.78
-## 
-## Number of Fisher Scoring iterations: 7
-\end{verbatim}
-\begin{alltt}
-\hlstd{pstima.pa.1} \hlkwb{<-} \hlstd{fit.pa.1}\hlopt{$}\hlstd{fitted.values}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Age"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlstd{], pstima.pa.0,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{1}\hlstd{], pstima.pa.1,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Plot_Analisi_ModelloPA-1} 
-\end{knitrout}
-    
-    Il grafico non sembra mostrare differenze tra le due categorie di PA.
-    
-    \subsection{Visualizzazione Fitness e PA}
-    Andiamo a visualizzare il legame tra la variabile Fitness e Pa per la loro
-    valutazione all'interno di un modello.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
+\hlcom{#Barplot Fitness e PA}
 \hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(nmc}\hlopt{$}\hlstd{fitness, nmc}\hlopt{$}\hlstd{pa),}
-        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Molta attività fisica"}\hlstd{,} \hlstr{"Poca attività fisica"}\hlstd{),}
+        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"PA=0 Attività Fisica"}\hlstd{,} \hlstr{"PA=1 Non Attività Fisica"}\hlstd{),}
         \hlkwc{legend.text}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,} \hlstr{"Little Worse"}\hlstd{,}\hlstr{"Just as good"}\hlstd{,}
                 \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
-        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,}\hlstr{"red"}\hlstd{,} \hlstr{"orange"}\hlstd{,} \hlstr{"yellow"}\hlstd{,} \hlstr{"green"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#36352e"}\hlstd{,}\hlstr{"#912933"}\hlstd{,} \hlstr{"#c9723c"}\hlstd{,} \hlstr{"#e3dc76"}\hlstd{,} \hlstr{"#408552"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/Istogramma_Fitness_PA-1} 
+\includegraphics[width=\maxwidth]{figure/Barplot_Fitness_PA-1} 
 \end{knitrout}
       
     Come possiamo vedere, la variabile FITNESS e PA risultano connesse anche 
     all'interno dell'istogramma, mostrandoci come l'attività fisica induca
     maggiormente ad una miglior condizione di salute rispetto a chi non la
-    pratica.
+    pratica. \par
+    Dicotomizzo la variabile FITNESS per effettuare una regressione e valutare
+    meglio all'interno di un Barplot.\par
+    La dicotomizzazione che ho utilizzato è:
+    \begin{enumerate}
+      \setcounter{enumi}{-1}
+        \item FITNESS:Little Worse, Much Worse
+        \item FITNESS:Just as Good, A bit Better, Much Better 
+    \end{enumerate}
     
-
-\clearpage
-
-
-\section{Test sul Modello}
-  Verifichiamo adesso come il modello tende a calcolare la probabilità per un         campione di individui.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Dicotomizzazione Fitness}
+\hlstd{fitness.dic} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(fitness} \hlopt{==} \hlstr{"Just as good"}\hlopt{|}
+                            \hlstd{fitness} \hlopt{==} \hlstr{"A bit better"}\hlopt{|}
+                            \hlstd{fitness} \hlopt{==} \hlstr{"Much better"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Regressione tra Fitness e PA}
+\hlstd{fit.fitness} \hlkwb{<-} \hlkwd{glm}\hlstd{(fitness.dic}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{pa,} \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.fitness)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = fitness.dic ~ nmc$pa, family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.1227   0.4712   0.4712   0.4712   0.9715  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)  2.14195    0.01855  115.49   <2e-16 ***
+## nmc$pa      -1.63619    0.04589  -35.66   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 25083  on 33326  degrees of freedom
+## Residual deviance: 23981  on 33325  degrees of freedom
+## AIC: 23985
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Barplot Fitness Dicotomizzata e PA}
+\hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(fitness.dic, nmc}\hlopt{$}\hlstd{pa),}
+        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"PA=0 Attività Fisica"}\hlstd{,} \hlstr{"PA=1 Non Attività Fisica"}\hlstd{),}
+        \hlkwc{legend.text}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Cattivo stato di salute"}\hlstd{,}\hlstr{"Buono stato di salute"}\hlstd{),}
+        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#912933"}\hlstd{,} \hlstr{"#408552"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Barplot_Fitness_Dicotomizzata_e_PA-1} 
+\end{knitrout}
+    
+    Come è possibile vedere anche dalla semplice regressione logistica, l'attività
+    fisica influisce positivamente nello stato di salute dell'individuo. \par
+    Dato che la variabile PA risulta a carattere più oggettivo rispetto a FITNESS,
+    ritengo più valido dar importanza alla variabile PA rispetto a FITNESS per la
+    valutazione di insorgenza di CVD. \par
+    Valutiamo ora la rete bayesiana associato al Dataset senza la presenza della
+    variabile FITNESS, tenendo conto dell'ordinamento delle variabili fatto
+    precedentemente.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Rete Bayesiana senza Fitness}
+\hlcom{#1-SEX, 1-AGE, 3-BMI, 4-CVD, 2-PA, 2-SMOKE, 2-ALC}
+\hlstd{nmc.bn} \hlkwb{=} \hlkwd{subset}\hlstd{(nmc.bn,} \hlkwc{select}\hlstd{=}\hlopt{-}\hlkwd{c}\hlstd{(fitness))}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{7}\hlstd{)}
+\hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn)}
+\hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blackL} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwd{get.edgelist}\hlstd{(}\hlkwd{as}\hlstd{(blnmc.bn,} \hlstr{"igraph"}\hlstd{)))}
+\hlkwd{names}\hlstd{(blackL)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"from"}\hlstd{,} \hlstr{"to"}\hlstd{)}
+\hlstd{m.bn} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn,} \hlkwc{blacklist}\hlstd{=blackL)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(m.bn),} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana_senza_Fitness-1} 
+\end{knitrout}
+    
+    Possiamo vedere come in questa rete la variabile di risposta CVD sia sempre
+    direttamente connessa con le variabili SEX, AGE e ALCHOL. Da notare come in
+    questo ultimo grafo la variabile BMI sia influenzata direttamente dalle 
+    variabili SEX, AGE, ALCHOL, PA e SMOKE.
   
-  \subsection{Age}
-    Calcoliamo la probabilità di un ragazzo di 26 anni e di Uomo di 42 anni, 
-    entrambi fumatori (Smoke:Current), con BMI pari a 25(BMI 0) che stanno male 
-    (Fitness 2).
-      
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Dato ragazzo}
-\hlcom{#Intercetta: 1, SexMale: 1, Age: 26, BMI: 0, Fitness: 2, }
-\hlcom{#Smoke:Former: 0, Smoke:NO: 0 }
-\hlstd{t.age.boy} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{26}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{)}
-
-\hlcom{#Dato Uomo}
-\hlcom{#Intercetta: 1, SexMale: 1, Age: 42, BMI: 0, Fitness: 2, }
-\hlcom{#Smoke:Former: 0, Smoke:NO: 0 }
-\hlstd{t.age.man} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{42}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+  \subsection{BMI}
+    Precedentemente, durante l'analisi delle regressioni logistiche, abbiamo 
+    verificato come un aumento dell'indice di massa corporea sia direttamente 
+    connessa all'insorgenza di malattie cardiovascolari. Per questo motivo, 
+    all'interno del grafico andremo ad aggiungere l'arco tra BMI e CVD.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Stima per il ragazzo}
-\hlstd{stima.age.boy} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.age.boy)}\hlopt{/}
-                  \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.age.boy))}
-\hlstd{stima.age.boy}
+\hlcom{#Rete Bayesiana con arco da BMI a CVD}
+\hlstd{m.bn.bmicvd} \hlkwb{<-} \hlkwd{DAG}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{alc}\hlopt{:}\hlstd{bmi,alc}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{smoke,smoke}\hlopt{~}\hlstd{pa}\hlopt{:}\hlstd{age,}
+                   \hlstd{pa}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age, bmi}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{alc}\hlopt{:}\hlstd{pa}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{smoke)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.bn.bmicvd,} \hlstr{"graphNEL"}\hlstd{))}
 \end{alltt}
-\begin{verbatim}
-##             [,1]
-## [1,] 0.008300869
-\end{verbatim}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana_con_arco_BMI_-__CVD-1} 
+\end{knitrout}
+    
+    Verifichiamo ora l'influenza delle variabili SEX, AGE, PA, ALC
+    e SMOKE con la variabile BMI.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Stima per l'uomo}
-\hlstd{stima.age.man} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.age.man)}\hlopt{/}
-                       \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.age.man))}
-\hlstd{stima.age.man}
+\hlstd{fit.bmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{pa}\hlopt{+}\hlstd{smoke.ord}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{alc,}
+               \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.bmi)}
 \end{alltt}
 \begin{verbatim}
-##            [,1]
-## [1,] 0.03573426
+## 
+## Call:
+## glm(formula = nmc$bmi ~ nmc$sex + nmc$age + nmc$pa + smoke.ord + 
+##     nmc$alc, family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.8170  -0.4024  -0.3567  -0.3181   2.7488  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -2.926869   0.104871 -27.909  < 2e-16 ***
+## nmc$sexMale -0.324341   0.049706  -6.525 6.79e-11 ***
+## nmc$age      0.011322   0.001377   8.220  < 2e-16 ***
+## nmc$pa       0.758050   0.066422  11.413  < 2e-16 ***
+## smoke.ord    0.213703   0.033352   6.407 1.48e-10 ***
+## nmc$alc     -0.235959   0.032115  -7.347 2.02e-13 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 16621  on 33326  degrees of freedom
+## Residual deviance: 16319  on 33321  degrees of freedom
+## AIC: 16331
+## 
+## Number of Fisher Scoring iterations: 5
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
     
+    Dalla regressione logistica per BMI risulta che:
     \begin{itemize}
-      \item Probabilità per il ragazzo: $\hat{\pi}$ = 0.008
-      \item Probabilità per l'uomo: $\hat{\pi}$ = 0.036
-    \end{itemize}
-  
-  \subsection{Sex}
-    Calcoliamo la probabilità di una Donna e di un Uomo di 55 anni, 
-    ex-fumatori (Smoke:Former 1), con BMI pari a 32(BMI 1) che godono di
-    ottima salute(Fitness 5).
-      
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Dato Uomo}
-\hlcom{#Intercetta: 1, sexMale: 1, Age: 55, BMI: 1, Fitness: 5, }
-\hlcom{#Smoke:Former: 1, Smoke:NO: 0 }
-\hlstd{t.sex.man} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{55}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-
-\hlcom{#Dato Donna}
-\hlcom{#Intercetta: 1, sexMale: 0, Age: 55, BMI: 1, Fitness: 5, }
-\hlcom{#Smoke:Former: 1, Smoke:NO: 0 }
-\hlstd{t.sex.woman} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{55}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Stima per l'uomo}
-\hlstd{stima.sex.man} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.sex.man)}\hlopt{/}
-                  \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.sex.man))}
-\hlstd{stima.sex.man}
-\end{alltt}
-\begin{verbatim}
-##           [,1]
-## [1,] 0.0608401
-\end{verbatim}
-\begin{alltt}
-\hlcom{#Stima per la donna}
-\hlstd{stima.sex.woman} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.sex.woman)}\hlopt{/}
-                       \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.sex.woman))}
-\hlstd{stima.sex.woman}
-\end{alltt}
-\begin{verbatim}
-##            [,1]
-## [1,] 0.02866058
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-    \begin{itemize}
-      \item Probabilità per l'uomo: $\hat{\pi}$ = 0.061
-      \item Probabilità per la donna: $\hat{\pi}$ = 0.029
+      \item Tutte le variabili SEX, AGE, PA, ALC e SMOKE risultano significative.
+      \item Fare attività fisica riduce il BMI.
+      \item L'età aumenta l'indice BMI.
+      \item Essere un fumatore o un ex-fumatore aumenta l'indice BMI.
+      \item Il sesso maschile ha un indice BMI inferiore rispetto al sesso
+            femminile.
+      \item Il consumo di alchol sembra diminuire l'indice BMI.
     \end{itemize}
     
-  \subsection{Smoke}
-    Calcoliamo la probabilità di una Donna di 36 anni, fumatrice, ex-fumatrice 
-    e non fumatrice, con BMI pari a 25(BMI 0) che è in buona salute (Fitness 4).
-      
+    Verifichiamo tramite Barplot come si distribuiscono le persone sia in base
+    all'indice di BMI e al consumo di alchol.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Dato SmokeCurrent}
-\hlcom{#Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, }
-\hlcom{#Smoke:Former: 0, Smoke:NO: 0 }
-\hlstd{t.smoke.current} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{36}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{)}
-
-\hlcom{#Dato SmokeCurrent}
-\hlcom{#Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, }
-\hlcom{#Smoke:Former: 1, Smoke:NO: 0 }
-\hlstd{t.smoke.former} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{36}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-
-\hlcom{#Dato SmokeNO}
-\hlcom{#Intercetta: 1, Sex:0, Age: 36, BMI: 0, Fitness: 4, }
-\hlcom{#Smoke:Former: 0, Smoke:NO: 1 }
-\hlstd{t.smoke.no} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{36}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{)}
+\hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(nmc}\hlopt{$}\hlstd{bmi, nmc}\hlopt{$}\hlstd{alc),}
+        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Nessun"}\hlstd{,}\hlstr{"Poco"}\hlstd{,}
+                    \hlstr{"Medio"}\hlstd{,} \hlstr{"Alto"}\hlstd{),}
+        \hlkwc{legend.text}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"BMI Basso"}\hlstd{,} \hlstr{"BMI Alto"}\hlstd{),}
+        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#408552"}\hlstd{,} \hlstr{"#912933"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Barplot_BMI_e_Alchol-1} 
+\end{knitrout}
+    
+    Dal Barplot possiamo vedere come ci sia una prevalenza di persone con basso
+    indice BMI per ogni categoria di consumatori di alchol rispetto alle persone
+    con un alto indice di BMI. \par
+    Analizziamo allora la percentuale tra queste due categorie di persone.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Percentuale persone con alto BMI che bevono molto alchol}
+\hlstd{n.alc.high} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}\hlopt{/}\hlstd{n.alc.high}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.0671875
+\end{verbatim}
+\begin{alltt}
+\hlcom{#Percentuale persone con alto BMI che bevono alchol nella media}
+\hlstd{n.alc.med} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}\hlopt{/}\hlstd{n.alc.med}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05740756
+\end{verbatim}
+\begin{alltt}
+\hlcom{#Percentuale persone con basso BMI che bevono molto alchol}
+\hlstd{n.alc.high} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}\hlopt{/}\hlstd{n.alc.high}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9328125
+\end{verbatim}
+\begin{alltt}
+\hlcom{#Percentuale persone con bevono BMI che bevono alchol nella media}
+\hlstd{n.alc.med} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}\hlopt{/}\hlstd{n.alc.med}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9425924
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+    Verifichiamo se togliendo la variabile ALCHOL per BMI risulti ancora
+    significativo.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fit.bmi.nalc} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{pa}\hlopt{+}\hlstd{smoke.ord,}
+               \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{summary}\hlstd{(fit.bmi.nalc)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = nmc$bmi ~ nmc$sex + nmc$age + nmc$pa + smoke.ord, 
+##     family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6986  -0.4001  -0.3627  -0.3209   2.5988  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -3.341359   0.089561 -37.308  < 2e-16 ***
+## nmc$sexMale -0.379425   0.049150  -7.720 1.17e-14 ***
+## nmc$age      0.010972   0.001392   7.880 3.28e-15 ***
+## nmc$pa       0.765789   0.066320  11.547  < 2e-16 ***
+## smoke.ord    0.159274   0.032623   4.882 1.05e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 16621  on 33326  degrees of freedom
+## Residual deviance: 16373  on 33322  degrees of freedom
+## AIC: 16383
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+    Anche senza la presenza della variabile ALCHOL, questo modello per BMI
+    risulta significativo non modificando di molto il comportamento e la
+    significatività delle altre variabili. \par
+    Rimuoviamo quindi l'arco tra ALCHOL e BMI.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Rete Bayesiana senza arco da Alchol a BMI}
+\hlstd{m.bn.bmicvd} \hlkwb{<-} \hlkwd{DAG}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{alc}\hlopt{:}\hlstd{bmi, alc}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{smoke, smoke}\hlopt{~}\hlstd{pa}\hlopt{:}\hlstd{age,}
+                   \hlstd{pa}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age, bmi}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{pa}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{smoke)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.bn.bmicvd,} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana_senza_arco_tra_Alchol_e_BMI-1} 
+\end{knitrout}
+    
+    
+  \subsection{Alchol}
+    Sempre durante l'analisi delle regressioni logistiche e durante la selezione
+    del modello con le procedure Forward e Backward, abbiamo visto come
+    la variabile Alchol non influenzi la variabile di risposta CVD. Per questo
+    motivo, dato che è presente l'arco tra CVD e ALCHOL all'interno nella rete,
+    andremo a rimuovere l'arco da ALCHOL a CVD.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Rete Bayesiana senza arco da Alchol a CVD}
+\hlstd{m.bn.bmicvd} \hlkwb{<-} \hlkwd{DAG}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{bmi, alc}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{smoke, smoke}\hlopt{~}\hlstd{pa}\hlopt{:}\hlstd{age,}
+                   \hlstd{pa}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{age, bmi}\hlopt{~}\hlstd{sex}\hlopt{:}\hlstd{pa}\hlopt{:}\hlstd{age}\hlopt{:}\hlstd{smoke)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(m.bn.bmicvd,} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana_senza_arco_tra_Alchol_e_CVD-1} 
+\end{knitrout}
+    
+    Da questo DAG capiamo che la variabile di risposta non solo è connessa con
+    le variabili SEX, AGE ma anche dalla variabile BMI.
+    
+  \subsection{Maschio e Femmina}
+    Durante le precedenti analisi, abbiamo notato come ci sia una probabilità 
+    maggiore del sesso maschile rispetto a quello femminile.\par
+    Valutiamo la differenza di due reti bayesiane che comprendo per una il
+    genere maschile e l'altra quella femminile.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Dataset: sotto-problema Sex}
+\hlstd{male} \hlkwb{<-} \hlstd{(nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{)}
+\hlstd{female} \hlkwb{<-} \hlstd{(nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{)}
+\hlstd{nmc.bn.male} \hlkwb{<-} \hlstd{nmc.bn[male,} \hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{)]}
+\hlstd{nmc.bn.female} \hlkwb{<-} \hlstd{nmc.bn[female,} \hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{)]}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2785,68 +2562,135 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Stima SmokeCurrent}
-\hlstd{stima.smoke.current} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.smoke.current)}\hlopt{/}
-                          \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.smoke.current))}
-\hlstd{stima.smoke.current}
+\hlcom{#Rete Bayesiana per Male}
+\hlcom{#1-AGE, 3-BMI, 4-CVD, 2-PA, 2-SMOKE, 2-ALC}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{6}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{6}\hlstd{)}
+\hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn.male)}
+\hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blackL} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwd{get.edgelist}\hlstd{(}\hlkwd{as}\hlstd{(blnmc.bn,} \hlstr{"igraph"}\hlstd{)))}
+\hlkwd{names}\hlstd{(blackL)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"from"}\hlstd{,} \hlstr{"to"}\hlstd{)}
+\hlstd{m.bn.male} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn.male,} \hlkwc{blacklist}\hlstd{=blackL)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(m.bn.male),} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana_per_Male-1} 
+\end{knitrout}
+    
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Rete Bayesiana per Female}
+\hlcom{#1-AGE, 3-BMI, 4-CVD, 2-PA, 2-SMOKE, 2-ALC}
+\hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{6}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{6}\hlstd{)}
+\hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn.female)}
+\hlkwa{for} \hlstd{(b} \hlkwa{in} \hlnum{2}\hlopt{:}\hlnum{4}\hlstd{) blnmc.bn[block}\hlopt{==}\hlstd{b, block}\hlopt{<}\hlstd{b]} \hlkwb{<-} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blnmc.bn[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]} \hlkwb{=} \hlnum{1}
+\hlstd{blackL} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwd{get.edgelist}\hlstd{(}\hlkwd{as}\hlstd{(blnmc.bn,} \hlstr{"igraph"}\hlstd{)))}
+\hlkwd{names}\hlstd{(blackL)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"from"}\hlstd{,} \hlstr{"to"}\hlstd{)}
+\hlstd{m.bn.female} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn.female,} \hlkwc{blacklist}\hlstd{=blackL)}
+\hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(m.bn.female),} \hlstr{"graphNEL"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Rete_Bayesiana_per_Female-1} 
+\end{knitrout}
+    
+    Le reti risultanti risultano uguali se non consideriamo l'arco presente tra 
+    la variabile ALCHOL E BMI e quello tra ALCHOL e CVD. \par
+    Verifichiamo adesso la percentuale tra uomini e donne nelle varie categorie.
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n.male} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}
+\hlstd{n.female} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Percentuale degli uomini fumano}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{3}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}\hlopt{/}\hlstd{n.male}
 \end{alltt}
 \begin{verbatim}
-##             [,1]
-## [1,] 0.006613369
+## [1] 0.0672956
 \end{verbatim}
 \begin{alltt}
-\hlcom{#Stima SmokeFormer}
-\hlstd{stima.smoke.former} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.smoke.former)}\hlopt{/}
-                          \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.smoke.former))}
-\hlstd{stima.smoke.former}
+\hlcom{#Percentuale degli uomini ex-fumatori}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{2}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}\hlopt{/}\hlstd{n.male}
 \end{alltt}
 \begin{verbatim}
-##             [,1]
-## [1,] 0.004754465
-\end{verbatim}
-\begin{alltt}
-\hlcom{#Stima SmokeNO}
-\hlstd{stima.smoke.no} \hlkwb{<-} \hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.smoke.no)}\hlopt{/}
-                      \hlstd{(}\hlnum{1}\hlopt{+}\hlkwd{exp}\hlstd{(}\hlkwd{coef}\hlstd{(fit)}\hlopt{%*%}\hlstd{t.smoke.no))}
-\hlstd{stima.smoke.no}
-\end{alltt}
-\begin{verbatim}
-##             [,1]
-## [1,] 0.004660303
+## [1] 0.2915544
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
     
-    \begin{itemize}
-      \item Probabilità per Fumatrice: $\hat{\pi}$ = 0.007
-      \item Probabilità per EX-Fumatrice: $\hat{\pi}$ = 0.005
-      \item Probabilità per Non Fumatrice: $\hat{\pi}$ = 0.005
-    \end{itemize}
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Percentuale delle donne che fumano}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{3}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}\hlopt{/}\hlstd{n.female}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.08663333
+\end{verbatim}
+\begin{alltt}
+\hlcom{#Percentuale delle donne ex-fumatori}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{2}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}\hlopt{/}\hlstd{n.female}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.2471055
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Percentuale degli uomini fanno attività fisica}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}\hlopt{/}\hlstd{n.male}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9184187
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}\hlopt{/}\hlstd{n.female}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9319277
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \clearpage
 
 
 \section{Conclusioni}
   In conclusione, il modello scelto che più si adatta meglio al problema per il 
   calcolo della probabilità di un problema cardiovascolare è:\\
-  Modello: CVD $\sim$ Sex + Age + BMI + Fitness + Smoke. \par
-  All'interno del modello sono presenti unicamente variabili significative e
-  indipendenti.\par
-  I fattori che aumentano la probabilità di CVD sono:
+  Modello: CVD $\sim$ SEX + AGE + BMI \par
+  Infatti i fattori che aumentano la probabilità di CVD sono:
   \begin{itemize}
-    \item L'aumento dell'età, con maggior evidenza superati i 40 anni.
+    \item L'aumento dell'età, con una maggior evidenza superata la soglia dei 40 anni.
     \item Essere maschio.
-    \item Essere un fumatore.
     \item Avere un alto indice di massa corporea.
   \end{itemize}
-  I fattori che non influenzano la CVD sono:
-  \begin{itemize}
-    \item Il consumo di alchol.
-    \item La tipologia di attività fisica.
-  \end{itemize}
-  E' stato scelto questo modello a differenza di altri modelli (come il modello 
-  con interazioni) perchè rappresenta al meglio lo studio svolto sulle varie
-  categorie e contemporaneamente risulta essere un modello abbastanza semplice e
-  significativo.
+  Tuttavia dobbiamo tenere in considerazione che il fumare può aumentare l'indice
+  di massa corporea, andando ad influenzare negativamente l'indice di massa 
+  corporea. \par
+  Sempre per ridurre l'indice di massa corporea e quindi prevenire in qualche 
+  modo la CVD è consigliabile fare attività fisica.
+  
 
 \end{document}

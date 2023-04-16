@@ -1,19 +1,19 @@
 \section{Selezione del Modello}
   Utilizziamo adesso i metodi Backward, Forward e Both basati sui criteri di 
-  penalizzazione AIC e BIC per la selezione del modello.\par
+  penalizzazione AIC e BIC per un'ulteriore selezione del modello.\par
   Per eseguire le varie procedure, prenderemo in considerazione la formula base 
   con solo l'intercetta e il modello che comprende tutte le variabili fornite 
-  dal dataset.
+  dal Dataset.
   
-  <<FormulaIntercetta>>=
-  #Iniziliazziamo la formula base con intercetta
+  <<Formula Intercetta>>=
+  #Inizializziamo la formula base con intercetta
   fit.0 <- glm(nmc$cvd ~ 1, family= "binomial")
   @
 
    \subsection{Backward}
       Verifichiamo le formule della procedura Backward con AIC e BIC.
         \subsubsection{AIC}
-          <<Backward_AIC>>=
+          <<Backward AIC>>=
           #Backward: AIC
           backward.AIC <- step(fit.all, direction="backward", 
                                k=2, trace=FALSE)
@@ -22,7 +22,7 @@
           @
           
         \subsubsection{BIC}
-          <<Backward_BIC>>=
+          <<Backward BIC>>=
           #Backward: BIC 
           backward.BIC <- step(fit.all, direction="backward", 
                               k=log(length(nmc$cvd)), trace=FALSE)
@@ -33,7 +33,7 @@
     \subsection{Forward} 
       Verifichiamo adesso le formule della procedura Forward con AIC e BIC.
         \subsubsection{AIC}
-          <<Forward_AIC>>=
+          <<Forward AIC>>=
           #Forward: AIC
           forward.AIC <- step(fit.0, scope=formula(fit.all), 
                              direction="forward", k=2, trace=FALSE)
@@ -42,7 +42,7 @@
           @
           
         \subsubsection{BIC}
-          <<Forward_BIC>>=
+          <<Forward BIC>>=
           #Forward: BIC
           forward.BIC <- step(fit.0, scope=formula(fit.all), 
                              direction="forward", 
@@ -55,7 +55,7 @@
     \subsection{Both}
       Infine vediamo le formule della procedura Both con AIC e BIC.
         \subsubsection{AIC}
-          <<Both_AIC>>=
+          <<Both AIC>>=
           #Both: AIC 
           both.AIC <- step(fit.0, scope=formula(fit.all), 
                            direction="both", 
@@ -65,8 +65,8 @@
           @
           
         \subsubsection{BIC}
-          <<Both_BIC>>=
-          #Bot: BIC
+          <<Both BIC>>=
+          #Both: BIC
           both.BIC <- step(fit.0, scope=formula(fit.all), 
                            direction="both",
                            k=log(length(nmc$cvd)),
@@ -75,21 +75,15 @@
           summary(both.BIC)
           @
     
+    \clearpage
+    
     \subsection{Commento}
       Le formule ottenute dalle tre procedure sono:
         \begin{itemize}
           \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
-                CVD $\sim$ Age + Sex + Fitness + Smoke + BMI + Alchol
+                CVD $\sim$ AGE + SEX + FITNESS + SMOKE + BMI + ALCHOL
           \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
-                CVD $\sim$ Age + Sex + Fitness
+                CVD $\sim$ AGE + SEX + FITNESS
         \end{itemize}
-        
-      In questo caso, basandomi sulle procedure AIC e BIC, 
-      seleziono il risultato dalla procedura AIC ed elimino, secondo il
-      $\emph{p-value}$, la variabile non significativa Alchol, ottenendo un modello
-      che si pone in mezzo alle procedure AIC e BIC. \par
-      Il modello risultate da questa analisi risulta essere quello analizzato
-      nel capitolo delle regressioni logistiche multiple. \par
-      Modello: CVD $\sim$ Sex + Age + Fitness + Smoke + BMI. \par
 
 \clearpage

@@ -1,13 +1,13 @@
 \section{Regressioni Logistiche Semplici}
   Dato che stiamo analizzando un problema che presenta come variabile di 
-  risposta una varibile binaria (CVD), utilizzeremo la regressione logistica, 
+  risposta una variabile binaria (CVD), utilizzeremo la regressione logistica, 
   implementata in R tramite la funzione glm(). \par
   Per prima cosa analizzeremo le regressioni logistiche semplici delle singole
-  variabili presenti nel dataset, visualizzandone il loro comportamento verso la
+  variabili presenti nel Dataset, visualizzandone il loro comportamento verso la
   nostra variabile di risposta.
   
   \subsection{Age}
-    <<RLS_Age>>=
+    <<RLS Age>>=
     #Age
     fit.age <- glm(nmc$cvd ~ nmc$age, family=binomial)
     summary(fit.age)
@@ -19,17 +19,17 @@
       \item La variabile Age è molto significativa secondo il \emph{p-value}.
     \end{itemize}
     
-    Stampiamo ora il boxplot per valutare l'età delle persone che presentano
+    Stampiamo ora il Boxplot per valutare l'età delle persone che presentano
     o meno un problema cardiovascolare.
     
-    <<RLS_Age_BoxPlot>>=
+    <<RLS Age Boxplot>>=
     #Boxplot
-    boxplot(nmc$age~nmc$cvd, xlab="CVD", ylab="Age")
+    boxplot(nmc$age~nmc$cvd, xlab="CVD", ylab="AGE")
     @
     
     \begin{itemize}
-      \item Il boxplot ci mostra come la media delle persone che hanno problemi
-            cardiovascolari, all'interno del dataset, è quella della fascia
+      \item Il Boxplot ci mostra come la media delle persone che hanno problemi
+            cardiovascolari, all'interno del Dataset, è quella della fascia
             tra i 60 e 80 anni.
       \item La media delle persone che non hanno un problema cardiovascolare è
             quella tra i 40 e 60 anni.
@@ -37,27 +37,27 @@
             della popolazione.
     \end{itemize}
     
-    Eseguiamo il plot del modello con la sola variabile Age.\par
-    Modello: CVD $\sim$ Age.
+    Eseguiamo il plot del modello con la sola variabile AGE.\par
+    Modello: CVD $\sim$ AGE.
     
-    <<RLS_Age_Plot>>=
+    <<RLS Age Plot>>=
     #Plot
     pstima.age <- fit.age$fitted.values
-    plot(nmc$age, nmc$cvd, xlab="Age", ylab="CVD")
-    lines(sort(nmc$age), pstima.age[order(nmc$age)], col="blue")
+    plot(nmc$age, nmc$cvd, xlab="AGE", ylab="CVD")
+    lines(sort(nmc$age), pstima.age[order(nmc$age)], lwd=3, col="#123ba3")
     @
     
     Il modello e il grafico suggeriscono come, all'aumentare dell'età, ci sia un 
     aumento esponenziale nelle probabilità nell'incorrere in un problema 
-    cardiovascolare. In particolare possiamo notare, come visulizzato anche dal
-    boxplot, che superata la soglia dei 40 anni si ha un notevole aumento nella
+    cardiovascolare. In particolare possiamo notare, come visualizzato anche dal
+    BoxPlot, che superata la soglia dei 40 anni si ha un notevole aumento nella
     probabilità di CVD, confermando quindi come questo problema sia legato
     principalmente ad un fattore di età.
   
   \clearpage
   
   \subsection{Sex}
-    <<RLS_Sex>>=
+    <<RLS Sex>>=
     #Regressioni logistiche semplici
     #Sex
     fit.sex <- glm(nmc$cvd ~ nmc$sex, family=binomial)
@@ -68,14 +68,14 @@
       \item Nella regressione logistica semplice, il sesso Maschile 
             sembra aumentare notevolmente la possibilità di incorrere in un CVD 
             rispetto al sesso Femminile, con valore stimato: 
-            SexMale $\sim$ 0.910.
-      \item La variabile Sex risulta molto significativa secondo il \emph{p-value}, 
-            superando quindi il $5\%$ di significatività.
+            SEX:MALE $\sim$ 0.910.
+      \item La variabile SEX risulta molto significativa secondo 
+            il \emph{p-value}, superando quindi il $5\%$ di significatività.
     \end{itemize}
     
     Valutiamo quanto il sesso possa influire nella presenza o meno di CVD.
     
-    <<RLS_Sex_Plot>>=
+    <<RLS Sex Plot>>=
     #Modello per Maschio
     fit.sex.male <- glm(nmc$cvd[nmc$sex=="Male"] ~ 
                           nmc$age[nmc$sex=="Male"], 
@@ -88,19 +88,19 @@
     pstima.sex.female <- fit.sex.female$fitted.values
     #Plot
     plot(nmc$age[nmc$sex=="Male"], nmc$cvd[nmc$sex=="Male"], 
-         xlab="Age", ylab="CVD", col="blue")
+         xlab="AGE", ylab="CVD", col="#2291ba")
     points(nmc$age[nmc$sex=="Female"], nmc$cvd[nmc$sex=="Female"],
-           col="red")
-    lines(nmc$age[nmc$sex=="Male"], pstima.sex.male, col="blue")
-    lines(nmc$age[nmc$sex=="Female"], pstima.sex.female, col="red")
-    legend(x="left", legend=c("Male", "Female"), fill=c("blue","red"))
+           col="#a566ad")
+    lines(nmc$age[nmc$sex=="Male"],pstima.sex.male,lwd=3,col="#2291ba")
+    lines(nmc$age[nmc$sex=="Female"],pstima.sex.female,lwd=3,col="#a566ad")
+    legend(x="left",legend=c("Male","Female"),fill=c("#2291ba","#a566ad"))
     @
   
     Il grafico ci conferma come il sesso maschile sia più a rischio di problemi
     cardiovascolari rispetto al sesso femminile.
   
   \subsection{BMI}
-    <<RLS_BMI>>=
+    <<RLS BMI>>=
     #BMI
     fit.bmi <- glm(nmc$cvd ~ nmc$bmi, family=binomial)
     summary(fit.bmi)
@@ -114,7 +114,7 @@
     
     Visualizziamo come il BMI possa influenzare nell'avanzamento dell'età.
     
-    <<RLS_BMI_Plot>>=
+    <<RLS BMI Plot>>=
     #BMI 0
     fit.bmi.0 <- glm(nmc$cvd[nmc$bmi==0] ~ nmc$age[nmc$bmi==0], 
                      family=binomial)
@@ -127,12 +127,12 @@
     
     #Plot
     plot(nmc$age[nmc$bmi==0], nmc$cvd[nmc$bmi==0], 
-         xlab="Age", ylab="CVD", col="blue")
-    points(nmc$age[nmc$bmi==1], nmc$cvd[nmc$bmi==1], col="red")
-    lines(nmc$age[nmc$bmi==0], pstima.bmi.0, col="blue")
-    lines(nmc$age[nmc$bmi==1], pstima.bmi.1, col="red")
-    legend(x="left", legend=c("BMI < 30", "BMI >= 30"), lty=c(1, 1), 
-           col=c("blue","red"), lwd=1)
+         xlab="AGE", ylab="CVD", col="#408552")
+    points(nmc$age[nmc$bmi==1], nmc$cvd[nmc$bmi==1], col="#912933")
+    lines(nmc$age[nmc$bmi==0], pstima.bmi.0, lwd=3, col="#408552")
+    lines(nmc$age[nmc$bmi==1], pstima.bmi.1, lwd=3, col="#912933")
+    legend(x="left", legend=c("BMI < 30", "BMI >= 30"), 
+           fill=c("#408552","#912933"))
     @
   
     Le due curve sono molto simili tra di loro, con un leggero aumento per coloro
@@ -141,59 +141,60 @@
   \clearpage
   
   \subsection{Fitness}
-    <<RLS_Fitness>>=
+    <<RLS Fitness>>=
     #Fitness
     fit.fitness <- glm(nmc$cvd ~ nmc$fitness, family=binomial)
     summary(fit.fitness)
     @
     
     Contrariamente a quello che ci si potesse aspettare, per il solo modello di 
-    regressione logistica semplice, la variabile ordinale Fitness risulta, anche
+    regressione logistica semplice, la variabile ordinale FITNESS risulta, anche
     se di poco, positiva e significativa per l'insorgenza di un problema 
     cardiovascolare. \par
-    Verifichiamo quindi se ci siano delle differenze nel modello di regressione         logistica semplice 
-    con la variabile categoriale di Fitness.
+    Verifichiamo quindi se ci siano delle differenze nel modello di regressione 
+    logistica semplice con la variabile categoriale di FITNESS.
     
-    <<RLS_FitnessCategoriale>>=
+    <<RLS Fitness Categoriale>>=
     #Fitness: Categoriale
     fit.fitness.cat <- glm(nmc$cvd ~ fitness, family=binomial)
     summary(fit.fitness.cat)
     @
     
     \begin{itemize}
-      \item Con la variabile categoriale di Fitness notiamo come ci sia una 
+      \item Con la variabile categoriale di FITNESS notiamo come ci sia una 
             diminuzione nell'insorgenza di CVD per tutte le categorie.
-      \item Solamente le categorie Fitness:Just as good e Fitness:Little Worse                  risultano significative.
+      \item Solamente le categorie FITNESS:JUSTASGOOD e FITNESS:LITTLEWORSE
+            risultano significative.
     \end{itemize}
     
-    Visulizziamo il comportamento della variabile Fitness all'aumentare dell'età.
+    Visualizziamo il comportamento della variabile FITNESS all'aumentare dell'età.
     
-    <<RLS_Fitness_Plot>>=
-    #Fitness Much Worse
+    <<RLS Fitness Plot>>=
+    #Fitness:MuchWorse
     fit.fitness.muchworse <- glm(nmc$cvd[fitness=="Much Worse"] ~
                                    nmc$age[fitness=="Much Worse"],
                                    family=binomial)
     pstima.fitness.muchworse <- fit.fitness.muchworse$fitted.values
     
-    #Fitness LittleWorse
+    #Fitness:LittleWorse
     fit.fitness.littleworse <- glm(nmc$cvd[fitness=="Little Worse"] ~ 
                                      nmc$age[fitness=="Little Worse"],
                                      family=binomial)
     pstima.fitness.littleworse <- fit.fitness.littleworse$fitted.values
     
-    #Fitness Just as good
+    #Fitness:Justasgood
     fit.fitness.justasgood<- glm(nmc$cvd[fitness=="Just as good"] ~ 
                                    nmc$age[fitness=="Just as good"],
                                    family=binomial)
     pstima.fitness.justasgood <- fit.fitness.justasgood$fitted.values
     
-    #Fitness A bit better
+    #Fitness:Abitbetter
     fit.fitness.abitbetter <- glm(nmc$cvd[fitness=="A bit better"] ~ 
                                     nmc$age[fitness=="A bit better"],
                                     family=binomial)
     pstima.fitness.abitbetter <- fit.fitness.abitbetter$fitted.values
     
-    #Fitness Much better
+    #Fitness:Muchbetter
     fit.fitness.muchbetter <- glm(nmc$cvd[fitness=="Much better"] ~ 
                                     nmc$age[fitness=="Much better"],
                                     family=binomial)
@@ -201,48 +202,46 @@
     
     #Plot
     plot(nmc$age[fitness=="Much Worse"],nmc$cvd[fitness=="Much Worse"],
-         xlab="Age", ylab="CVD", col="black")
-    points(nmc$age[fitness=="Little Worse"], nmc$cvd[fitness=="Little Worse"],
-           col="red")
-    points(nmc$age[fitness=="Just as good"], nmc$cvd[fitness=="Just as good"],
-           col="yellow")
-    points(nmc$age[fitness=="A bit better"], nmc$cvd[fitness=="A bit better"],
-           col="orange")
-    points(nmc$age[fitness=="Much better"],nmc$cvd[fitness=="Much better"],
-           col="green")
+         xlab="AGE", ylab="CVD", col="#36352e")
+    points(nmc$age[fitness=="Little Worse"], 
+           nmc$cvd[fitness=="Little Worse"], col="#912933")
+    points(nmc$age[fitness=="Just as good"], 
+           nmc$cvd[fitness=="Just as good"], col="#e3dc76")
+    points(nmc$age[fitness=="A bit better"], 
+           nmc$cvd[fitness=="A bit better"], col="#c9723c")
+    points(nmc$age[fitness=="Much better"],
+           nmc$cvd[fitness=="Much better"], col="#408552")
     lines(nmc$age[fitness=="Much Worse"], pstima.fitness.muchworse,  
-          col="black")
+          lwd=3, col="#36352e")
     lines(nmc$age[fitness=="Little Worse"], pstima.fitness.littleworse, 
-          col="red")
+          lwd=3, col="#912933")
     lines(nmc$age[fitness=="Just as good"], pstima.fitness.justasgood,
-          col="orange")
+          lwd=3, col="#c9723c")
     lines(nmc$age[fitness=="A bit better"], pstima.fitness.abitbetter,
-          col="yellow")
+          lwd=3, col="#e3dc76")
     lines(nmc$age[fitness=="Much better"], pstima.fitness.muchbetter,
-          col="green")
+          lwd=3, col="#408552")
     legend(x="left", 
            legend=c("Much Worse", "Little Worse", "Just as good",
                     "A bit better", "Much better"), 
-           fill=c("black","red", "orange", "yellow", "green"))
+           fill=c("#36352e","#912933","#c9723c","#e3dc76","#408552"))
     @
     
-    Attraverso il grafico notiamo che la categoria Fitness:Much better è quella meno
-    soggetta rispetto a tutte le altre. Viceversa la categoria Fitness:Little Worse 
+    Attraverso il grafico notiamo che la categoria FITNESS:MUCHBETTER è quella meno
+    soggetta rispetto a tutte le altre. Viceversa la categoria FITNESS:LITTLEWORSE 
     ha più probabilità di incorrere in un problema cardiovascolare. \par
     
-    Chi è della categoria Fitness:Much Worse ha meno probabilità rispetto alla          categoria Fitness:Little Worse evidenziando come un problema cardiovascolare
-    non è associato perforza a una pessima condizione di salute. \par
+    Chi è della categoria FITNESS:MUCHWORSE ha meno probabilità rispetto alla 
+    categoria FITNESS:LITTLEWORSE evidenziando come un problema cardiovascolare
+    non è associato per forza a una pessima condizione di salute. \par
     
     In conclusione, per il solo modello di regressione logistica semplice,
-    consideriamo la variabile ordinale Fitness come significativa.\par
-    
-    Nei successivi capitoli considereremo unicamente la variabile ordinale 
-    Fitness.
+    consideriamo la variabile FITNESS come significativa.
     
   \clearpage
 
   \subsection{PA}
-    <<RLS_PA>>=
+    <<RLS PA>>=
     #PA
     fit.pa <- glm(nmc$cvd ~ nmc$pa, family=binomial)
     summary(fit.pa)
@@ -253,51 +252,51 @@
     risultando non significativa.
     
   \subsection{Smoke}  
-    <<RLS_Smoke>>=
+    <<RLS Smoke>>=
     #Smoke
     fit.smoke <- glm(nmc$cvd ~ nmc$smoke, family=binomial)
     summary(fit.smoke)
     @
   
     \begin{itemize}
-      \item Le categorie Smoke:Former e Smoke:NO sembrano influire positivamente
+      \item Le categorie SMOKE:FORMER e SMOKE:NO sembrano influire positivamente
             sull'insorgenza di CVD.
-      \item Risulta significativa solo la categoria Smoke:Former con valore stimato:
-            Smoke:Former $\sim$ 0.246.
+      \item Risulta significativa solo la categoria SMOKE:FORMER con valore stimato:
+            SMOKE:FORMER $\sim$ 0.246.
     \end{itemize}
     
     Verifichiamo ora il modello di regressione logistica semplice nel caso della 
-    variabile ordinale Smoke.
+    variabile ordinale SMOKE.
     
-    <<RLS_SmokeOrdinale>>=
-    #Smoke: Ordinale
+    <<RLS Smoke Ordinale>>=
+    #Smoke Ordinale
     fit.smoke.ord <- glm(nmc$cvd ~ smoke.ord, family=binomial)
     summary(fit.smoke.ord)
     @
     
     \begin{itemize}
-      \item La variabile ordinale Smoke risulta positiva nell'insorgenza di CVD.
-      \item Nonostante ciò la variabile Smoke ordinale risulta non significativa
+      \item La variabile ordinale SMOKE risulta positiva nell'insorgenza di CVD.
+      \item Nonostante ciò la variabile SMOKE ordinale risulta non significativa
             secondo il \emph{p-value}.
     \end{itemize}
     
     Analizziamo se ci siano delle differenze tra le varie categorie di fumatori
     con l'avanzare dell'età.
     
-    <<RLS_Smoke_Plot>>=
-    #Smoke NO
+    <<RLS Smoke Plot>>=
+    #Smoke:NO
     fit.smoke.no <- glm(nmc$cvd[nmc$smoke=="NO"] ~ 
                           nmc$age[nmc$smoke=="NO"],
                           family=binomial)
     pstima.smoke.no <- fit.smoke.no$fitted.values
     
-    #Smoke Former
+    #Smoke:Former
     fit.smoke.former <- glm(nmc$cvd[nmc$smoke=="Former"] ~ 
                               nmc$age[nmc$smoke=="Former"],
                               family=binomial)
     pstima.smoke.former <- fit.smoke.former$fitted.values
 
-    #Smoke Current
+    #Smoke:Current
     fit.smoke.current <- glm(nmc$cvd[nmc$smoke=="Current"] ~ 
                                nmc$age[nmc$smoke=="Current"],
                                family=binomial)
@@ -305,52 +304,49 @@
     
     #Plot
     plot(nmc$age[nmc$smoke=="NO"], nmc$cvd[nmc$smoke=="NO"], 
-         xlab="Age", ylab="CVD", col="green")
+         xlab="AGE", ylab="CVD", col="#408552")
     points(nmc$age[nmc$smoke=="Former"], nmc$cvd[nmc$smoke=="Former"], 
-           col="orange")
+           col="#c9723c")
     points(nmc$age[nmc$smoke=="Current"], nmc$cvd[nmc$smoke=="Current"], 
-           col="red")
+           col="#912933")
     lines(nmc$age[nmc$smoke=="NO"], pstima.smoke.no, 
-          col="green")
+          lwd=3, col="#408552")
     lines(nmc$age[nmc$smoke=="Former"], pstima.smoke.former, 
-          col="orange")
+          lwd=3, col="#c9723c")
     lines(nmc$age[nmc$smoke=="Current"], pstima.smoke.current, 
-          col="red")
-    legend(x="left", 
-           legend=c("NO", "Former", "Current"), 
-           lty=c(1, 1, 1), 
-           col=c("green","orange", "red"), lwd=1)
+          lwd=3, col="#912933")
+    legend(x="left", legend=c("NO", "Former", "Current"), 
+           fill=c("#408552","#c9723c", "#912933"))
     @
     
-    Possiamo notare come un un fumatore, rispetto alle altre categorie, abbia una       maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
+    Possiamo notare come un fumatore, rispetto alle altre categorie, abbia una
+    maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
     Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie di
-    incorrere nella malattia. \par
-    Nei successivi capitoli considereremo unicamente la variabile categoriale di
-    Smoke.
+    incorrere nella malattia.
     
   \clearpage  
     
   \subsection{Alchol}
-    <<RLS_Alchol>>=
+    <<RLS Alchol>>=
     #Alchol
     fit.alc <- glm(nmc$cvd ~ nmc$alc, family=binomial)
     summary(fit.alc)
     @
     
-    La variabile Alchol, secondo la valutazione del \emph{p-value}, non supera
+    La variabile ALCHOL, secondo la valutazione del \emph{p-value}, non supera
     il $5\%$ di significatività, risultando non significativa.
   
   \subsection{Commento}
     Nei soli modelli con regressione logistica semplice abbiamo che:
     \begin{itemize}
       \item Le variabili che risultano essere significative secondo la valutazione
-            del \emph{p-value} sono: Sex, Age, BMI e Fitness.
+            del \emph{p-value} sono: SEX, AGE, BMI e FITNESS.
       \item Sempre secondo la valutazione del \emph{p-value}, le variabili che 
-            invece risultano non significative sono: PA, Smoke e Alchol.
-      \item Le variabili Sex:Male, Age e BMI aumentano il rischio di CVD.
+            invece risultano non significative sono: PA, SMOKE e ALCHOL.
+      \item Le variabili SEX:MALE, AGE e BMI aumentano il rischio di CVD.
       \item La variabile Fitness evidenzia il fatto che chi sta bene è meno
             soggetto alla problematica.
-      \item Il fumatore è più soggetto alla malattia rispetto alle altre categorie.
+      \item Un fumatore è più soggetto alla malattia rispetto alle altre categorie.
     \end{itemize}
   
 \clearpage

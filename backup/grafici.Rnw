@@ -59,4 +59,44 @@
     plot(m.ind.cvd1)
     @
 
+
+  \subsection{Sotto problema CVD}
+    <<Sotto problema CVD>>=
+    #Dataset: sotto-problema CVD
+    cvd0 <- (nmc.bn$cvd==0)
+    cvd1 <- (nmc.bn$cvd==1)
+    nmc.bn.cvd0 <- nmc.bn[cvd0, c(1:3, 5:7)]
+    nmc.bn.cvd1 <- nmc.bn[cvd1, c(1:3, 5:7)]
+    @
+    
+    <<Rete Bayesiana per CVD0>>=
+    #Rete Bayesiana per CVD0
+    #1-SEX, 1-AGE, 3-BMI, 2-PA, 2-SMOKE, 2-ALC
+    block<-c(1, 1, 3, 2, 2, 2)
+    blnmc.bn <- matrix(0, nrow=6, ncol=6)
+    rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn.cvd0)
+    for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+    blnmc.bn[1,2] = 1
+    blnmc.bn[2,1] = 1
+    blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
+    names(blackL) <- c("from", "to")
+    m.bn.cvd0 <- hc(nmc.bn.cvd0, blacklist=blackL)
+    plot(as(amat(m.bn.cvd0), "graphNEL"))
+    @
+    
+    
+    <<Rete Bayesiana per CVD1>>=
+    #Rete Bayesiana per CVD1
+    #1-SEX, 1-AGE, 3-BMI, 2-PA, 2-SMOKE, 2-ALC
+    block<-c(1, 1, 3, 2, 2, 2)
+    blnmc.bn <- matrix(0, nrow=6, ncol=6)
+    rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn.cvd1)
+    for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+    blnmc.bn[1,2] = 1
+    blnmc.bn[2,1] = 1
+    blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
+    names(blackL) <- c("from", "to")
+    m.bn.cvd1 <- hc(nmc.bn.cvd1, blacklist=blackL)
+    plot(as(amat(m.bn.cvd1), "graphNEL"))
+    @
 \end{document}

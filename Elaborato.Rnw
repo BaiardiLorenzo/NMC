@@ -34,8 +34,6 @@
 
 \Sexpr{knit_child("documentation/considerazioni_modello.Rnw")}
 
-\Sexpr{knit_child("documentation/test_modello.Rnw")}
-
 \Sexpr{knit_child("documentation/conclusioni.Rnw")}
 
 \end{document}

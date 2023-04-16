@@ -2,23 +2,27 @@
 library(gRbase)
 library(gRain)
 library(gRim)
+library(ggm)
 library(bnlearn)
 library(igraph)
 @
 
 \section{Grafi non orientati}
+  Analizziamo adesso lo spazio dei modelli da un punto di vista grafico attraverso la 
+  visualizzazione di grafi associati al Dataset. Utilizzeremo anche qui
+  procedure di Backward e Forward con metodi di penalizzazione AIC e BIC.
+  
   <<Formula modello saturo e indipendente>>=
-  #Formula modello saturo e indipidente
+  #Formula modello saturo e indipendente
   sat <- dmod(~.^., data=nmc)
   ind <- dmod(~.^1, data=nmc)
   @
   
   \subsection{Backward}
-    Utilizziamo la procedura di Backward con criterio di selezione AIC e BIC.
   
     \subsubsection{AIC}
-      <<Grafo_AIC_Backward>>=
-      #AIC Backward
+      <<Grafo AIC Backward>>=
+      #Backward:AIC
       m.aic.backward <- stepwise(sat, direction="backward")
       m.aic.backward
       plot(as(m.aic.backward, "graphNEL"), "fdp")
@@ -29,21 +33,20 @@ library(igraph)
       risulta indipendente dalle variabili FITNESS e PA condizionatamente alle
       altre.
       
-    \subsection{BIC}
-      <<Grafo_BIC_Backward>>=
-      #BIC Backward
+    \subsubsection{BIC}
+      <<Grafo BIC Backward>>=
+      #Backward:BIC
       m.bic.backward <- stepwise(sat, k=log(length(nmc$cvd)),
                         direction="backward")
       m.bic.backward
       plot(as(m.bic.backward, "graphNEL"), "fdp")
       @
       
-      Con il criterio il BIC, la variabile CVD rimane direttamente dipendente
-      con le variabili SMOKE, SEX e AGE.
+      Con il criterio BIC invece la variabile CVD rimane direttamente connesse
+      con le variabili SMOKE, SEX e AGE e non direttamente connesse con le altre.
       
   \subsection{Forward}
-    Utilizziamo la procedura di Forward con criterio di selezione AIC e BIC.
-
+  
     \subsubsection{AIC}
       <<Grafo_AIC_Forward>>=
       #AIC Forward
@@ -74,32 +77,6 @@ library(igraph)
             forte con la variabile SEX.
       \item In tutte le procedure, le variabili PA e FITNESS risultano
             direttamente connesse e legate alla variabile SEX.
-    
     \end{itemize}
-      
-  \subsection{Sotto problema CVD}
-    <<Sottoproblema_CVD>>=
-    #Dataset: sotto-problema CVD
-    cvd0 <- (nmc$cvd==0)
-    cvd1 <- (nmc$cvd==1)
-    nmc.cvd0 <- nmc[cvd0, c(1:3, 5:8)]
-    nmc.cvd1 <- nmc[cvd1, c(1:3, 5:8)]
-    @
-    
-    <<Grafo_CVD0>>=
-    #Grafo per CVD0
-    sat.cvd0 <- dmod(~.^., data=nmc.cvd0)
-    m.cvd0 <- stepwise(sat.cvd0)
-    plot(as(m.cvd0, "graphNEL"), "fdp")
-    @
-    
-    
-    <<Grafo_CVD1>>=
-    #Grafo per CVD1
-    sat.cvd1 <- dmod(~.^., data=nmc.cvd1)
-    m.cvd1 <- stepwise(sat.cvd1)
-    plot(as(m.cvd1, "graphNEL"), "fdp")
-    @
-    
     
 \clearpage

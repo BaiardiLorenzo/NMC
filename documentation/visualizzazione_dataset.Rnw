@@ -1,7 +1,7 @@
-\section{Visualizzazione del dataset} 
-  Per lo studio di questo fenomeno utilizzeremo il dataset fornito: 
+\section{Visualizzazione del Dataset} 
+  Per lo studio di questo fenomeno utilizzeremo il Dataset fornito: 
   $\emph{Sjolander et al.(2009)}$ \par
-  Il dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
+  Il Dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
   
   <<Dataset>>=
   load("../nmc.RData")
@@ -16,19 +16,19 @@
           \item Nessun problema cardiovascolare
           \item Uno o più problemi cardiovascolari
         \end{enumerate}
-      \item Sex: rappresenta il genere dell'individuo.
+      \item SEX: rappresenta il genere dell'individuo.
         \begin{itemize}
           \item Male
           \item Female
         \end{itemize}
-      \item Age: età dell'individuo.
+      \item AGE: età dell'individuo.
       \item BMI: Body Mass Index, valore dicotomizzato.
         \begin{enumerate}
           \setcounter{enumi}{-1}
           \item BMI $< 30$
           \item BMI $\ge 30$ 
         \end{enumerate}
-      \item Fitness: statico di salute dell'indiviudo.
+      \item FITNESS: statico di salute dell'individuo.
         \begin{enumerate}
           \item Much Worse 
           \item Little Worse
@@ -42,13 +42,13 @@
           \item high-level exerciser 
           \item low-level exerciser
         \end{enumerate}
-      \item Smoke: tipologia di fumatore.
+      \item SMOKE: tipologia di fumatore.
         \begin{itemize}
           \item NO 
           \item Former
           \item Current
         \end{itemize}
-      \item Alchol: frequenza nel consumo di alchol dell'individuo.
+      \item ALCHOL: frequenza nel consumo di alchol dell'individuo.
         \begin{enumerate}
           \item Never 
           \item Low
@@ -59,7 +59,7 @@
   
     Per una maggiore comprensione del problema, convertiremo alcune variabili di
     tipo categoriale in variabili di tipo ordinale per la valutazione di 
-    quest'ultime durante l'analisi. \par
+    quest ultime durante l'analisi. \par
     Di seguito mostreremo la legenda utilizzata.
     
     <<Legenda>>=
@@ -75,7 +75,7 @@
     c.alc =  c('Never', 'Low', 'Medium', 'High')
     c.smoke<- c('NO', 'Former', 'Current')
     
-    #bmi dicotomizzata
+    #BMI dicotomizzata
     bmi = nmc$bmi
     nmc$bmi = as.numeric(nmc$bmi>=30) 
     #Variabili ordinali
@@ -87,9 +87,9 @@
     str(nmc)
     @
     
-  \subsection{Tabella Frequenze}
-    <<Tabella frequenze>>=
-    #Tabella
+  \subsection{Tabella delle Frequenze}
+    <<Tabella delle Frequenze>>=
+    #Tabella delle Frequenze del Dataset
     ftable(sex+bmi+pa ~ cvd+smoke+alc+fitness, nmc)
     @
     
