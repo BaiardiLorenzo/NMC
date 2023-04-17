@@ -7,7 +7,7 @@
 \contentsline {section}{\numberline {3}Regressioni Logistiche Semplici}{10}{}%
 \contentsline {subsection}{\numberline {3.1}Age}{10}{}%
 \contentsline {subsection}{\numberline {3.2}Sex}{13}{}%
-\contentsline {subsection}{\numberline {3.3}BMI}{14}{}%
+\contentsline {subsection}{\numberline {3.3}BMI}{15}{}%
 \contentsline {subsection}{\numberline {3.4}Fitness}{17}{}%
 \contentsline {subsection}{\numberline {3.5}PA}{21}{}%
 \contentsline {subsection}{\numberline {3.6}Smoke}{21}{}%
@@ -51,8 +51,7 @@
 \contentsline {section}{\numberline {9}Considerazioni sul Modello}{54}{}%
 \contentsline {subsection}{\numberline {9.1}Fitness e PA}{54}{}%
 \contentsline {subsection}{\numberline {9.2}BMI}{57}{}%
-\contentsline {subsection}{\numberline {9.3}Alchol}{62}{}%
-\contentsline {subsection}{\numberline {9.4}Maschio e Femmina}{63}{}%
-\contentsline {subsubsection}{\numberline {9.4.1}Smoke}{66}{}%
-\contentsline {subsubsection}{\numberline {9.4.2}PA}{67}{}%
-\contentsline {section}{\numberline {10}Conclusioni}{68}{}%
+\contentsline {subsection}{\numberline {9.3}Alchol}{61}{}%
+\contentsline {subsection}{\numberline {9.4}Smoke}{63}{}%
+\contentsline {subsection}{\numberline {9.5}Sex:Male e Sex:Female}{64}{}%
+\contentsline {section}{\numberline {10}Conclusioni}{67}{}%

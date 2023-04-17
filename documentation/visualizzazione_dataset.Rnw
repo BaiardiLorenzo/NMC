@@ -1,6 +1,6 @@
 \section{Visualizzazione del Dataset} 
   Per lo studio di questo fenomeno utilizzeremo il Dataset fornito: 
-  $\emph{Sjolander et al.(2009)}$ \par
+  $\emph{Sjolander et al.(2009)}$
   Il Dataset fornisce un campione di numerosità: n = 33327 osservazioni. 
   
   <<Dataset>>=
@@ -9,6 +9,7 @@
   @
  
   \subsection{Variabili}
+    Analizziamo le variabili che sono presenti nel Dataset.
     \begin{itemize}
       \item CVD: variabile d'interesse.
         \begin{enumerate}
@@ -28,7 +29,7 @@
           \item BMI $< 30$
           \item BMI $\ge 30$ 
         \end{enumerate}
-      \item FITNESS: statico di salute dell'individuo.
+      \item FITNESS: stato di salute dell'individuo.
         \begin{enumerate}
           \item Much Worse 
           \item Little Worse
@@ -36,7 +37,7 @@
           \item A bit better
           \item Much better
         \end{enumerate}
-      \item PA: Personal Activities.
+      \item PA: Attività Fisica.
         \begin{enumerate}
           \setcounter{enumi}{-1}
           \item high-level exerciser 
@@ -59,7 +60,7 @@
   
     Per una maggiore comprensione del problema, convertiremo alcune variabili di
     tipo categoriale in variabili di tipo ordinale per la valutazione di 
-    quest ultime durante l'analisi. \par
+    quest ultime durante l'analisi.
     Di seguito mostreremo la legenda utilizzata.
     
     <<Legenda>>=
@@ -73,11 +74,12 @@
     c.fit = c('Much Worse', 'Little Worse', 'Just as good',
                 'A bit better', 'Much better')
     c.alc =  c('Never', 'Low', 'Medium', 'High')
-    c.smoke<- c('NO', 'Former', 'Current')
+    c.smoke = c('NO', 'Former', 'Current')
     
     #BMI dicotomizzata
     bmi = nmc$bmi
-    nmc$bmi = as.numeric(nmc$bmi>=30) 
+    nmc$bmi = as.numeric(nmc$bmi>=30)
+    
     #Variabili ordinali
     fitness <- nmc$fitness
     nmc$fitness = as.numeric(ordered(nmc$fitness, c.fit))
@@ -88,9 +90,20 @@
     @
     
   \subsection{Tabella delle Frequenze}
+    Visualizziamo la tabella delle frequenze.
+    <<Adattamento dataset per reti bayesiane, echo=FALSE>>=
+    #Adattamento del dataset
+    nmc.bn <- nmc
+    nmc.bn$sex = as.numeric(nmc.bn$sex=="Male")
+    nmc.bn$age = as.numeric(nmc.bn$age)
+    nmc.bn$cvd = as.numeric(nmc.bn$cvd)
+    nmc.bn$pa = as.numeric(nmc.bn$pa)
+    nmc.bn$smoke = smoke.ord
+    @
+    
     <<Tabella delle Frequenze>>=
     #Tabella delle Frequenze del Dataset
-    ftable(sex+bmi+pa ~ cvd+smoke+alc+fitness, nmc)
+    ftable(sex+bmi+pa ~ cvd+smoke+alc+fitness, nmc.bn)
     @
     
 \clearpage

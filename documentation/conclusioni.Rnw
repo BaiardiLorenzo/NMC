@@ -4,11 +4,13 @@
   Modello: CVD $\sim$ SEX + AGE + BMI \par
   Infatti i fattori che aumentano la probabilità di CVD sono:
   \begin{itemize}
-    \item L'aumento dell'età, con una maggior evidenza superata la soglia dei 40 anni.
     \item Essere maschio.
+    \item L'aumento dell'età.
     \item Avere un alto indice di massa corporea.
   \end{itemize}
-  Tuttavia dobbiamo tenere in considerazione che è consigliabile fare attività 
-  fisica per poter ridurre l'indice di massa corporea che è un fattore
-  importante nella comparsa o meno di un problema cardiovascolare.
+  Il fatto età però risulta particolarmente rilevante sopratutto superata la 
+  soglia dei 40 anni, mostrando come la malattia si manifesti sopratutto nella 
+  fascia più anziana della popolazione. L'uso della sigaretta può far aumentare 
+  l'indice di massa corporea che è un fattore scatenante della CVD. Per quanto
+  visto, per ridurre l'indice di massa corporea, è consigliabile fare attività.
   

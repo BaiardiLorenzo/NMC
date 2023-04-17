@@ -652,5 +652,50 @@ library(gRim)
                            (1+exp(coef(fit.all)%*%man45.all))
     stima.man45.all
     @
-
+   \par
+    Visualizziamo adesso la percentuale tra uomini e donne nelle varie categorie.
+    
+    <<Numero di Uomini nel campione>>=
+    #Numero di uomini e donne
+    n.male = nrow(nmc.bn[nmc.bn$sex==1,])
+    n.male
+    n.female = nrow(nmc.bn[nmc.bn$sex==0,])
+    n.female
+    @
+    
+    \subsubsection{Smoke}
+      <<Percentuale Uomini che fumano>>=
+      #Percentuale degli uomini fumatori
+      nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==1,])/n.male
+      #Percentuale degli uomini ex-fumatori
+      nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==1,])/n.male
+      #Percentuale degli uomini non fumatori
+      nrow(nmc.bn[nmc.bn$smoke==1&nmc.bn$sex==1,])/n.male
+      @
+      
+      <<Percentuale Donne che fumano>>=
+      #Percentuale delle donne che fumano
+      nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==0,])/n.female
+      #Percentuale delle donne ex-fumatori
+      nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==0,])/n.female
+      #Percentuale delle donne non fumatori
+      nrow(nmc.bn[nmc.bn$smoke==1&nmc.bn$sex==0,])/n.female
+      @
+    
+      Dal rapporto tra le varie categorie di fumatori, risulta come in media
+      le donne fumano di più rispetto a gli uomini.
+      
+    \subsubsection{PA}
+      <<Percentuale Uomini che fanno attività fisica>>=
+      #Percentuale degli uomini fanno attività fisica
+      nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==1,])/n.male
+      @
+      
+      <<Percentuale Donne che fanno attività fisica>>=
+      #Percentuale delle donne fanno attività fisica
+      nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==0,])/n.female
+      @
+      
+      Anche in questo caso, le donne in media fanno più attività fisica rispetto
+      al sesso maschile.
 \end{document}

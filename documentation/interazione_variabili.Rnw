@@ -73,9 +73,7 @@
     
     Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
     significativa tra la variabile SEX e AGE. Per il sesso maschile con l'aumentare
-    dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
-    Analizzeremo successivamente se questa interazione può risultare utile ai fini
-    del nostro problema.
+    dell'età ha, anche se piccola, una riduzione nella probabilità di CVD.
   
   \clearpage
   
@@ -110,7 +108,7 @@
   
   \subsection{Modello con interazioni}
     Analizziamo ora il modello con solo variabili significative aggiungendo
-    le interazioni che precedentemente abbiamo valutato come significative.\par
+    le interazioni che precedentemente abbiamo valutato come significative.
     Il modello da valutare sarà quindi:\\
     Modello: CVD $\sim$ SEX + AGE + BMI + FITNESS + SMOKE + SEX*AGE + SMOKE*BMI.
     
@@ -123,15 +121,14 @@
 
   \subsection{Commento}
     Nonostante il modello con le due interazioni SMOKE*BMI e SEX*AGE risulti
-    significativo, vediamo come questo si comporti in maniera differente dalle
-    valutazioni che abbiamo analizzato precedentemente.\par
+    significativo, possiamo vedere come questo si comporti in maniera differente
+    dalle valutazioni che abbiamo analizzato precedentemente.
     Il modello con interazioni mostra una minor probabilità per un individuo che
-    fuma e con alto indice di massa corporea (SMOKE*BMI) non risultando 
-    veritiero dato che esistono molti studi che affermano come l'utilizzo della 
-    sigaretta possa far aumentare il proprio peso corporeo.\par
+    fuma e con alto indice di massa corporea (SMOKE*BMI) risultando non
+    veritiero.
     Inoltre il significato della variabile BMI varia rispetto al modello con 
     solo variabili significative e al modello con la sola regressione logistica 
-    semplice, diminuendone anche la significatività. \par
+    semplice, diminuendone anche la significatività.
     Decido quindi di non considerare questo modello perché non fornisce alcun 
     contributo decisivo per il nostro problema, andando contro anche alle 
     analisi che fino a qui abbiamo valutato.

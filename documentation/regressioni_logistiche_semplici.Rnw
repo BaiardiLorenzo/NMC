@@ -12,7 +12,7 @@ black = "#36352e"
 \section{Regressioni Logistiche Semplici}
   Dato che stiamo analizzando un problema che presenta come variabile di 
   risposta una variabile binaria (CVD), utilizzeremo la regressione logistica, 
-  implementata in R tramite la funzione glm(). \par
+  implementata in R tramite la funzione glm().
   Per prima cosa analizzeremo le regressioni logistiche semplici delle singole
   variabili presenti nel Dataset, visualizzandone il loro comportamento verso la
   nostra variabile di risposta.
@@ -107,7 +107,7 @@ black = "#36352e"
   
     Il grafico ci conferma come il sesso maschile sia più a rischio di problemi
     cardiovascolari rispetto al sesso femminile.
-  
+  \clearpage
   \subsection{BMI}
     <<RLS BMI>>=
     #BMI
@@ -139,7 +139,7 @@ black = "#36352e"
     points(nmc$age[bmi1],nmc$cvd[bmi1],col=red)
     lines(nmc$age[bmi0],pstima.bmi.0,lwd=3,col=green)
     lines(nmc$age[bmi1],pstima.bmi.1,lwd=3,col=red)
-    legend(x="left",legend=c("BMI < 30","BMI >= 30"),fill=c(green,red))
+    legend(x="left",legend=c("BMI Basso","BMI Alto"),fill=c(green,red))
     @
   
     Le due curve sono molto simili tra di loro, con un leggero aumento per coloro
@@ -157,7 +157,7 @@ black = "#36352e"
     Contrariamente a quello che ci si potesse aspettare, per il solo modello di 
     regressione logistica semplice, la variabile ordinale FITNESS risulta, anche
     se di poco, positiva e significativa per l'insorgenza di un problema 
-    cardiovascolare. \par
+    cardiovascolare.
     Verifichiamo quindi se ci siano delle differenze nel modello di regressione 
     logistica semplice con la variabile categoriale di FITNESS.
     
@@ -220,12 +220,13 @@ black = "#36352e"
     
     Attraverso il grafico notiamo che la categoria FITNESS:MUCHBETTER è quella meno
     soggetta rispetto a tutte le altre. Viceversa la categoria FITNESS:LITTLEWORSE 
-    ha più probabilità di incorrere in un problema cardiovascolare. \par
-    
+    ha più probabilità di incorrere in un problema cardiovascolare.
     Chi è della categoria FITNESS:MUCHWORSE ha meno probabilità rispetto alla 
     categoria FITNESS:LITTLEWORSE evidenziando come un problema cardiovascolare
-    non è associato per forza a una pessima condizione di salute. \par
-    
+    non è associato per forza a una pessima condizione di salute.
+    Dobbiamo comunque considerare che la variabile FITNESS sia una variabile
+    soggettiva a discrezione dell'individuo e per questo può l'idea di
+    benessere può variare da persona a persona.
     In conclusione, per il solo modello di regressione logistica semplice,
     consideriamo la variabile FITNESS come significativa.
     

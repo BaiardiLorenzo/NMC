@@ -1,5 +1,5 @@
 \section{Considerazioni sul Modello}
-  Data le reti e le analisi fatte precedentemente, effettuiamo adesso qualche
+  Date le reti e le analisi fatte precedentemente, effettuiamo adesso qualche
   considerazione su un possibile modello per la valutazione delle cause nella
   comparsa di una malattia cardiovascolare.
   
@@ -16,7 +16,7 @@
     
     Come è possibile vedere dalla semplice regressione lineare, l'attività
     fisica influisce positivamente nello stato di salute dell'individuo.
-    Valutiamo adesso tramite un Barplot come le due variabili si dividono
+    Visualizziamo tramite un Barplot come le due variabili si dividono
     all'interno del Dataset osservato.
     
     <<Barplot Fitness PA>>=
@@ -28,26 +28,26 @@
             col=c(black,red,orange,yellow,green), beside=TRUE)
     @
       
-    Come possiamo vedere, la variabile FITNESS e PA risultano connesse anche 
-    all'interno del Barplot, mostrandoci come l'attività fisica induca
-    maggiormente ad una miglior condizione di salute rispetto a chi non la
-    pratica.
-    
-    Dato che la variabile PA risulta a carattere più oggettivo rispetto a FITNESS,
-    ritengo più valido dar importanza alla variabile PA rispetto a FITNESS per la
-    valutazione di insorgenza di CVD.
-    Valutiamo ora la rete bayesiana associato al Dataset senza la presenza della
-    variabile FITNESS, tenendo conto dell'ordinamento delle variabili fatto
+    Possiamo vedere nel Barplot come, all'interno del campione osservato,
+    ci sia un aumento delle persone che hanno una miglior condizione di salute
+    facendo attività fisica rispetto a chi non la pratica.
+    Come detto precedentemente, dato che la variabile FITNESS è una variabile
+    a carattere soggettivo dell'individuo e che questa è influenzata dalla
+    variabile PA, verifichiamo come si potrebbe comportare quest ultima variabile
+    all'interno di una rete bayesiana senza la presenza della variabile FITNESS,
+    tenendo comunque conto della gerarchia e dei vincoli delle variabili fatto
     precedentemente.
     
     <<Rete Bayesiana senza Fitness>>=
     #Rete Bayesiana senza Fitness
-    #1-SEX, 1-AGE, 3-BMI, 4-CVD, 2-PA, 2-SMOKE, 2-ALC
+    #Rimozione variabile Fitness
     nmc.bn = subset(nmc.bn, select=-c(fitness))
+    #1-SEX, 1-AGE, 3-BMI, 4-CVD, 2-PA, 2-SMOKE, 2-ALC
     block<-c(1, 1, 3, 4, 2, 2, 2)
     blnmc.bn <- matrix(0, nrow=7, ncol=7)
     rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
     for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+    #Vincolo tra Sex e Age
     blnmc.bn[1,2] = 1
     blnmc.bn[2,1] = 1
     blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
@@ -56,86 +56,85 @@
     plot(as(amat(m.bn), "graphNEL"))
     @
     
-    Possiamo vedere come in questa rete la variabile di risposta CVD sia sempre
-    direttamente connessa con le variabili SEX, AGE e ALCHOL. Da notare come in
-    questo ultimo grafo la variabile BMI sia influenzata direttamente dalle 
-    variabili SEX, AGE, ALCHOL, PA e SMOKE.
+    In questa rete la variabile di risposta CVD è ancora direttamente connessa 
+    con le variabili SEX, AGE e ALCHOL. La variabile PA, invece, influenza la
+    la variabile SMOKE. La variabile BMI è anche influenzata dalle variabili 
+    PA, ALCHOL, SMOKE, AGE e SEX.
   
   \subsection{BMI}
-    Precedentemente, durante l'analisi delle regressioni logistiche, abbiamo 
-    verificato come un aumento dell'indice di massa corporea sia direttamente 
-    connessa all'insorgenza di malattie cardiovascolari. Per questo motivo, 
-    all'interno del grafico andremo ad aggiungere l'arco tra BMI e CVD.
-    
-    <<Rete Bayesiana con arco BMI -> CVD>>=
-    #Rete Bayesiana con arco da BMI a CVD
-    m.bn.bmicvd <- DAG(cvd~sex:age:alc:bmi,alc~sex:age:smoke,smoke~pa:age, 
-                       pa~sex:age, bmi~sex:alc:pa:age:smoke)
-    plot(as(m.bn.bmicvd, "graphNEL"))
-    @
-    
-    Verifichiamo ora l'influenza delle variabili SEX, AGE, PA, ALC
-    e SMOKE con la variabile BMI.
+    Analizziamo ora, tramite una regressione logistica, l'influenza che hanno le
+    variabili SEX, AGE, PA, ALC e SMOKE con la variabile BMI.
     
     <<Regressione Logistica Multipla BMI>>=
-    fit.bmi <- glm(nmc$bmi~nmc$sex+nmc$age+nmc$pa+smoke.ord+nmc$alc,
-                   family=binomial)
+    #RLM per BMI
+    fit.bmi <- glm(bmi~sex+age+pa+smoke.ord+alc, family=binomial, data=nmc)
     summary(fit.bmi)
     @
     
-    Dalla regressione logistica per BMI risulta che:
     \begin{itemize}
-      \item Tutte le variabili SEX, AGE, PA, ALC e SMOKE risultano significative.
+      \item Le variabili SEX, AGE, PA, ALC e SMOKE risultano tutte significative.
+      \item Essere maschio influenza positivamente il BMI rispetto alla donna.
+      \item L'età fa aumenta l'indice di BMI.
       \item Fare attività fisica riduce il BMI.
-      \item L'età aumenta l'indice BMI.
-      \item Essere un fumatore o un ex-fumatore aumenta l'indice BMI.
-      \item Il sesso maschile ha un indice BMI inferiore rispetto al sesso
-            femminile.
+      \item Fumare fa aumentare l'indice BMI.
       \item Il consumo di alchol sembra diminuire l'indice BMI.
     \end{itemize}
     
-    Verifichiamo tramite Barplot come si distribuiscono le persone sia in base
-    all'indice di BMI e al consumo di alchol.
+    Contrariamente a quello che ci si potesse aspettare, sembrerebbe che un
+    maggior consumo di alchol possa diminuire l'indice di massa corporea,
+    visualizziamo quindi, tramite Barplot, come si distribuiscono le persone in 
+    base all'indice di BMI e al consumo di alchol all'interno del Dataset.
     
     <<Barplot BMI e Alchol>>=
-    barplot(table(nmc$bmi, nmc$alc), 
-            names.arg=c("Nessun","Poco", 
-                        "Medio", "Alto"),
+    #Barplot per BMI e Alchol
+    barplot(table(nmc$bmi, nmc$alc),
+            names.arg=c("Nessun","Poco","Medio","Alto"),
             legend.text=c("BMI Basso", "BMI Alto"),
             col=c("#408552", "#912933"), beside=TRUE)
     @
     
-    Dal Barplot possiamo vedere come ci sia una prevalenza di persone con basso
-    indice BMI per ogni categoria di consumatori di alchol rispetto alle persone
-    con un alto indice di BMI. \par
-    Verifichiamo se togliendo la variabile ALCHOL per BMI risulti ancora
-    significativo.
+    Possiamo vedere come ci sia una prevalenza di persone con basso indice BMI 
+    per ogni categoria di consumatori di alchol rispetto alle persone con un 
+    alto indice di BMI.
+    Proviamo a togliere la variabile ALCHOL nella regressione logistica di BMI 
+    se il modello risulta ancora significativo.
     
     <<Regressione Logistica Multipla BMI senza Alchol>>=
-    fit.bmi.nalc <- glm(nmc$bmi~nmc$sex+nmc$age+nmc$pa+smoke.ord,
-                   family=binomial)
+    #RLM per BMI senza Alchol
+    fit.bmi.nalc <- glm(bmi~sex+age+pa+smoke.ord, family=binomial, data=nmc)
     summary(fit.bmi.nalc)
     @
     
     Anche senza la presenza della variabile ALCHOL, questo modello per BMI
-    risulta significativo non modificando di molto il comportamento e la
-    significatività delle altre variabili. \par
-    Rimuoviamo quindi l'arco tra ALCHOL e BMI.
+    risulta significativo non modificando di molto il comportamento delle altre 
+    variabili. Per questo motivo, rimuoviamo l'arco che va dalla variabile
+    ALCHOL a BMI.
     
     <<Rete Bayesiana senza arco tra Alchol e BMI>>=
     #Rete Bayesiana senza arco da Alchol a BMI
-    m.bn.bmicvd <- DAG(cvd~sex:age:alc:bmi, alc~sex:age:smoke, smoke~pa:age, 
+    m.bn.bmicvd <- DAG(cvd~sex:age:alc, alc~sex:age:smoke, smoke~pa:age, 
                        pa~sex:age, bmi~sex:pa:age:smoke)
     plot(as(m.bn.bmicvd, "graphNEL"))
     @
     
+    Nell'analisi delle regressioni logistiche abbiamo notato anche come un aumento 
+    dell'indice di massa corporea sia direttamente connessa all'insorgenza di 
+    malattie cardiovascolari, per questo motivo andremo ad aggiungere nella rete
+    un arco che va dalla variabile BMI alla variabile di risposta CVD.
+    
+    <<Rete Bayesiana con arco BMI -> CVD>>=
+    #Rete Bayesiana con arco da BMI a CVD
+    m.bn.bmicvd <- DAG(cvd~sex:age:alc:bmi,alc~sex:age:smoke,smoke~pa:age, 
+                       pa~sex:age, bmi~sex:pa:age:smoke)
+    plot(as(m.bn.bmicvd, "graphNEL"))
+    @
     
   \subsection{Alchol}
-    Sempre durante l'analisi delle regressioni logistiche e durante la selezione
-    del modello con le procedure Forward e Backward, abbiamo visto come
-    la variabile Alchol non influenzi la variabile di risposta CVD. Per questo
-    motivo, dato che è presente l'arco tra CVD e ALCHOL all'interno nella rete,
-    andremo a rimuovere l'arco da ALCHOL a CVD.
+    Sempre durante l'analisi delle regressioni logistiche e durante la 
+    visualizzazione dei grafi non orientati, abbiamo visto come la variabile 
+    ALCHOL non influenzi direttamente la variabile di risposta CVD. Per questo
+    motivo andremo a rimuovere l'arco da ALCHOL a CVD dato che è presente all'
+    interno della rete.
     
     <<Rete Bayesiana senza arco tra Alchol e CVD>>=
     #Rete Bayesiana senza arco da Alchol a CVD
@@ -144,14 +143,43 @@
     plot(as(m.bn.bmicvd, "graphNEL"))
     @
     
-    Da questo DAG capiamo che la variabile di risposta non solo è connessa con
-    le variabili SEX, AGE ma anche dalla variabile BMI.
+    Valutiamo ora le dipendenze di Alchol tramite la regressione lineare.
     
-  \subsection{Maschio e Femmina}
+    <<Regressione Lineare Multipla per Alchol>>=
+    #RLM per Alchol
+    fit.alc <- lm(alc~sex+age+smoke.ord, data=nmc)
+    summary(fit.alc)
+    @
+    
+    Dal modello per ALCHOL vediamo che:
+    \begin{itemize}
+      \item Gli uomini fanno più consumo di alchol rispetto alle donne.
+      \item Con l'aumentare dell'età si aumenta anche il consumo di alcoli.
+      \item Chi fuma tende a fare un consumo maggiore di alcolici.
+    \end{itemize}
+    
+  \subsection{Smoke}
+    Andiamo ora a valutare le dipendenze che ha la variabile SMOKE tramite
+    la regressione lineare.
+    
+    <<Regressione Lineare Multipla per Smoke>>=
+    #RLM per Smoke
+    fit.smoke <- lm(smoke.ord~age+pa, data=nmc)
+    summary(fit.smoke)
+    @
+    
+    Dal modello per SMOKE vediamo che:
+    \begin{itemize}
+      \item Con l'aumentare dell'età si tende a fumare di più.
+      \item Chi non fa attività fisica tende a fumare di più.
+    \end{itemize}
+    
+  \subsection{Sex:Male e Sex:Female}
     Durante le precedenti analisi, abbiamo notato come ci sia una probabilità 
-    maggiore del sesso maschile rispetto a quello femminile.\par
-    Valutiamo la differenza di due reti bayesiane che comprendo per una il
-    genere maschile e l'altra quella femminile.
+    maggiore del sesso maschile rispetto a quello femminile della comparsa di
+    CVD.
+    Valutiamo se ci sono differenze nelle due reti bayesiane, una per il
+    genere maschile e l'altra per quella femminile.
     
     <<Sotto problema Sex>>=
     #Dataset: sotto-problema Sex
@@ -192,53 +220,10 @@
     plot(as(amat(m.bn.female), "graphNEL"))
     @
     
-    Le reti risultanti risultano uguali se non consideriamo l'arco presente tra 
-    la variabile ALCHOL E BMI e quello tra ALCHOL e CVD per quello detto
-    precedentemente. \par
-    Visualizziamo adesso la percentuale tra uomini e donne nelle varie categorie.
-    
-    <<Numero di Uomini nel campione>>=
-    #Numero di uomini e donne
-    n.male = nrow(nmc.bn[nmc.bn$sex==1,])
-    n.male
-    n.female = nrow(nmc.bn[nmc.bn$sex==0,])
-    n.female
-    @
-    
-    \subsubsection{Smoke}
-      <<Percentuale Uomini che fumano>>=
-      #Percentuale degli uomini fumatori
-      nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==1,])/n.male
-      #Percentuale degli uomini ex-fumatori
-      nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==1,])/n.male
-      #Percentuale degli uomini non fumatori
-      nrow(nmc.bn[nmc.bn$smoke==1&nmc.bn$sex==1,])/n.male
-      @
-      
-      <<Percentuale Donne che fumano>>=
-      #Percentuale delle donne che fumano
-      nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==0,])/n.female
-      #Percentuale delle donne ex-fumatori
-      nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==0,])/n.female
-      #Percentuale delle donne non fumatori
-      nrow(nmc.bn[nmc.bn$smoke==1&nmc.bn$sex==0,])/n.female
-      @
-    
-      Dal rapporto tra le varie categorie di fumatori, risulta come in media
-      le donne fumano di più rispetto a gli uomini.
-      
-    \subsubsection{PA}
-      <<Percentuale Uomini che fanno attività fisica>>=
-      #Percentuale degli uomini fanno attività fisica
-      nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==1,])/n.male
-      @
-      
-      <<Percentuale Donne che fanno attività fisica>>=
-      #Percentuale delle donne fanno attività fisica
-      nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==0,])/n.female
-      @
-      
-      Anche in questo caso, le donne in media fanno più attività fisica rispetto
-      al sesso maschile.
+    Le reti non presentano particolari differenze tranne nella rete del genere 
+    maschile dove è presente l'arco che va da ALCHOL a BMI. Se non consideriamo 
+    quest arco per quello che abbiamo detto precedentemente (con l'aggiunta
+    anche della diretta connessione che la BMI ha su la CVD) le due reti risultano
+    identiche.
       
 \clearpage

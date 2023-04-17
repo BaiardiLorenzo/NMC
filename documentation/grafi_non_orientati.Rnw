@@ -55,7 +55,7 @@ library(igraph)
       plot(as(m.aic.forward, "graphNEL"), "fdp")
       @
      
-      Nella procedura AIC con criterio di selezione AIC, la variabile CVD
+      Nella procedura Forward con criterio di selezione AIC, la variabile CVD
       è connessa con le sole variabili SEX e AGE.
       
     \subsubsection{BIC}

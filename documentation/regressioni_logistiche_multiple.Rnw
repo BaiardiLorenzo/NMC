@@ -27,18 +27,18 @@
             modelli con regressione logistica semplice.
       \item La variabile SEX mostra ancora come il sesso maschile influisca 
             positivamente nella presenza di CVD con valore stimato: 
-            SEX:MALE $\sim$ 0.788.
+            SEX:MALE $\sim$ 0.799.
       \item Anche le variabili BMI e SMOKE mostrano un aumento nelle possibilità 
             di insorgenza di un CVD.
       \item La variabile FITNESS aumenta di significatività, rispetto
             al modello di regressione logistica semplice, riducendo la 
-            probabilità di CVD con valore stimato: FITNESS $\sim$ -0.184.
+            probabilità di CVD con valore stimato: FITNESS $\sim$ -0.182.
     \end{itemize}
   
   \subsection{Modello Significativo}
     Dato che nel modello completo sono presenti variabili non significative,
     le andremo ad eliminare gradualmente dalla formula del modello fino ad 
-    ottenere un modello con solo variabili significative.\par
+    ottenere un modello con solo variabili significative.
     Iniziamo eliminando la variabile non significativa PA.
     
     <<RLM NO PA>>=
@@ -50,7 +50,7 @@
     @
     
     Tutte le variabili che erano significative nel modello completo risultano 
-    ancora significative. \par
+    ancora significative. 
     Eliminiamo la variabile ALCHOL, che risulta ancora non significativa,
     all'interno della formula.
     
