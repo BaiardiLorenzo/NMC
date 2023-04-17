@@ -1,60 +1,41 @@
 \section{Considerazioni sul Modello}
-  Effuiamo qualche considerazione su un possibile modello finale.
+  Data le reti e le analisi fatte precedentemente, effettuiamo adesso qualche
+  considerazione su un possibile modello per la valutazione delle cause nella
+  comparsa di una malattia cardiovascolare.
   
   \subsection{Fitness e PA}
-    Durante l'analisi abbiamo visto come le variabili FITNESS e PA fossero 
-    direttamente connessa tra di loro. Valutiamo questa connessione tramite
-    un Barplot per la visualizzazione tra le varie categorie di FITNESS e la 
-    loro attività fisica.
+    Abbiamo visto nelle precedenti reti come le variabili FITNESS e PA fossero 
+    direttamente connessa tra di loro. Effettuiamo una regressione lineare per
+    valutare l'effetto di PA sulla variabile FITNESS. 
+    
+    <<Regressione Lineare tra Fitness e PA>>=
+    #Regressione Lineare tra Fitness e PA
+    fit.fitness <- lm(fitness~pa, data=nmc)
+    summary(fit.fitness)
+    @
+    
+    Come è possibile vedere dalla semplice regressione lineare, l'attività
+    fisica influisce positivamente nello stato di salute dell'individuo.
+    Valutiamo adesso tramite un Barplot come le due variabili si dividono
+    all'interno del Dataset osservato.
     
     <<Barplot Fitness PA>>=
     #Barplot Fitness e PA
     barplot(table(nmc$fitness, nmc$pa), 
-            names.arg=c("PA=0 Attività Fisica", "PA=1 Non Attività Fisica"),
+            names.arg=c("Attività Fisica", "Non Attività Fisica"),
             legend.text=c("Much Worse", "Little Worse","Just as good",
                     "A bit better", "Much better"),
-            col=c("#36352e","#912933", "#c9723c", "#e3dc76", "#408552"), beside=TRUE)
+            col=c(black,red,orange,yellow,green), beside=TRUE)
     @
       
     Come possiamo vedere, la variabile FITNESS e PA risultano connesse anche 
-    all'interno dell'istogramma, mostrandoci come l'attività fisica induca
+    all'interno del Barplot, mostrandoci come l'attività fisica induca
     maggiormente ad una miglior condizione di salute rispetto a chi non la
-    pratica. \par
-    Dicotomizzo la variabile FITNESS per effettuare una regressione e valutare
-    meglio all'interno di un Barplot.\par
-    La dicotomizzazione che ho utilizzato è:
-    \begin{enumerate}
-      \setcounter{enumi}{-1}
-        \item FITNESS:Little Worse, Much Worse
-        \item FITNESS:Just as Good, A bit Better, Much Better 
-    \end{enumerate}
+    pratica.
     
-    <<Dicotomizzazione Fitness>>=
-    #Dicotomizzazione Fitness
-    fitness.dic <- as.numeric(fitness == "Just as good"|
-                                fitness == "A bit better"|
-                                fitness == "Much better")
-    @
-    
-    <<Regressione Semplice tra Fitness e PA>>=
-    #Regressione tra Fitness e PA
-    fit.fitness <- glm(fitness.dic~nmc$pa, family=binomial)
-    summary(fit.fitness)
-    @
-    
-    <<Barplot Fitness Dicotomizzata e PA>>=
-    #Barplot Fitness Dicotomizzata e PA
-    barplot(table(fitness.dic, nmc$pa), 
-            names.arg=c("PA=0 Attività Fisica", "PA=1 Non Attività Fisica"),
-            legend.text=c("Cattivo stato di salute","Buono stato di salute"),
-            col=c("#912933", "#408552"), beside=TRUE)
-    @
-    
-    Come è possibile vedere anche dalla semplice regressione logistica, l'attività
-    fisica influisce positivamente nello stato di salute dell'individuo. \par
     Dato che la variabile PA risulta a carattere più oggettivo rispetto a FITNESS,
     ritengo più valido dar importanza alla variabile PA rispetto a FITNESS per la
-    valutazione di insorgenza di CVD. \par
+    valutazione di insorgenza di CVD.
     Valutiamo ora la rete bayesiana associato al Dataset senza la presenza della
     variabile FITNESS, tenendo conto dell'ordinamento delle variabili fatto
     precedentemente.
@@ -127,22 +108,6 @@
     Dal Barplot possiamo vedere come ci sia una prevalenza di persone con basso
     indice BMI per ogni categoria di consumatori di alchol rispetto alle persone
     con un alto indice di BMI. \par
-    Analizziamo allora la percentuale tra queste due categorie di persone.
-    <<Percentuale BMI per Alchol>>=
-    #Percentuale persone con alto BMI che bevono molto alchol
-    n.alc.high = nrow(nmc.bn[nmc.bn$alc==4,])
-    nrow(nmc.bn[nmc.bn$bmi==1&nmc.bn$alc==4,])/n.alc.high
-    #Percentuale persone con alto BMI che bevono alchol nella media
-    n.alc.med = nrow(nmc.bn[nmc.bn$alc==3,])
-    nrow(nmc.bn[nmc.bn$bmi==1&nmc.bn$alc==3,])/n.alc.med
-    #Percentuale persone con basso BMI che bevono molto alchol
-    n.alc.high = nrow(nmc.bn[nmc.bn$alc==4,])
-    nrow(nmc.bn[nmc.bn$bmi==0&nmc.bn$alc==4,])/n.alc.high
-    #Percentuale persone con bevono BMI che bevono alchol nella media
-    n.alc.med = nrow(nmc.bn[nmc.bn$alc==3,])
-    nrow(nmc.bn[nmc.bn$bmi==0&nmc.bn$alc==3,])/n.alc.med
-    @
-    
     Verifichiamo se togliendo la variabile ALCHOL per BMI risulti ancora
     significativo.
     
@@ -228,34 +193,52 @@
     @
     
     Le reti risultanti risultano uguali se non consideriamo l'arco presente tra 
-    la variabile ALCHOL E BMI e quello tra ALCHOL e CVD. \par
-    Verifichiamo adesso la percentuale tra uomini e donne nelle varie categorie.
+    la variabile ALCHOL E BMI e quello tra ALCHOL e CVD per quello detto
+    precedentemente. \par
+    Visualizziamo adesso la percentuale tra uomini e donne nelle varie categorie.
     
     <<Numero di Uomini nel campione>>=
+    #Numero di uomini e donne
     n.male = nrow(nmc.bn[nmc.bn$sex==1,])
+    n.male
     n.female = nrow(nmc.bn[nmc.bn$sex==0,])
+    n.female
     @
     
-    <<Percentuale Uomini che fumano>>=
-    #Percentuale degli uomini fumano
-    nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==1,])/n.male
-    #Percentuale degli uomini ex-fumatori
-    nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==1,])/n.male
-    @
+    \subsubsection{Smoke}
+      <<Percentuale Uomini che fumano>>=
+      #Percentuale degli uomini fumatori
+      nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==1,])/n.male
+      #Percentuale degli uomini ex-fumatori
+      nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==1,])/n.male
+      #Percentuale degli uomini non fumatori
+      nrow(nmc.bn[nmc.bn$smoke==1&nmc.bn$sex==1,])/n.male
+      @
+      
+      <<Percentuale Donne che fumano>>=
+      #Percentuale delle donne che fumano
+      nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==0,])/n.female
+      #Percentuale delle donne ex-fumatori
+      nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==0,])/n.female
+      #Percentuale delle donne non fumatori
+      nrow(nmc.bn[nmc.bn$smoke==1&nmc.bn$sex==0,])/n.female
+      @
     
-    <<Percentuale Donne che fumano>>=
-    #Percentuale delle donne che fumano
-    nrow(nmc.bn[nmc.bn$smoke==3&nmc.bn$sex==0,])/n.female
-    #Percentuale delle donne ex-fumatori
-    nrow(nmc.bn[nmc.bn$smoke==2&nmc.bn$sex==0,])/n.female
-    @
-    
-    <<Percentuale Uomini che fanno attività fisica>>=
-    #Percentuale degli uomini fanno attività fisica
-    nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==1,])/n.male
-    @
-    
-    <<Percentuale Donne che fanno attività fisica>>=
-    nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==0,])/n.female
-    @
+      Dal rapporto tra le varie categorie di fumatori, risulta come in media
+      le donne fumano di più rispetto a gli uomini.
+      
+    \subsubsection{PA}
+      <<Percentuale Uomini che fanno attività fisica>>=
+      #Percentuale degli uomini fanno attività fisica
+      nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==1,])/n.male
+      @
+      
+      <<Percentuale Donne che fanno attività fisica>>=
+      #Percentuale delle donne fanno attività fisica
+      nrow(nmc.bn[nmc.bn$pa==0&nmc.bn$sex==0,])/n.female
+      @
+      
+      Anche in questo caso, le donne in media fanno più attività fisica rispetto
+      al sesso maschile.
+      
 \clearpage

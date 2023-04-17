@@ -1,120 +1,112 @@
 \section{Interazioni fra le variabili}
   Valutiamo se all'interno del modello ci sia la possibilità di interazioni
-  fra le variabili. \par
+  fra le variabili. 
   Consideriamo i casi nei quali le variabili come SMOKE, ALCHOL, PA o SEX possano 
   interagire con le altre variabili, limitandoci unicamente nelle interazioni 
   del secondo ordine.
   
   \subsection{Smoke e Alchol}
-  Analizziamo il caso nel quale il consumo di ALCHOL, combinato con l'uso di 
-  sigaretta, possa o meno aumentare le probabilità di CVD.
-  
-  <<Modello Interazione Smoke*Alchol>>=
-  #Modello con interazione: Smoke e Alchol
-  fit.smokealchol <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                           nmc$fitness+nmc$smoke+
-                           nmc$smoke*nmc$alc,
-                           family=binomial)
-  summary(fit.smokealchol)
-  @
-  
-  I dati sembrano non mostrare l'interazione fra SMOKE e ALCHOL.
+    Analizziamo il caso nel quale il consumo di ALCHOL, combinato con l'uso di 
+    sigaretta, possa o meno aumentare le probabilità di CVD.
+    
+    <<Modello Interazione Smoke*Alchol>>=
+    #Modello con interazione: Smoke e Alchol
+    fit.smokealchol <- glm(cvd~sex+age+bmi+fitness+smoke+smoke*alc,
+                           family=binomial, data=nmc)
+    summary(fit.smokealchol)
+    @
+    
+    I dati sembrano non mostrare l'interazione fra SMOKE e ALCHOL.
   
   \subsection{Smoke e BMI}
-  Vediamo se l'uso di sigaretta per una persona con un alto indice di massa 
-  corporea possa aumentarne le probabilità.
-  
-  <<Modello Interazione Smoke*BMI>>=
-  #Modello con interazione: Smoke e BMI
-  fit.smokebmi <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                           nmc$fitness+nmc$smoke+
-                           nmc$smoke*nmc$bmi,
-                           family=binomial)
-  summary(fit.smokebmi)
-  @
-  
-  A differenza di SMOKE e ALCHOL, l'interazione tra SMOKE e BMI 
-  mostra un'interazione significativa, variando il valore stimato e diminuendo la 
-  significatività della variabile BMI. In questo caso la variabile BMI assume 
-  valore stimato negativo, influendo negativamente nella comparsa di CVD.
-  
+    Vediamo se l'uso di sigaretta per una persona con un alto indice di massa 
+    corporea possa aumentarne le probabilità.
+    
+    <<Modello Interazione Smoke*BMI>>=
+    #Modello con interazione: Smoke e BMI
+    fit.smokebmi <- glm(cvd~sex+age+bmi+fitness+smoke+smoke*bmi,
+                        family=binomial, data=nmc)
+    summary(fit.smokebmi)
+    @
+    
+    A differenza di SMOKE e ALCHOL, l'interazione tra SMOKE e BMI 
+    mostra un'interazione significativa, variando il valore stimato e diminuendo la 
+    significatività della variabile BMI. In questo caso la variabile BMI assume 
+    valore stimato negativo, influendo negativamente nella comparsa di CVD.
+    
   \subsection{Alchol e BMI}
-  Come per il caso di SMOKE, verifichiamo se il consumo di ALCHOL associato ad un
-  maggior indice di massa corporea influisca nella probabilità di CVD.
-  
-  <<Modello Interazione Alchol*BMI>>=
-  #Modello con interazione: Alchol e BMI
-  fit.alcholbmi <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                           nmc$fitness+nmc$smoke+
-                           nmc$alc*nmc$bmi,
-                           family=binomial)
-  summary(fit.alcholbmi)
-  @
-  
-  A differenza di SMOKE*BMI, l'interazione tra ALCHOL e BMI non è supportata.
+    Come per il caso di SMOKE, verifichiamo se il consumo di ALCHOL associato ad un
+    maggior indice di massa corporea influisca nella probabilità di CVD.
+    
+    <<Modello Interazione Alchol*BMI>>=
+    #Modello con interazione: Alchol e BMI
+    fit.alcholbmi <- glm(cvd~sex+age+bmi+fitness+smoke+alc*bmi,
+                         family=binomial, data=nmc)
+    summary(fit.alcholbmi)
+    @
+    
+    A differenza di SMOKE*BMI, l'interazione tra ALCHOL e BMI non è supportata.
   
   \subsection{Sex e Smoke}
-  Verifichiamo se l'utilizzo di sigaretta sia peggiorativo in uno dei due 
-  sessi.
-  
-  <<Modello Interazione Sex*Smoke>>=
-  #Modello con interazione: Sex e Smoke
-  fit.sexsmoke <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                      nmc$fitness+nmc$smoke+
-                      nmc$sex*nmc$smoke,
-                      family=binomial)
-  summary(fit.sexsmoke)
-  @
-  
-  L'interazione fra le variabili SEX e SMOKE risulta non significativa.
-  
+    Verifichiamo se l'utilizzo di sigaretta sia peggiorativo in uno dei due 
+    sessi.
+    
+    <<Modello Interazione Sex*Smoke>>=
+    #Modello con interazione: Sex e Smoke
+    fit.sexsmoke <- glm(cvd~sex+age+bmi+fitness+smoke+sex*smoke,
+                        family=binomial, data=nmc)
+    summary(fit.sexsmoke)
+    @
+    
+    L'interazione fra le variabili SEX e SMOKE risulta non significativa.
+    
   \subsection{Sex e Age}
-  Analizziamo ora il caso nel quale l'aumento dell'età possa influenzare in
-  maniera differente tra i due sessi.
+    Analizziamo ora il caso nel quale l'aumento dell'età possa influenzare in
+    maniera differente tra i due sessi.
+    
+    <<Modello Interazione Sex*Age>>=
+    #Modello con interazione: Sex e Age
+    fit.sexage <- glm(cvd~sex+age+bmi+fitness+smoke+sex*age,
+                      family=binomial, data=nmc)
+    summary(fit.sexage)
+    @
+    
+    Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
+    significativa tra la variabile SEX e AGE. Per il sesso maschile con l'aumentare
+    dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
+    Analizzeremo successivamente se questa interazione può risultare utile ai fini
+    del nostro problema.
   
-  <<Modello Interazione Sex*Age>>=
-  #Modello con interazione: Sex e Age
-  fit.sexage <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                      nmc$fitness+nmc$smoke+
-                      nmc$sex*nmc$age,
-                      family=binomial)
-  summary(fit.sexage)
-  @
-  
-  Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
-  significativa tra la variabile SEX e AGE. Per il sesso maschile con l'aumentare
-  dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
-  Analizzeremo successivamente se questa interazione può risultare utile ai fini
-  del nostro problema.
+  \clearpage
   
   \subsection{PA e Age}
-  Verifichiamo se l'attività fisica di un individuo è influenzata in base
-  alla sua età.
-  <<Modello Interazione PA*Age>>=
-  #Modello con interazione PA e Age
-  fit.sexsmoke <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                      nmc$fitness+nmc$smoke+
-                      nmc$pa*nmc$age,
-                      family=binomial)
-  summary(fit.sexsmoke)
-  @
+    Verifichiamo se l'attività fisica di un individuo è influenzata in base
+    alla sua età.
+    <<Modello Interazione PA*Age>>=
+    #Modello con interazione PA e Age
+    fit.sexsmoke <- glm(cvd~sex+age+bmi+fitness+smoke+pa*age,
+                        family=binomial, data=nmc)
+    summary(fit.sexsmoke)
+    @
+    
+    Non è verificata l'interazione fra le variabili PA e AGE.
   
-  Non è verificata l'interazione fra le variabili PA e AGE.
-  
+  \clearpage
+    
   \subsection{PA e Fitness}
-  Analizziamo il caso nel quale l'attività fisica e lo stato di salute di un
-  individuo possano aumentare le probabilità di CVD.
+    Analizziamo il caso nel quale l'attività fisica e lo stato di salute di un
+    individuo possano aumentare le probabilità di CVD.
+    
+    <<Modello Interazione PA*Fitness>>=
+    #Modello con interazione PA e Fitness
+    fit.sexsmoke <- glm(cvd~sex+age+bmi+fitness+smoke+pa*fitness,
+                        family=binomial, data=nmc)
+    summary(fit.sexsmoke)
+    @
+    
+    Il modello mostra come non ci sia interazione fra le variabili PA e FITNESS.
   
-  <<Modello Interazione PA*Fitness>>=
-  #Modello con interazione PA e Fitness
-  fit.sexsmoke <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                      nmc$fitness+nmc$smoke+
-                      nmc$pa*nmc$fitness,
-                      family=binomial)
-  summary(fit.sexsmoke)
-  @
-  
-  Il modello mostra come non ci sia interazione fra le variabili PA e FITNESS.
+  \clearpage
   
   \subsection{Modello con interazioni}
     Analizziamo ora il modello con solo variabili significative aggiungendo
@@ -124,11 +116,8 @@
     
     <<Modello Interazioni Significative>>=
     #Modello con interazione: Sex*Age + Smoke*BMI
-    fit.int <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+
-                     nmc$fitness+nmc$smoke+
-                     nmc$sex*nmc$age+
-                     nmc$smoke*nmc$bmi,
-                     family=binomial)
+    fit.int <- glm(cvd~sex+age+bmi+fitness+smoke+sex*age+smoke*bmi,
+                   family=binomial, data=nmc)
     summary(fit.int)
     @
 
@@ -137,9 +126,9 @@
     significativo, vediamo come questo si comporti in maniera differente dalle
     valutazioni che abbiamo analizzato precedentemente.\par
     Il modello con interazioni mostra una minor probabilità per un individuo che
-    fuma e con alto indice di massa corporea (SMOKE x BMI) non risultando 
+    fuma e con alto indice di massa corporea (SMOKE*BMI) non risultando 
     veritiero dato che esistono molti studi che affermano come l'utilizzo della 
-    sigaretta possa far rallentare il metabolismo.\par
+    sigaretta possa far aumentare il proprio peso corporeo.\par
     Inoltre il significato della variabile BMI varia rispetto al modello con 
     solo variabili significative e al modello con la sola regressione logistica 
     semplice, diminuendone anche la significatività. \par

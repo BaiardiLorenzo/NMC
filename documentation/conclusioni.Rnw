@@ -1,6 +1,6 @@
 \section{Conclusioni}
-  In conclusione, il modello scelto che più si adatta meglio al problema per il 
-  calcolo della probabilità di un problema cardiovascolare è:\\
+  In conclusione, il modello scelto che più si adatta meglio alla comprensione
+  e alle cause di un problema cardiovascolare è:\\
   Modello: CVD $\sim$ SEX + AGE + BMI \par
   Infatti i fattori che aumentano la probabilità di CVD sono:
   \begin{itemize}
@@ -8,9 +8,7 @@
     \item Essere maschio.
     \item Avere un alto indice di massa corporea.
   \end{itemize}
-  Tuttavia dobbiamo tenere in considerazione che il fumare può aumentare l'indice
-  di massa corporea, andando ad influenzare negativamente l'indice di massa 
-  corporea. \par
-  Sempre per ridurre l'indice di massa corporea e quindi prevenire in qualche 
-  modo la CVD è consigliabile fare attività fisica.
+  Tuttavia dobbiamo tenere in considerazione che è consigliabile fare attività 
+  fisica per poter ridurre l'indice di massa corporea che è un fattore
+  importante nella comparsa o meno di un problema cardiovascolare.
   

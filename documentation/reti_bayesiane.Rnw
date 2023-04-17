@@ -1,80 +1,81 @@
-  \section{Reti Bayesiane}
-    Prima di poter individuare una prima rete bayesiana dobbiamo adattare i
-    numeri affinché la funzione hc possa essere eseguita.
-    
-    <<Adattamento dataset per reti bayesiane>>=
-    #Adattamento del dataset
-    nmc.bn <- nmc
-    nmc.bn$sex = as.numeric(nmc.bn$sex == "Male")
-    nmc.bn$age = as.numeric(nmc.bn$age)
-    nmc.bn$cvd = as.numeric(nmc.bn$cvd)
-    nmc.bn$pa = as.numeric(nmc.bn$pa)
-    nmc.bn$smoke = smoke.ord
-    str(nmc.bn)
-    @
-    
-    Visualizziamo la prima rete bayesiana tramite la funzione hc. 
-    <<Rete Bayesiana>>=
-    #Rete Bayesiana
-    bn <- hc(nmc.bn)
-    plot(as(amat(bn), "graphNEL"))
-    @
-    
-    Questa prima rete mostra delle dipendenze non realistiche, come ad esempio
-    l'influenza che ha il FITNESS e il PA (Attività Fisica) nella determinazione
-    del SEX. Per questo motivo dobbiamo dare un ordinamento alle variabili
-    permettendo di non avere incoerenze tra i vari archi.
-    
-    \subsection{Ordinamento delle Variabili}
-      L'ordinamento che andrò ad utilizzare sarà:
-      \begin{itemize}
-        \item Variabili di background: SEX, AGE
-        \item Attività che influenzano il CVD: ALCHOL, SMOKE, PA
-        \item Condizione fisica del paziente: BMI, FITNESS
-        \item CVD
-      \end{itemize}
-      
-      <<Ordinamento variabili>>=
-      #Ordinamento delle variabili
-      #1-SEX, 1-AGE, 3-BMI, 4-CVD, 3-FITNESS, 2-PA, 2-SMOKE, 2-ALC
-      block<-c(1, 1, 3, 4, 3, 2, 2, 2)
-      blnmc.bn <- matrix(0, nrow=8, ncol=8)
-      rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
-      for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
-      blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
-      names(blackL) <- c("from", "to")
-      @
-      
-      <<Rete bayesiana con ordinamento>>=
-      #Rete Bayesiana con ordinamento
-      bn.o <- hc(nmc.bn, blacklist=blackL)
-      plot(as(amat(bn.o), "graphNEL"))
-      @
-      
-      Anche in questo caso la rete risultante mostra un incongruenza nell'arco
-      tra SEX e AGE (il Sesso non può essere condizionata dall'età della persona).
-      Rimuoviamo allora l'arco e rieseguiamo la funzione hc.
-      
-      <<Rimozione arco SEX e AGE>>=
-      #Rimozione arco tra SEX e AGE
-      block<-c(1, 1, 3, 4, 3, 2, 2, 2)
-      blnmc.bn <- matrix(0, nrow=8, ncol=8)
-      rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
-      for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
-      blnmc.bn[1,2] = 1
-      blnmc.bn[2,1] = 1
-      blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
-      names(blackL) <- c("from", "to")
-      @
+<<Adattamento dataset per reti bayesiane, echo=FALSE>>=
+#Adattamento del dataset
+nmc.bn <- nmc
+nmc.bn$sex = as.numeric(nmc.bn$sex=="Male")
+nmc.bn$age = as.numeric(nmc.bn$age)
+nmc.bn$cvd = as.numeric(nmc.bn$cvd)
+nmc.bn$pa = as.numeric(nmc.bn$pa)
+nmc.bn$smoke = smoke.ord
+@
 
-      <<Bayesian Network finale>>=
-      #Bayesian Network finale
-      m.bn <- hc(nmc.bn, blacklist=blackL)
-      plot(as(amat(m.bn), "graphNEL"))
-      @
-      
-      In questo ultimo grafo, possiamo notare come ci sia una relazione diretta
-      tra le variabili AGE, SEX, FITNESS e ALCHOL. Viceversa la variabile di 
-      risposta CVD risulta indipendente dalle variabili SMOKE, PA e BMI.
+\section{Reti Bayesiane}
+  Visualizziamo una prima rete bayesiana risultante dalla funzione hc. 
+  <<Rete Bayesiana>>=
+  #Rete Bayesiana
+  bn <- hc(nmc.bn)
+  plot(as(amat(bn), "graphNEL"))
+  @
+  
+  La rete mostra degli archi non realistici, per esempio abbiamo che le variabili
+  FITNESS e PA (Attività Fisica) influenzano in qualche modo la determinazione del
+  SEX dell'individuo. Per risolvere questo problema dobbiamo generare una 
+  gerarchia tra le variabili, tramite un loro ordinamento, in modo tale da non 
+  avere incoerenze tra i vari archi. Nonostante ciò, è importante osservare
+  come all'interno di questa rete è presente comunque una relazione tra le
+  variabili FITNESS, SMOKE e ALCHOL.
+  
+  \subsection{Ordinamento delle Variabili}
+    L'ordinamento che andrò ad utilizzare sarà:
+    \begin{enumerate}
+      \item Variabili di background: SEX, AGE
+      \item Attività che influenzano il CVD: ALCHOL, SMOKE, PA
+      \item Condizione fisica del paziente: BMI, FITNESS
+      \item CVD
+    \end{enumerate}
+    
+    <<Ordinamento variabili>>=
+    #Ordinamento delle variabili
+    #1-SEX, 1-AGE, 3-BMI, 4-CVD, 3-FITNESS, 2-PA, 2-SMOKE, 2-ALC
+    #Generazione matrice di adiacenza
+    block<-c(1, 1, 3, 4, 3, 2, 2, 2)
+    blnmc.bn <- matrix(0, nrow=8, ncol=8)
+    rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
+    for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+    blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
+    names(blackL) <- c("from", "to")
+    @
+    
+    <<Rete bayesiana gerarchica>>=
+    #Rete Bayesiana gerarchica
+    bn.o <- hc(nmc.bn, blacklist=blackL)
+    plot(as(amat(bn.o), "graphNEL"))
+    @
+    
+    Anche in questo caso la rete con gerarchia mostra un incongruenza cioè una
+    relazione tra la variabile SEX e la variabile AGE, come se il Sesso possa
+    influire sull'età dell'individuo. Per questo motivo, rimuoviamo quest arco
+    e rieseguiamo la funzione hc.
+    
+    <<Rimozione arco SEX e AGE>>=
+    #Rimozione arco tra SEX e AGE
+    block<-c(1, 1, 3, 4, 3, 2, 2, 2)
+    blnmc.bn <- matrix(0, nrow=8, ncol=8)
+    rownames(blnmc.bn) <- colnames(blnmc.bn) <- names(nmc.bn)
+    for (b in 2:4) blnmc.bn[block==b, block<b] <- 1
+    blnmc.bn[1,2] = 1
+    blnmc.bn[2,1] = 1
+    blackL <- data.frame(get.edgelist(as(blnmc.bn, "igraph")))
+    names(blackL) <- c("from", "to")
+    @
+  
+    <<Bayesian Network finale>>=
+    #Bayesian Network
+    m.bn <- hc(nmc.bn, blacklist=blackL)
+    plot(as(amat(m.bn), "graphNEL"))
+    @
+    
+    In questa ultima rete notiamo come ci sia una relazione diretta
+    tra le variabili AGE, SEX, FITNESS e ALCHOL alla variabile di risposta CVD. 
+    Viceversa la CVD sembra indipendente dalle variabili SMOKE, PA e BMI.
     
   \clearpage

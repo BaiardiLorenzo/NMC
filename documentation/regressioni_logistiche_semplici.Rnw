@@ -1,3 +1,14 @@
+<<Colori HEX, echo=FALSE, warning=FALSE, message=FALSE, results='hide'>>=
+blue = "#123ba3"
+azure = "#2291ba"
+pink = "#a566ad"
+green = "#408552"
+red = "#912933"
+orange = "#c9723c"
+yellow = "#e3dc76"
+black = "#36352e"
+@
+
 \section{Regressioni Logistiche Semplici}
   Dato che stiamo analizzando un problema che presenta come variabile di 
   risposta una variabile binaria (CVD), utilizzeremo la regressione logistica, 
@@ -9,14 +20,14 @@
   \subsection{Age}
     <<RLS Age>>=
     #Age
-    fit.age <- glm(nmc$cvd ~ nmc$age, family=binomial)
+    fit.age <- glm(cvd~age, family=binomial, data=nmc)
     summary(fit.age)
     @
     
     \begin{itemize}
       \item L'età influenza positivamente l'insorgenza di un problema 
-            cardiovascolare, con valore stimato: Age $\sim$ 0.092. 
-      \item La variabile Age è molto significativa secondo il \emph{p-value}.
+            cardiovascolare, con valore stimato: AGE $\sim$ 0.092. 
+      \item La variabile AGE è molto significativa secondo il \emph{p-value}.
     \end{itemize}
     
     Stampiamo ora il Boxplot per valutare l'età delle persone che presentano
@@ -24,7 +35,7 @@
     
     <<RLS Age Boxplot>>=
     #Boxplot
-    boxplot(nmc$age~nmc$cvd, xlab="CVD", ylab="AGE")
+    boxplot(age~cvd, xlab="CVD", ylab="AGE", data=nmc)
     @
     
     \begin{itemize}
@@ -44,13 +55,13 @@
     #Plot
     pstima.age <- fit.age$fitted.values
     plot(nmc$age, nmc$cvd, xlab="AGE", ylab="CVD")
-    lines(sort(nmc$age), pstima.age[order(nmc$age)], lwd=3, col="#123ba3")
+    lines(sort(nmc$age),pstima.age[order(nmc$age)],lwd=3,col=blue)
     @
     
     Il modello e il grafico suggeriscono come, all'aumentare dell'età, ci sia un 
     aumento esponenziale nelle probabilità nell'incorrere in un problema 
     cardiovascolare. In particolare possiamo notare, come visualizzato anche dal
-    BoxPlot, che superata la soglia dei 40 anni si ha un notevole aumento nella
+    Boxplot, che superata la soglia dei 40 anni si ha un notevole aumento nella
     probabilità di CVD, confermando quindi come questo problema sia legato
     principalmente ad un fattore di età.
   
@@ -60,7 +71,7 @@
     <<RLS Sex>>=
     #Regressioni logistiche semplici
     #Sex
-    fit.sex <- glm(nmc$cvd ~ nmc$sex, family=binomial)
+    fit.sex <- glm(cvd~sex, family=binomial, data=nmc)
     summary(fit.sex)
     @
     
@@ -77,23 +88,21 @@
     
     <<RLS Sex Plot>>=
     #Modello per Maschio
-    fit.sex.male <- glm(nmc$cvd[nmc$sex=="Male"] ~ 
-                          nmc$age[nmc$sex=="Male"], 
-                          family=binomial)
+    male = (nmc$sex=="Male")
+    fit.sex.male <- glm(cvd[male]~age[male], family=binomial, data=nmc)
     pstima.sex.male <- fit.sex.male$fitted.values
+    
     #Modello per Femmina
-    fit.sex.female <- glm(nmc$cvd[nmc$sex=="Female"] ~ 
-                            nmc$age[nmc$sex=="Female"], 
-                            family=binomial)
+    female = (nmc$sex=="Female")
+    fit.sex.female <- glm(cvd[female]~age[female], family=binomial, data=nmc)
     pstima.sex.female <- fit.sex.female$fitted.values
+    
     #Plot
-    plot(nmc$age[nmc$sex=="Male"], nmc$cvd[nmc$sex=="Male"], 
-         xlab="AGE", ylab="CVD", col="#2291ba")
-    points(nmc$age[nmc$sex=="Female"], nmc$cvd[nmc$sex=="Female"],
-           col="#a566ad")
-    lines(nmc$age[nmc$sex=="Male"],pstima.sex.male,lwd=3,col="#2291ba")
-    lines(nmc$age[nmc$sex=="Female"],pstima.sex.female,lwd=3,col="#a566ad")
-    legend(x="left",legend=c("Male","Female"),fill=c("#2291ba","#a566ad"))
+    plot(nmc$age[male],nmc$cvd[male],xlab="AGE",ylab="CVD",col=azure)
+    points(nmc$age[female], nmc$cvd[female],col=pink)
+    lines(nmc$age[male],pstima.sex.male,lwd=3,col=azure)
+    lines(nmc$age[female],pstima.sex.female,lwd=3,col=pink)
+    legend(x="left",legend=c("MALE","FEMALE"),fill=c(azure,pink))
     @
   
     Il grafico ci conferma come il sesso maschile sia più a rischio di problemi
@@ -102,7 +111,7 @@
   \subsection{BMI}
     <<RLS BMI>>=
     #BMI
-    fit.bmi <- glm(nmc$cvd ~ nmc$bmi, family=binomial)
+    fit.bmi <- glm(cvd~bmi, family=binomial, data=nmc)
     summary(fit.bmi)
     @
     
@@ -116,23 +125,21 @@
     
     <<RLS BMI Plot>>=
     #BMI 0
-    fit.bmi.0 <- glm(nmc$cvd[nmc$bmi==0] ~ nmc$age[nmc$bmi==0], 
-                     family=binomial)
+    bmi0 = (nmc$bmi==0)
+    fit.bmi.0 <- glm(cvd[bmi0]~age[bmi0], family=binomial, data=nmc)
     pstima.bmi.0 <- fit.bmi.0$fitted.values
     
     #BMI 1
-    fit.bmi.1 <- glm(nmc$cvd[nmc$bmi==1] ~ nmc$age[nmc$bmi==1], 
-                     family=binomial)
+    bmi1 = (nmc$bmi==1)
+    fit.bmi.1 <- glm(cvd[bmi1]~age[bmi1], family=binomial, data=nmc)
     pstima.bmi.1 <- fit.bmi.1$fitted.values
     
     #Plot
-    plot(nmc$age[nmc$bmi==0], nmc$cvd[nmc$bmi==0], 
-         xlab="AGE", ylab="CVD", col="#408552")
-    points(nmc$age[nmc$bmi==1], nmc$cvd[nmc$bmi==1], col="#912933")
-    lines(nmc$age[nmc$bmi==0], pstima.bmi.0, lwd=3, col="#408552")
-    lines(nmc$age[nmc$bmi==1], pstima.bmi.1, lwd=3, col="#912933")
-    legend(x="left", legend=c("BMI < 30", "BMI >= 30"), 
-           fill=c("#408552","#912933"))
+    plot(nmc$age[bmi0],nmc$cvd[bmi0],xlab="AGE",ylab="CVD",col=green)
+    points(nmc$age[bmi1],nmc$cvd[bmi1],col=red)
+    lines(nmc$age[bmi0],pstima.bmi.0,lwd=3,col=green)
+    lines(nmc$age[bmi1],pstima.bmi.1,lwd=3,col=red)
+    legend(x="left",legend=c("BMI < 30","BMI >= 30"),fill=c(green,red))
     @
   
     Le due curve sono molto simili tra di loro, con un leggero aumento per coloro
@@ -171,60 +178,44 @@
     
     <<RLS Fitness Plot>>=
     #Fitness:MuchWorse
-    fit.fitness.muchworse <- glm(nmc$cvd[fitness=="Much Worse"] ~
-                                   nmc$age[fitness=="Much Worse"],
-                                   family=binomial)
-    pstima.fitness.muchworse <- fit.fitness.muchworse$fitted.values
+    f.mw = (fitness=="Much Worse")
+    fit.fitness.mw <- glm(cvd[f.mw]~age[f.mw],family=binomial,data=nmc)
+    pstima.fitness.mw <- fit.fitness.mw$fitted.values
     
     #Fitness:LittleWorse
-    fit.fitness.littleworse <- glm(nmc$cvd[fitness=="Little Worse"] ~ 
-                                     nmc$age[fitness=="Little Worse"],
-                                     family=binomial)
-    pstima.fitness.littleworse <- fit.fitness.littleworse$fitted.values
+    f.lw = (fitness=="Little Worse")
+    fit.fitness.lw <- glm(cvd[f.lw]~age[f.lw],family=binomial,data=nmc)
+    pstima.fitness.lw <- fit.fitness.lw$fitted.values
     
     #Fitness:Justasgood
-    fit.fitness.justasgood<- glm(nmc$cvd[fitness=="Just as good"] ~ 
-                                   nmc$age[fitness=="Just as good"],
-                                   family=binomial)
-    pstima.fitness.justasgood <- fit.fitness.justasgood$fitted.values
+    f.jg = (fitness=="Just as good")
+    fit.fitness.jg<- glm(cvd[f.jg]~age[f.jg],family=binomial,data=nmc)
+    pstima.fitness.jg <- fit.fitness.jg$fitted.values
     
     #Fitness:Abitbetter
-    fit.fitness.abitbetter <- glm(nmc$cvd[fitness=="A bit better"] ~ 
-                                    nmc$age[fitness=="A bit better"],
-                                    family=binomial)
-    pstima.fitness.abitbetter <- fit.fitness.abitbetter$fitted.values
+    f.bb = (fitness=="A bit better")
+    fit.fitness.bb <- glm(cvd[f.bb]~age[f.bb],family=binomial,data=nmc)
+    pstima.fitness.bb <- fit.fitness.bb$fitted.values
     
     #Fitness:Muchbetter
-    fit.fitness.muchbetter <- glm(nmc$cvd[fitness=="Much better"] ~ 
-                                    nmc$age[fitness=="Much better"],
-                                    family=binomial)
-    pstima.fitness.muchbetter <- fit.fitness.muchbetter$fitted.values
+    f.mb = (fitness=="Much better")
+    fit.fitness.mb <- glm(cvd[f.mb]~age[f.mb],family=binomial,data=nmc)
+    pstima.fitness.mb <- fit.fitness.mb$fitted.values
     
     #Plot
-    plot(nmc$age[fitness=="Much Worse"],nmc$cvd[fitness=="Much Worse"],
-         xlab="AGE", ylab="CVD", col="#36352e")
-    points(nmc$age[fitness=="Little Worse"], 
-           nmc$cvd[fitness=="Little Worse"], col="#912933")
-    points(nmc$age[fitness=="Just as good"], 
-           nmc$cvd[fitness=="Just as good"], col="#e3dc76")
-    points(nmc$age[fitness=="A bit better"], 
-           nmc$cvd[fitness=="A bit better"], col="#c9723c")
-    points(nmc$age[fitness=="Much better"],
-           nmc$cvd[fitness=="Much better"], col="#408552")
-    lines(nmc$age[fitness=="Much Worse"], pstima.fitness.muchworse,  
-          lwd=3, col="#36352e")
-    lines(nmc$age[fitness=="Little Worse"], pstima.fitness.littleworse, 
-          lwd=3, col="#912933")
-    lines(nmc$age[fitness=="Just as good"], pstima.fitness.justasgood,
-          lwd=3, col="#c9723c")
-    lines(nmc$age[fitness=="A bit better"], pstima.fitness.abitbetter,
-          lwd=3, col="#e3dc76")
-    lines(nmc$age[fitness=="Much better"], pstima.fitness.muchbetter,
-          lwd=3, col="#408552")
-    legend(x="left", 
-           legend=c("Much Worse", "Little Worse", "Just as good",
-                    "A bit better", "Much better"), 
-           fill=c("#36352e","#912933","#c9723c","#e3dc76","#408552"))
+    plot(nmc$age[f.mw],nmc$cvd[f.mw],xlab="AGE",ylab="CVD",col=black)
+    points(nmc$age[f.lw],nmc$cvd[f.lw],col=red)
+    points(nmc$age[f.jg],nmc$cvd[f.jg],col=yellow)
+    points(nmc$age[f.bb],nmc$cvd[f.bb],col=orange)
+    points(nmc$age[f.mb],nmc$cvd[f.mb],col=green)
+    lines(nmc$age[f.mw],pstima.fitness.mw,lwd=3,col=black)
+    lines(nmc$age[f.lw],pstima.fitness.lw,lwd=3,col=red)
+    lines(nmc$age[f.jg],pstima.fitness.jg,lwd=3,col=orange)
+    lines(nmc$age[f.bb],pstima.fitness.bb,lwd=3,col=yellow)
+    lines(nmc$age[f.mb],pstima.fitness.mb,lwd=3,col=green)
+    legend(x="left",legend=c("Much Worse","Little Worse","Just as good",
+           "A bit better", "Much better"),
+           fill=c(black,red,orange,yellow,green))
     @
     
     Attraverso il grafico notiamo che la categoria FITNESS:MUCHBETTER è quella meno
@@ -243,7 +234,7 @@
   \subsection{PA}
     <<RLS PA>>=
     #PA
-    fit.pa <- glm(nmc$cvd ~ nmc$pa, family=binomial)
+    fit.pa <- glm(cvd~pa, family=binomial, data=nmc)
     summary(fit.pa)
     @
     
@@ -254,7 +245,7 @@
   \subsection{Smoke}  
     <<RLS Smoke>>=
     #Smoke
-    fit.smoke <- glm(nmc$cvd ~ nmc$smoke, family=binomial)
+    fit.smoke <- glm(cvd~smoke, family=binomial, data=nmc)
     summary(fit.smoke)
     @
   
@@ -285,38 +276,29 @@
     
     <<RLS Smoke Plot>>=
     #Smoke:NO
-    fit.smoke.no <- glm(nmc$cvd[nmc$smoke=="NO"] ~ 
-                          nmc$age[nmc$smoke=="NO"],
-                          family=binomial)
+    s.no = (nmc$smoke=="NO")
+    fit.smoke.no <- glm(cvd[s.no]~age[s.no], family=binomial, data=nmc)
     pstima.smoke.no <- fit.smoke.no$fitted.values
     
     #Smoke:Former
-    fit.smoke.former <- glm(nmc$cvd[nmc$smoke=="Former"] ~ 
-                              nmc$age[nmc$smoke=="Former"],
-                              family=binomial)
-    pstima.smoke.former <- fit.smoke.former$fitted.values
+    s.f = (nmc$smoke=="Former")
+    fit.smoke.f <- glm(cvd[s.f]~age[s.f], family=binomial, data=nmc)
+    pstima.smoke.f <- fit.smoke.f$fitted.values
 
     #Smoke:Current
-    fit.smoke.current <- glm(nmc$cvd[nmc$smoke=="Current"] ~ 
-                               nmc$age[nmc$smoke=="Current"],
-                               family=binomial)
-    pstima.smoke.current <- fit.smoke.current$fitted.values
+    s.c = (nmc$smoke=="Current")
+    fit.smoke.c <- glm(cvd[s.c]~age[s.c], family=binomial, data=nmc)
+    pstima.smoke.c <- fit.smoke.c$fitted.values
     
     #Plot
-    plot(nmc$age[nmc$smoke=="NO"], nmc$cvd[nmc$smoke=="NO"], 
-         xlab="AGE", ylab="CVD", col="#408552")
-    points(nmc$age[nmc$smoke=="Former"], nmc$cvd[nmc$smoke=="Former"], 
-           col="#c9723c")
-    points(nmc$age[nmc$smoke=="Current"], nmc$cvd[nmc$smoke=="Current"], 
-           col="#912933")
-    lines(nmc$age[nmc$smoke=="NO"], pstima.smoke.no, 
-          lwd=3, col="#408552")
-    lines(nmc$age[nmc$smoke=="Former"], pstima.smoke.former, 
-          lwd=3, col="#c9723c")
-    lines(nmc$age[nmc$smoke=="Current"], pstima.smoke.current, 
-          lwd=3, col="#912933")
+    plot(nmc$age[s.no],nmc$cvd[s.no],xlab="AGE",ylab="CVD",col=green)
+    points(nmc$age[s.f],nmc$cvd[s.f],col=orange)
+    points(nmc$age[s.c],nmc$cvd[s.c],col=red)
+    lines(nmc$age[s.no],pstima.smoke.no,lwd=3,col=green)
+    lines(nmc$age[s.f],pstima.smoke.f,lwd=3,col=orange)
+    lines(nmc$age[s.c],pstima.smoke.c,lwd=3,col=red)
     legend(x="left", legend=c("NO", "Former", "Current"), 
-           fill=c("#408552","#c9723c", "#912933"))
+           fill=c(green,orange,red))
     @
     
     Possiamo notare come un fumatore, rispetto alle altre categorie, abbia una
@@ -329,7 +311,7 @@
   \subsection{Alchol}
     <<RLS Alchol>>=
     #Alchol
-    fit.alc <- glm(nmc$cvd ~ nmc$alc, family=binomial)
+    fit.alc <- glm(cvd~alc, family=binomial, data=nmc)
     summary(fit.alc)
     @
     
@@ -344,7 +326,7 @@
       \item Sempre secondo la valutazione del \emph{p-value}, le variabili che 
             invece risultano non significative sono: PA, SMOKE e ALCHOL.
       \item Le variabili SEX:MALE, AGE e BMI aumentano il rischio di CVD.
-      \item La variabile Fitness evidenzia il fatto che chi sta bene è meno
+      \item La variabile FITNESS evidenzia il fatto che chi sta bene è meno
             soggetto alla problematica.
       \item Un fumatore è più soggetto alla malattia rispetto alle altre categorie.
     \end{itemize}

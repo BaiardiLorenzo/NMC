@@ -1,89 +1,84 @@
-\section{Selezione del Modello}
+\section{Selezione dei Modelli}
   Utilizziamo adesso i metodi Backward, Forward e Both basati sui criteri di 
-  penalizzazione AIC e BIC per un'ulteriore selezione del modello.\par
+  penalizzazione AIC e BIC per un'ulteriore selezione del modello.
   Per eseguire le varie procedure, prenderemo in considerazione la formula base 
   con solo l'intercetta e il modello che comprende tutte le variabili fornite 
   dal Dataset.
   
   <<Formula Intercetta>>=
   #Inizializziamo la formula base con intercetta
-  fit.0 <- glm(nmc$cvd ~ 1, family= "binomial")
+  fit.0 <- glm(cvd~1, family="binomial", data=nmc)
   @
 
    \subsection{Backward}
-      Verifichiamo le formule della procedura Backward con AIC e BIC.
-        \subsubsection{AIC}
-          <<Backward AIC>>=
-          #Backward: AIC
-          backward.AIC <- step(fit.all, direction="backward", 
-                               k=2, trace=FALSE)
-          formula(backward.AIC)
-          summary(backward.AIC)
-          @
-          
-        \subsubsection{BIC}
-          <<Backward BIC>>=
-          #Backward: BIC 
-          backward.BIC <- step(fit.all, direction="backward", 
-                              k=log(length(nmc$cvd)), trace=FALSE)
-          formula(backward.BIC)
-          summary(backward.BIC)
-          @
+      \subsubsection{AIC}
+        <<Backward AIC>>=
+        #Backward: AIC
+        backward.AIC <- step(fit.all, direction="backward", k=2,
+                             trace=FALSE)
+        formula(backward.AIC)
+        summary(backward.AIC)
+        @
+        
+      \subsubsection{BIC}
+        <<Backward BIC>>=
+        #Backward: BIC 
+        backward.BIC <- step(fit.all, direction="backward", 
+                             k=log(length(nmc$cvd)), trace=FALSE)
+        formula(backward.BIC)
+        summary(backward.BIC)
+        @
           
     \subsection{Forward} 
-      Verifichiamo adesso le formule della procedura Forward con AIC e BIC.
-        \subsubsection{AIC}
-          <<Forward AIC>>=
-          #Forward: AIC
-          forward.AIC <- step(fit.0, scope=formula(fit.all), 
-                             direction="forward", k=2, trace=FALSE)
-          formula(forward.AIC)
-          summary(forward.AIC)
-          @
-          
-        \subsubsection{BIC}
-          <<Forward BIC>>=
-          #Forward: BIC
-          forward.BIC <- step(fit.0, scope=formula(fit.all), 
-                             direction="forward", 
-                             k=log(length(nmc$cvd)),
-                             trace=FALSE)
-          formula(forward.BIC)
-          summary(forward.BIC)
-          @
-          
-    \subsection{Both}
-      Infine vediamo le formule della procedura Both con AIC e BIC.
-        \subsubsection{AIC}
-          <<Both AIC>>=
-          #Both: AIC 
-          both.AIC <- step(fit.0, scope=formula(fit.all), 
-                           direction="both", 
-                           k=2, trace=FALSE)
-          formula(both.AIC)
-          summary(both.AIC)
-          @
-          
-        \subsubsection{BIC}
-          <<Both BIC>>=
-          #Both: BIC
-          both.BIC <- step(fit.0, scope=formula(fit.all), 
-                           direction="both",
-                           k=log(length(nmc$cvd)),
+      \subsubsection{AIC}
+        <<Forward AIC>>=
+        #Forward: AIC
+        forward.AIC <- step(fit.0, scope=formula(fit.all), 
+                           direction="forward", k=2, trace=FALSE)
+        formula(forward.AIC)
+        summary(forward.AIC)
+        @
+        
+      \clearpage 
+      
+      \subsubsection{BIC}
+        <<Forward BIC>>=
+        #Forward: BIC
+        forward.BIC <- step(fit.0, scope=formula(fit.all), 
+                           direction="forward", k=log(length(nmc$cvd)),
                            trace=FALSE)
-          formula(both.BIC)
-          summary(both.BIC)
-          @
-    
-    \clearpage
+        formula(forward.BIC)
+        summary(forward.BIC)
+        @
+        
+    \clearpage 
+      
+    \subsection{Both}
+      \subsubsection{AIC}
+        <<Both AIC>>=
+        #Both: AIC 
+        both.AIC <- step(fit.0, scope=formula(fit.all), direction="both", 
+                         k=2, trace=FALSE)
+        formula(both.AIC)
+        summary(both.AIC)
+        @
+      \clearpage
+      \subsubsection{BIC}
+        <<Both BIC>>=
+        #Both: BIC
+        both.BIC <- step(fit.0, scope=formula(fit.all), direction="both",
+                         k=log(length(nmc$cvd)), trace=FALSE)
+        formula(both.BIC)
+        summary(both.BIC)
+        @
     
     \subsection{Commento}
       Le formule ottenute dalle tre procedure sono:
-        \begin{itemize}
-          \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
-                CVD $\sim$ AGE + SEX + FITNESS + SMOKE + BMI + ALCHOL
-          \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
-                CVD $\sim$ AGE + SEX + FITNESS
-        \end{itemize}
+      \begin{itemize}
+        \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
+              CVD $\sim$ AGE + SEX + FITNESS + SMOKE + BMI + ALCHOL
+        \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
+              CVD $\sim$ AGE + SEX + FITNESS
+      \end{itemize}
 
 \clearpage

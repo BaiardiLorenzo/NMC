@@ -333,6 +333,8 @@
 \clearpage
 
 
+
+
 \section{Regressioni Logistiche Semplici}
   Dato che stiamo analizzando un problema che presenta come variabile di 
   risposta una variabile binaria (CVD), utilizzeremo la regressione logistica, 
@@ -346,13 +348,13 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Age}
-\hlstd{fit.age} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{age,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.age} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{age,} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.age)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$age, family = binomial)
+## glm(formula = cvd ~ age, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -361,7 +363,7 @@
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -8.179700   0.151662  -53.93   <2e-16 ***
-## nmc$age      0.092122   0.002345   39.28   <2e-16 ***
+## age          0.092122   0.002345   39.28   <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -378,8 +380,8 @@
     
     \begin{itemize}
       \item L'età influenza positivamente l'insorgenza di un problema 
-            cardiovascolare, con valore stimato: Age $\sim$ 0.092. 
-      \item La variabile Age è molto significativa secondo il \emph{p-value}.
+            cardiovascolare, con valore stimato: AGE $\sim$ 0.092. 
+      \item La variabile AGE è molto significativa secondo il \emph{p-value}.
     \end{itemize}
     
     Stampiamo ora il Boxplot per valutare l'età delle persone che presentano
@@ -389,7 +391,7 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Boxplot}
-\hlkwd{boxplot}\hlstd{(nmc}\hlopt{$}\hlstd{age}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"AGE"}\hlstd{)}
+\hlkwd{boxplot}\hlstd{(age}\hlopt{~}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{data}\hlstd{=nmc)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Age_Boxplot-1} 
@@ -414,7 +416,7 @@
 \hlcom{#Plot}
 \hlstd{pstima.age} \hlkwb{<-} \hlstd{fit.age}\hlopt{$}\hlstd{fitted.values}
 \hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age, nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{)}
-\hlkwd{lines}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age), pstima.age[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#123ba3"}\hlstd{)}
+\hlkwd{lines}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age),pstima.age[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=blue)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Age_Plot-1} 
@@ -423,7 +425,7 @@
     Il modello e il grafico suggeriscono come, all'aumentare dell'età, ci sia un 
     aumento esponenziale nelle probabilità nell'incorrere in un problema 
     cardiovascolare. In particolare possiamo notare, come visualizzato anche dal
-    BoxPlot, che superata la soglia dei 40 anni si ha un notevole aumento nella
+    Boxplot, che superata la soglia dei 40 anni si ha un notevole aumento nella
     probabilità di CVD, confermando quindi come questo problema sia legato
     principalmente ad un fattore di età.
   
@@ -435,13 +437,13 @@
 \begin{alltt}
 \hlcom{#Regressioni logistiche semplici}
 \hlcom{#Sex}
-\hlstd{fit.sex} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.sex} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex,} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.sex)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex, family = binomial)
+## glm(formula = cvd ~ sex, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -450,7 +452,7 @@
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -3.31797    0.03654  -90.80   <2e-16 ***
-## nmc$sexMale  0.91004    0.05021   18.12   <2e-16 ***
+## sexMale      0.91004    0.05021   18.12   <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -480,23 +482,21 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello per Maschio}
-\hlstd{fit.sex.male} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{]} \hlopt{~}
-                      \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-                      \hlkwc{family}\hlstd{=binomial)}
+\hlstd{male} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{)}
+\hlstd{fit.sex.male} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[male]}\hlopt{~}\hlstd{age[male],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlstd{pstima.sex.male} \hlkwb{<-} \hlstd{fit.sex.male}\hlopt{$}\hlstd{fitted.values}
+
 \hlcom{#Modello per Femmina}
-\hlstd{fit.sex.female} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{]} \hlopt{~}
-                        \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-                        \hlkwc{family}\hlstd{=binomial)}
+\hlstd{female} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{)}
+\hlstd{fit.sex.female} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[female]}\hlopt{~}\hlstd{age[female],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlstd{pstima.sex.female} \hlkwb{<-} \hlstd{fit.sex.female}\hlopt{$}\hlstd{fitted.values}
+
 \hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#2291ba"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"#a566ad"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Male"}\hlstd{],pstima.sex.male,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{"#2291ba"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{sex}\hlopt{==}\hlstr{"Female"}\hlstd{],pstima.sex.female,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{"#a566ad"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}\hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Male"}\hlstd{,}\hlstr{"Female"}\hlstd{),}\hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#2291ba"}\hlstd{,}\hlstr{"#a566ad"}\hlstd{))}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[male],nmc}\hlopt{$}\hlstd{cvd[male],}\hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,}\hlkwc{col}\hlstd{=azure)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[female], nmc}\hlopt{$}\hlstd{cvd[female],}\hlkwc{col}\hlstd{=pink)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[male],pstima.sex.male,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=azure)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[female],pstima.sex.female,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=pink)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}\hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"MALE"}\hlstd{,}\hlstr{"FEMALE"}\hlstd{),}\hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(azure,pink))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Sex_Plot-1} 
@@ -510,13 +510,13 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#BMI}
-\hlstd{fit.bmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{bmi,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.bmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{bmi,} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.bmi)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$bmi, family = binomial)
+## glm(formula = cvd ~ bmi, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -525,7 +525,7 @@
 ## Coefficients:
 ##             Estimate Std. Error  z value Pr(>|z|)    
 ## (Intercept) -2.94542    0.02605 -113.070  < 2e-16 ***
-## nmc$bmi      0.24948    0.08995    2.773  0.00555 ** 
+## bmi          0.24948    0.08995    2.773  0.00555 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -552,23 +552,21 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#BMI 0}
-\hlstd{fit.bmi.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{],}
-                 \hlkwc{family}\hlstd{=binomial)}
+\hlstd{bmi0} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{)}
+\hlstd{fit.bmi.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[bmi0]}\hlopt{~}\hlstd{age[bmi0],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlstd{pstima.bmi.0} \hlkwb{<-} \hlstd{fit.bmi.0}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#BMI 1}
-\hlstd{fit.bmi.1} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{]} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{],}
-                 \hlkwc{family}\hlstd{=binomial)}
+\hlstd{bmi1} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{)}
+\hlstd{fit.bmi.1} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[bmi1]}\hlopt{~}\hlstd{age[bmi1],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlstd{pstima.bmi.1} \hlkwb{<-} \hlstd{fit.bmi.1}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlstd{], pstima.bmi.0,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlstd{], pstima.bmi.1,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"BMI < 30"}\hlstd{,} \hlstr{"BMI >= 30"}\hlstd{),}
-       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#408552"}\hlstd{,}\hlstr{"#912933"}\hlstd{))}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[bmi0],nmc}\hlopt{$}\hlstd{cvd[bmi0],}\hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,}\hlkwc{col}\hlstd{=green)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[bmi1],nmc}\hlopt{$}\hlstd{cvd[bmi1],}\hlkwc{col}\hlstd{=red)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[bmi0],pstima.bmi.0,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=green)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[bmi1],pstima.bmi.1,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=red)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}\hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"BMI < 30"}\hlstd{,}\hlstr{"BMI >= 30"}\hlstd{),}\hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(green,red))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_BMI_Plot-1} 
@@ -671,60 +669,44 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Fitness:MuchWorse}
-\hlstd{fit.fitness.muchworse} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{]} \hlopt{~}
-                               \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{],}
-                               \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.fitness.muchworse} \hlkwb{<-} \hlstd{fit.fitness.muchworse}\hlopt{$}\hlstd{fitted.values}
+\hlstd{f.mw} \hlkwb{=} \hlstd{(fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{)}
+\hlstd{fit.fitness.mw} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[f.mw]}\hlopt{~}\hlstd{age[f.mw],}\hlkwc{family}\hlstd{=binomial,}\hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.fitness.mw} \hlkwb{<-} \hlstd{fit.fitness.mw}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Fitness:LittleWorse}
-\hlstd{fit.fitness.littleworse} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{]} \hlopt{~}
-                                 \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],}
-                                 \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.fitness.littleworse} \hlkwb{<-} \hlstd{fit.fitness.littleworse}\hlopt{$}\hlstd{fitted.values}
+\hlstd{f.lw} \hlkwb{=} \hlstd{(fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{)}
+\hlstd{fit.fitness.lw} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[f.lw]}\hlopt{~}\hlstd{age[f.lw],}\hlkwc{family}\hlstd{=binomial,}\hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.fitness.lw} \hlkwb{<-} \hlstd{fit.fitness.lw}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Fitness:Justasgood}
-\hlstd{fit.fitness.justasgood}\hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{]} \hlopt{~}
-                               \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],}
-                               \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.fitness.justasgood} \hlkwb{<-} \hlstd{fit.fitness.justasgood}\hlopt{$}\hlstd{fitted.values}
+\hlstd{f.jg} \hlkwb{=} \hlstd{(fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{)}
+\hlstd{fit.fitness.jg}\hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[f.jg]}\hlopt{~}\hlstd{age[f.jg],}\hlkwc{family}\hlstd{=binomial,}\hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.fitness.jg} \hlkwb{<-} \hlstd{fit.fitness.jg}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Fitness:Abitbetter}
-\hlstd{fit.fitness.abitbetter} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{]} \hlopt{~}
-                                \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],}
-                                \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.fitness.abitbetter} \hlkwb{<-} \hlstd{fit.fitness.abitbetter}\hlopt{$}\hlstd{fitted.values}
+\hlstd{f.bb} \hlkwb{=} \hlstd{(fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{)}
+\hlstd{fit.fitness.bb} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[f.bb]}\hlopt{~}\hlstd{age[f.bb],}\hlkwc{family}\hlstd{=binomial,}\hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.fitness.bb} \hlkwb{<-} \hlstd{fit.fitness.bb}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Fitness:Muchbetter}
-\hlstd{fit.fitness.muchbetter} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{]} \hlopt{~}
-                                \hlstd{nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],}
-                                \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.fitness.muchbetter} \hlkwb{<-} \hlstd{fit.fitness.muchbetter}\hlopt{$}\hlstd{fitted.values}
+\hlstd{f.mb} \hlkwb{=} \hlstd{(fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{)}
+\hlstd{fit.fitness.mb} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[f.mb]}\hlopt{~}\hlstd{age[f.mb],}\hlkwc{family}\hlstd{=binomial,}\hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.fitness.mb} \hlkwb{<-} \hlstd{fit.fitness.mb}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{],nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#36352e"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],}
-       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],}
-       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#e3dc76"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],}
-       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],}
-       \hlstd{nmc}\hlopt{$}\hlstd{cvd[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much Worse"}\hlstd{], pstima.fitness.muchworse,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#36352e"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Little Worse"}\hlstd{], pstima.fitness.littleworse,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Just as good"}\hlstd{], pstima.fitness.justasgood,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"A bit better"}\hlstd{], pstima.fitness.abitbetter,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#e3dc76"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[fitness}\hlopt{==}\hlstr{"Much better"}\hlstd{], pstima.fitness.muchbetter,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}
-       \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,} \hlstr{"Little Worse"}\hlstd{,} \hlstr{"Just as good"}\hlstd{,}
-                \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
-       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#36352e"}\hlstd{,}\hlstr{"#912933"}\hlstd{,}\hlstr{"#c9723c"}\hlstd{,}\hlstr{"#e3dc76"}\hlstd{,}\hlstr{"#408552"}\hlstd{))}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.mw],nmc}\hlopt{$}\hlstd{cvd[f.mw],}\hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,}\hlkwc{col}\hlstd{=black)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.lw],nmc}\hlopt{$}\hlstd{cvd[f.lw],}\hlkwc{col}\hlstd{=red)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.jg],nmc}\hlopt{$}\hlstd{cvd[f.jg],}\hlkwc{col}\hlstd{=yellow)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.bb],nmc}\hlopt{$}\hlstd{cvd[f.bb],}\hlkwc{col}\hlstd{=orange)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.mb],nmc}\hlopt{$}\hlstd{cvd[f.mb],}\hlkwc{col}\hlstd{=green)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.mw],pstima.fitness.mw,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=black)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.lw],pstima.fitness.lw,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=red)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.jg],pstima.fitness.jg,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=orange)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.bb],pstima.fitness.bb,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=yellow)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[f.mb],pstima.fitness.mb,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=green)}
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,}\hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,}\hlstr{"Little Worse"}\hlstd{,}\hlstr{"Just as good"}\hlstd{,}
+       \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
+       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(black,red,orange,yellow,green))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Fitness_Plot-1} 
@@ -748,13 +730,13 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#PA}
-\hlstd{fit.pa} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{pa,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.pa} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{pa,} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.pa)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$pa, family = binomial)
+## glm(formula = cvd ~ pa, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -763,7 +745,7 @@
 ## Coefficients:
 ##             Estimate Std. Error  z value Pr(>|z|)    
 ## (Intercept) -2.91978    0.02581 -113.126   <2e-16 ***
-## nmc$pa      -0.09610    0.09974   -0.963    0.335    
+## pa          -0.09610    0.09974   -0.963    0.335    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -787,23 +769,23 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Smoke}
-\hlstd{fit.smoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{smoke,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.smoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{smoke,} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.smoke)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$smoke, family = binomial)
+## glm(formula = cvd ~ smoke, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -0.3402  -0.3186  -0.3186  -0.3186   2.4946  
 ## 
 ## Coefficients:
-##                 Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -3.06590    0.09377 -32.696   <2e-16 ***
-## nmc$smokeFormer  0.24571    0.10465   2.348   0.0189 *  
-## nmc$smokeNO      0.11061    0.09880   1.119   0.2629    
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -3.06590    0.09377 -32.696   <2e-16 ***
+## smokeFormer  0.24571    0.10465   2.348   0.0189 *  
+## smokeNO      0.11061    0.09880   1.119   0.2629    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -875,38 +857,29 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Smoke:NO}
-\hlstd{fit.smoke.no} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{]} \hlopt{~}
-                      \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{],}
-                      \hlkwc{family}\hlstd{=binomial)}
+\hlstd{s.no} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{)}
+\hlstd{fit.smoke.no} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[s.no]}\hlopt{~}\hlstd{age[s.no],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlstd{pstima.smoke.no} \hlkwb{<-} \hlstd{fit.smoke.no}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Smoke:Former}
-\hlstd{fit.smoke.former} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{]} \hlopt{~}
-                          \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{],}
-                          \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.smoke.former} \hlkwb{<-} \hlstd{fit.smoke.former}\hlopt{$}\hlstd{fitted.values}
+\hlstd{s.f} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{)}
+\hlstd{fit.smoke.f} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[s.f]}\hlopt{~}\hlstd{age[s.f],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.smoke.f} \hlkwb{<-} \hlstd{fit.smoke.f}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Smoke:Current}
-\hlstd{fit.smoke.current} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{]} \hlopt{~}
-                           \hlstd{nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{],}
-                           \hlkwc{family}\hlstd{=binomial)}
-\hlstd{pstima.smoke.current} \hlkwb{<-} \hlstd{fit.smoke.current}\hlopt{$}\hlstd{fitted.values}
+\hlstd{s.c} \hlkwb{=} \hlstd{(nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{)}
+\hlstd{fit.smoke.c} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd[s.c]}\hlopt{~}\hlstd{age[s.c],} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
+\hlstd{pstima.smoke.c} \hlkwb{<-} \hlstd{fit.smoke.c}\hlopt{$}\hlstd{fitted.values}
 
 \hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{],}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
-\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{], nmc}\hlopt{$}\hlstd{cvd[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{],}
-       \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"NO"}\hlstd{], pstima.smoke.no,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#408552"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Former"}\hlstd{], pstima.smoke.former,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#c9723c"}\hlstd{)}
-\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[nmc}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlstr{"Current"}\hlstd{], pstima.smoke.current,}
-      \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"#912933"}\hlstd{)}
+\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age[s.no],nmc}\hlopt{$}\hlstd{cvd[s.no],}\hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{,}\hlkwc{col}\hlstd{=green)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[s.f],nmc}\hlopt{$}\hlstd{cvd[s.f],}\hlkwc{col}\hlstd{=orange)}
+\hlkwd{points}\hlstd{(nmc}\hlopt{$}\hlstd{age[s.c],nmc}\hlopt{$}\hlstd{cvd[s.c],}\hlkwc{col}\hlstd{=red)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[s.no],pstima.smoke.no,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=green)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[s.f],pstima.smoke.f,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=orange)}
+\hlkwd{lines}\hlstd{(nmc}\hlopt{$}\hlstd{age[s.c],pstima.smoke.c,}\hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=red)}
 \hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"left"}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"NO"}\hlstd{,} \hlstr{"Former"}\hlstd{,} \hlstr{"Current"}\hlstd{),}
-       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#408552"}\hlstd{,}\hlstr{"#c9723c"}\hlstd{,} \hlstr{"#912933"}\hlstd{))}
+       \hlkwc{fill}\hlstd{=}\hlkwd{c}\hlstd{(green,orange,red))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/RLS_Smoke_Plot-1} 
@@ -924,13 +897,13 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Alchol}
-\hlstd{fit.alc} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{alc,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.alc} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{alc,} \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.alc)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$alc, family = binomial)
+## glm(formula = cvd ~ alc, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -939,7 +912,7 @@
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -2.934597   0.084928  -34.55   <2e-16 ***
-## nmc$alc      0.003563   0.035652    0.10     0.92    
+## alc          0.003563   0.035652    0.10     0.92    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -965,7 +938,7 @@
       \item Sempre secondo la valutazione del \emph{p-value}, le variabili che 
             invece risultano non significative sono: PA, SMOKE e ALCHOL.
       \item Le variabili SEX:MALE, AGE e BMI aumentano il rischio di CVD.
-      \item La variabile Fitness evidenzia il fatto che chi sta bene è meno
+      \item La variabile FITNESS evidenzia il fatto che chi sta bene è meno
             soggetto alla problematica.
       \item Un fumatore è più soggetto alla malattia rispetto alle altre categorie.
     \end{itemize}
@@ -976,7 +949,7 @@
 \section{Regressioni Logistiche Multiple}
   Consideriamo ora la regressione logistica multipla includendo tutte le variabili
   che sono presenti all'interno del Dataset, verificando quali di esse sono più 
-  o meno significative per la visualizzazione di un primo modello unico.
+  o meno significative.
   
   \subsection{Modello Completo}
 \begin{knitrout}
@@ -985,32 +958,31 @@
 \hlcom{#Regressioni logistiche multiple}
 \hlcom{#Modello Completo}
 \hlcom{#Variabili: Sex, Age, BMI, Fitness, PA, Smoke, Alchol}
-\hlstd{fit.all} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{pa}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{alc,}
-                         \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.all} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{pa}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{alc,} \hlkwc{data}\hlstd{=nmc,}
+               \hlkwc{family}\hlstd{=binomial)}
 \hlkwd{summary}\hlstd{(fit.all)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$pa + nmc$smoke + nmc$alc, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + pa + smoke + 
+##     alc, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5967  -0.3394  -0.1937  -0.0950   3.6484  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.475667   0.213543 -35.008  < 2e-16 ***
-## nmc$sexMale      0.799132   0.054689  14.612  < 2e-16 ***
-## nmc$age          0.092680   0.002446  37.896  < 2e-16 ***
-## nmc$bmi          0.235120   0.096986   2.424 0.015339 *  
-## nmc$fitness     -0.181741   0.031070  -5.849 4.93e-09 ***
-## nmc$pa           0.035563   0.108422   0.328 0.742909    
-## nmc$smokeFormer -0.332158   0.111102  -2.990 0.002793 ** 
-## nmc$smokeNO     -0.374001   0.106486  -3.512 0.000444 ***
-## nmc$alc         -0.056404   0.035625  -1.583 0.113368    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.475667   0.213543 -35.008  < 2e-16 ***
+## sexMale      0.799132   0.054689  14.612  < 2e-16 ***
+## age          0.092680   0.002446  37.896  < 2e-16 ***
+## bmi          0.235120   0.096986   2.424 0.015339 *  
+## fitness     -0.181741   0.031070  -5.849 4.93e-09 ***
+## pa           0.035563   0.108422   0.328 0.742909    
+## smokeFormer -0.332158   0.111102  -2.990 0.002793 ** 
+## smokeNO     -0.374001   0.106486  -3.512 0.000444 ***
+## alc         -0.056404   0.035625  -1.583 0.113368    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1058,31 +1030,30 @@
 \begin{alltt}
 \hlcom{#Modello senza PA}
 \hlcom{#Variabili: Sex, Age, BMI, Fitness, Smoke, Alchol}
-\hlstd{fit.npa} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{alc,}
-                         \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.npa} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{alc,} \hlkwc{data}\hlstd{=nmc,}
+               \hlkwc{family}\hlstd{=binomial)}
 \hlkwd{summary}\hlstd{(fit.npa)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$alc, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + alc, 
+##     family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5978  -0.3371  -0.1941  -0.0950   3.6471  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.462934   0.209921 -35.551  < 2e-16 ***
-## nmc$sexMale      0.799887   0.054643  14.638  < 2e-16 ***
-## nmc$age          0.092640   0.002442  37.930  < 2e-16 ***
-## nmc$bmi          0.235857   0.096958   2.433 0.014992 *  
-## nmc$fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
-## nmc$smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
-## nmc$smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
-## nmc$alc         -0.056553   0.035625  -1.587 0.112413    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.462934   0.209921 -35.551  < 2e-16 ***
+## sexMale      0.799887   0.054643  14.638  < 2e-16 ***
+## age          0.092640   0.002442  37.930  < 2e-16 ***
+## bmi          0.235857   0.096958   2.433 0.014992 *  
+## fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
+## smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
+## smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
+## alc         -0.056553   0.035625  -1.587 0.112413    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1107,29 +1078,28 @@
 \begin{alltt}
 \hlcom{#Modello significativo}
 \hlcom{#Variabili: Sex, Age, BMI, Fitness, Smoke }
-\hlstd{fit} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}
-                     \hlstd{nmc}\hlopt{$}\hlstd{smoke,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke,}\hlkwc{data}\hlstd{=nmc,}\hlkwc{family}\hlstd{=binomial)}
 \hlkwd{summary}\hlstd{(fit)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke, family = binomial, 
+##     data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.6215  -0.3381  -0.1935  -0.0943   3.6515  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.614728   0.187445 -40.624  < 2e-16 ***
-## nmc$sexMale      0.786417   0.053959  14.574  < 2e-16 ***
-## nmc$age          0.092988   0.002437  38.159  < 2e-16 ***
-## nmc$bmi          0.240200   0.096914   2.478 0.013194 *  
-## nmc$fitness     -0.186214   0.030344  -6.137 8.42e-10 ***
-## nmc$smokeFormer -0.331879   0.111118  -2.987 0.002820 ** 
-## nmc$smokeNO     -0.351977   0.105515  -3.336 0.000851 ***
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.614728   0.187445 -40.624  < 2e-16 ***
+## sexMale      0.786417   0.053959  14.574  < 2e-16 ***
+## age          0.092988   0.002437  38.159  < 2e-16 ***
+## bmi          0.240200   0.096914   2.478 0.013194 *  
+## fitness     -0.186214   0.030344  -6.137 8.42e-10 ***
+## smokeFormer -0.331879   0.111118  -2.987 0.002820 ** 
+## smokeNO     -0.351977   0.105515  -3.336 0.000851 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1154,21 +1124,7 @@
     \end{itemize}
     
     Il modello con solo variabili significative sembra mostrare un buon 
-    adattamento.\par
-    Visualizziamo il grafico dell'andamento del modello stimato.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{pstima} \hlkwb{<-} \hlstd{fit}\hlopt{$}\hlstd{fitted.values}
-
-\hlcom{#Plot}
-\hlkwd{plot}\hlstd{(nmc}\hlopt{$}\hlstd{age, nmc}\hlopt{$}\hlstd{cvd,} \hlkwc{xlab}\hlstd{=}\hlstr{"AGE"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"CVD"}\hlstd{)}
-\hlkwd{points}\hlstd{(}\hlkwd{sort}\hlstd{(nmc}\hlopt{$}\hlstd{age), pstima[}\hlkwd{order}\hlstd{(nmc}\hlopt{$}\hlstd{age)],} \hlkwc{col}\hlstd{=}\hlstr{"#123ba3"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/RLM_Plot_ModelloSignificativo-1} 
-\end{knitrout}
+    adattamento.
   
   \subsection{Commento}
     \begin{itemize}
@@ -1188,47 +1144,45 @@
 
 \section{Interazioni fra le variabili}
   Valutiamo se all'interno del modello ci sia la possibilità di interazioni
-  fra le variabili. \par
+  fra le variabili. 
   Consideriamo i casi nei quali le variabili come SMOKE, ALCHOL, PA o SEX possano 
   interagire con le altre variabili, limitandoci unicamente nelle interazioni 
   del secondo ordine.
   
   \subsection{Smoke e Alchol}
-  Analizziamo il caso nel quale il consumo di ALCHOL, combinato con l'uso di 
-  sigaretta, possa o meno aumentare le probabilità di CVD.
-  
+    Analizziamo il caso nel quale il consumo di ALCHOL, combinato con l'uso di 
+    sigaretta, possa o meno aumentare le probabilità di CVD.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione: Smoke e Alchol}
-\hlstd{fit.smokealchol} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{alc,}
-                         \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.smokealchol} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{smoke}\hlopt{*}\hlstd{alc,}
+                       \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.smokealchol)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$smoke * nmc$alc, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + smoke * 
+##     alc, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.6094  -0.3392  -0.1936  -0.0952   3.6495  
 ## 
 ## Coefficients:
-##                          Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)             -7.777741   0.409428 -18.997  < 2e-16 ***
-## nmc$sexMale              0.800386   0.054612  14.656  < 2e-16 ***
-## nmc$age                  0.092757   0.002449  37.869  < 2e-16 ***
-## nmc$bmi                  0.233538   0.097010   2.407   0.0161 *  
-## nmc$fitness             -0.183944   0.030378  -6.055  1.4e-09 ***
-## nmc$smokeFormer          0.239303   0.425957   0.562   0.5743    
-## nmc$smokeNO             -0.120962   0.395698  -0.306   0.7598    
-## nmc$alc                  0.062892   0.142152   0.442   0.6582    
-## nmc$smokeFormer:nmc$alc -0.223037   0.158794  -1.405   0.1602    
-## nmc$smokeNO:nmc$alc     -0.094178   0.148217  -0.635   0.5252    
+##                  Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)     -7.777741   0.409428 -18.997  < 2e-16 ***
+## sexMale          0.800386   0.054612  14.656  < 2e-16 ***
+## age              0.092757   0.002449  37.869  < 2e-16 ***
+## bmi              0.233538   0.097010   2.407   0.0161 *  
+## fitness         -0.183944   0.030378  -6.055  1.4e-09 ***
+## smokeFormer      0.239303   0.425957   0.562   0.5743    
+## smokeNO         -0.120962   0.395698  -0.306   0.7598    
+## alc              0.062892   0.142152   0.442   0.6582    
+## smokeFormer:alc -0.223037   0.158794  -1.405   0.1602    
+## smokeNO:alc     -0.094178   0.148217  -0.635   0.5252    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1242,44 +1196,42 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  
-  I dati sembrano non mostrare l'interazione fra SMOKE e ALCHOL.
+    
+    I dati sembrano non mostrare l'interazione fra SMOKE e ALCHOL.
   
   \subsection{Smoke e BMI}
-  Vediamo se l'uso di sigaretta per una persona con un alto indice di massa 
-  corporea possa aumentarne le probabilità.
-  
+    Vediamo se l'uso di sigaretta per una persona con un alto indice di massa 
+    corporea possa aumentarne le probabilità.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione: Smoke e BMI}
-\hlstd{fit.smokebmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{bmi,}
-                         \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.smokebmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{smoke}\hlopt{*}\hlstd{bmi,}
+                    \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.smokebmi)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$smoke * nmc$bmi, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + smoke * 
+##     bmi, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.6167  -0.3389  -0.1923  -0.0938   3.6547  
 ## 
 ## Coefficients:
-##                          Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)             -7.538233   0.187909 -40.116  < 2e-16 ***
-## nmc$sexMale              0.789657   0.054027  14.616  < 2e-16 ***
-## nmc$age                  0.092953   0.002438  38.128  < 2e-16 ***
-## nmc$bmi                 -1.495180   0.726032  -2.059 0.039457 *  
-## nmc$fitness             -0.186487   0.030356  -6.143 8.08e-10 ***
-## nmc$smokeFormer         -0.400699   0.113377  -3.534 0.000409 ***
-## nmc$smokeNO             -0.438392   0.107190  -4.090 4.32e-05 ***
-## nmc$bmi:nmc$smokeFormer  1.667155   0.744567   2.239 0.025150 *  
-## nmc$bmi:nmc$smokeNO      1.874406   0.734922   2.550 0.010757 *  
+##                  Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)     -7.538233   0.187909 -40.116  < 2e-16 ***
+## sexMale          0.789657   0.054027  14.616  < 2e-16 ***
+## age              0.092953   0.002438  38.128  < 2e-16 ***
+## bmi             -1.495180   0.726032  -2.059 0.039457 *  
+## fitness         -0.186487   0.030356  -6.143 8.08e-10 ***
+## smokeFormer     -0.400699   0.113377  -3.534 0.000409 ***
+## smokeNO         -0.438392   0.107190  -4.090 4.32e-05 ***
+## bmi:smokeFormer  1.667155   0.744567   2.239 0.025150 *  
+## bmi:smokeNO      1.874406   0.734922   2.550 0.010757 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1293,47 +1245,45 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  
-  A differenza di SMOKE e ALCHOL, l'interazione tra SMOKE e BMI 
-  mostra un'interazione significativa, variando il valore stimato e diminuendo la 
-  significatività della variabile BMI. In questo caso la variabile BMI assume 
-  valore stimato negativo, influendo negativamente nella comparsa di CVD.
-  
+    
+    A differenza di SMOKE e ALCHOL, l'interazione tra SMOKE e BMI 
+    mostra un'interazione significativa, variando il valore stimato e diminuendo la 
+    significatività della variabile BMI. In questo caso la variabile BMI assume 
+    valore stimato negativo, influendo negativamente nella comparsa di CVD.
+    
   \subsection{Alchol e BMI}
-  Come per il caso di SMOKE, verifichiamo se il consumo di ALCHOL associato ad un
-  maggior indice di massa corporea influisca nella probabilità di CVD.
-  
+    Come per il caso di SMOKE, verifichiamo se il consumo di ALCHOL associato ad un
+    maggior indice di massa corporea influisca nella probabilità di CVD.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione: Alchol e BMI}
-\hlstd{fit.alcholbmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                         \hlstd{nmc}\hlopt{$}\hlstd{alc}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{bmi,}
-                         \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.alcholbmi} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{alc}\hlopt{*}\hlstd{bmi,}
+                     \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.alcholbmi)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$alc * nmc$bmi, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + alc * 
+##     bmi, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5941  -0.3386  -0.1936  -0.0950   3.6460  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.436723   0.211379 -35.182  < 2e-16 ***
-## nmc$sexMale      0.798024   0.054655  14.601  < 2e-16 ***
-## nmc$age          0.092645   0.002442  37.932  < 2e-16 ***
-## nmc$bmi         -0.031850   0.282019  -0.113 0.910080    
-## nmc$fitness     -0.184203   0.030379  -6.063 1.33e-09 ***
-## nmc$smokeFormer -0.332279   0.111100  -2.991 0.002782 ** 
-## nmc$smokeNO     -0.374629   0.106482  -3.518 0.000434 ***
-## nmc$alc         -0.067192   0.037109  -1.811 0.070191 .  
-## nmc$bmi:nmc$alc  0.120560   0.118070   1.021 0.307213    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.436723   0.211379 -35.182  < 2e-16 ***
+## sexMale      0.798024   0.054655  14.601  < 2e-16 ***
+## age          0.092645   0.002442  37.932  < 2e-16 ***
+## bmi         -0.031850   0.282019  -0.113 0.910080    
+## fitness     -0.184203   0.030379  -6.063 1.33e-09 ***
+## smokeFormer -0.332279   0.111100  -2.991 0.002782 ** 
+## smokeNO     -0.374629   0.106482  -3.518 0.000434 ***
+## alc         -0.067192   0.037109  -1.811 0.070191 .  
+## bmi:alc      0.120560   0.118070   1.021 0.307213    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1347,44 +1297,42 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  
-  A differenza di SMOKE*BMI, l'interazione tra ALCHOL e BMI non è supportata.
+    
+    A differenza di SMOKE*BMI, l'interazione tra ALCHOL e BMI non è supportata.
   
   \subsection{Sex e Smoke}
-  Verifichiamo se l'utilizzo di sigaretta sia peggiorativo in uno dei due 
-  sessi.
-  
+    Verifichiamo se l'utilizzo di sigaretta sia peggiorativo in uno dei due 
+    sessi.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione: Sex e Smoke}
-\hlstd{fit.sexsmoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{smoke,}
-                    \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.sexsmoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{sex}\hlopt{*}\hlstd{smoke,}
+                    \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.sexsmoke)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$sex * nmc$smoke, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + sex * 
+##     smoke, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5936  -0.3413  -0.1902  -0.0948   3.6359  
 ## 
 ## Coefficients:
-##                              Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)                 -7.823919   0.218529 -35.803  < 2e-16 ***
-## nmc$sexMale                  1.213811   0.200893   6.042 1.52e-09 ***
-## nmc$age                      0.092548   0.002447  37.822  < 2e-16 ***
-## nmc$bmi                      0.237345   0.096938   2.448   0.0143 *  
-## nmc$fitness                 -0.182865   0.030381  -6.019 1.75e-09 ***
-## nmc$smokeFormer             -0.168152   0.173095  -0.971   0.3313    
-## nmc$smokeNO                 -0.086983   0.158493  -0.549   0.5831    
-## nmc$sexMale:nmc$smokeFormer -0.332887   0.226013  -1.473   0.1408    
-## nmc$sexMale:nmc$smokeNO     -0.513869   0.211536  -2.429   0.0151 *  
+##                      Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)         -7.823919   0.218529 -35.803  < 2e-16 ***
+## sexMale              1.213811   0.200893   6.042 1.52e-09 ***
+## age                  0.092548   0.002447  37.822  < 2e-16 ***
+## bmi                  0.237345   0.096938   2.448   0.0143 *  
+## fitness             -0.182865   0.030381  -6.019 1.75e-09 ***
+## smokeFormer         -0.168152   0.173095  -0.971   0.3313    
+## smokeNO             -0.086983   0.158493  -0.549   0.5831    
+## sexMale:smokeFormer -0.332887   0.226013  -1.473   0.1408    
+## sexMale:smokeNO     -0.513869   0.211536  -2.429   0.0151 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1398,43 +1346,41 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  
-  L'interazione fra le variabili SEX e SMOKE risulta non significativa.
-  
+    
+    L'interazione fra le variabili SEX e SMOKE risulta non significativa.
+    
   \subsection{Sex e Age}
-  Analizziamo ora il caso nel quale l'aumento dell'età possa influenzare in
-  maniera differente tra i due sessi.
-  
+    Analizziamo ora il caso nel quale l'aumento dell'età possa influenzare in
+    maniera differente tra i due sessi.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione: Sex e Age}
-\hlstd{fit.sexage} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{age,}
-                    \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.sexage} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{sex}\hlopt{*}\hlstd{age,}
+                  \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.sexage)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$sex * nmc$age, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + sex * 
+##     age, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5257  -0.3426  -0.1892  -0.0925   3.7386  
 ## 
 ## Coefficients:
-##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)         -8.072593   0.247550 -32.610  < 2e-16 ***
-## nmc$sexMale          1.686372   0.306886   5.495 3.90e-08 ***
-## nmc$age              0.100329   0.003529  28.427  < 2e-16 ***
-## nmc$bmi              0.233344   0.096960   2.407 0.016102 *  
-## nmc$fitness         -0.185576   0.030249  -6.135 8.52e-10 ***
-## nmc$smokeFormer     -0.328928   0.111095  -2.961 0.003069 ** 
-## nmc$smokeNO         -0.364822   0.105629  -3.454 0.000553 ***
-## nmc$sexMale:nmc$age -0.014186   0.004760  -2.980 0.002879 ** 
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -8.072593   0.247550 -32.610  < 2e-16 ***
+## sexMale      1.686372   0.306886   5.495 3.90e-08 ***
+## age          0.100329   0.003529  28.427  < 2e-16 ***
+## bmi          0.233344   0.096960   2.407 0.016102 *  
+## fitness     -0.185576   0.030249  -6.135 8.52e-10 ***
+## smokeFormer -0.328928   0.111095  -2.961 0.003069 ** 
+## smokeNO     -0.364822   0.105629  -3.454 0.000553 ***
+## sexMale:age -0.014186   0.004760  -2.980 0.002879 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1448,47 +1394,47 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+    
+    Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
+    significativa tra la variabile SEX e AGE. Per il sesso maschile con l'aumentare
+    dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
+    Analizzeremo successivamente se questa interazione può risultare utile ai fini
+    del nostro problema.
   
-  Contrariamente a quello che ci si poteva aspettare, esiste un interazione 
-  significativa tra la variabile SEX e AGE. Per il sesso maschile con l'aumentare
-  dell'età ha, anche se piccola, una riduzione nella probabilità di CVD. \par
-  Analizzeremo successivamente se questa interazione può risultare utile ai fini
-  del nostro problema.
+  \clearpage
   
   \subsection{PA e Age}
-  Verifichiamo se l'attività fisica di un individuo è influenzata in base
-  alla sua età.
+    Verifichiamo se l'attività fisica di un individuo è influenzata in base
+    alla sua età.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione PA e Age}
-\hlstd{fit.sexsmoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{pa}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{age,}
-                    \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.sexsmoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{pa}\hlopt{*}\hlstd{age,}
+                    \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.sexsmoke)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$pa * nmc$age, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + pa * 
+##     age, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.6223  -0.3380  -0.1931  -0.0944   3.6547  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.637524   0.196623 -38.844  < 2e-16 ***
-## nmc$sexMale      0.785270   0.054030  14.534  < 2e-16 ***
-## nmc$age          0.093182   0.002543  36.636  < 2e-16 ***
-## nmc$bmi          0.239306   0.096938   2.469 0.013563 *  
-## nmc$fitness     -0.183966   0.031043  -5.926  3.1e-09 ***
-## nmc$smokeFormer -0.331027   0.111137  -2.979 0.002896 ** 
-## nmc$smokeNO     -0.351321   0.105525  -3.329 0.000871 ***
-## nmc$pa           0.150329   0.532956   0.282 0.777893    
-## nmc$age:nmc$pa  -0.001873   0.008691  -0.216 0.829356    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.637524   0.196623 -38.844  < 2e-16 ***
+## sexMale      0.785270   0.054030  14.534  < 2e-16 ***
+## age          0.093182   0.002543  36.636  < 2e-16 ***
+## bmi          0.239306   0.096938   2.469 0.013563 *  
+## fitness     -0.183966   0.031043  -5.926  3.1e-09 ***
+## smokeFormer -0.331027   0.111137  -2.979 0.002896 ** 
+## smokeNO     -0.351321   0.105525  -3.329 0.000871 ***
+## pa           0.150329   0.532956   0.282 0.777893    
+## age:pa      -0.001873   0.008691  -0.216 0.829356    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1502,44 +1448,44 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+    
+    Non è verificata l'interazione fra le variabili PA e AGE.
   
-  Non è verificata l'interazione fra le variabili PA e AGE.
-  
+  \clearpage
+    
   \subsection{PA e Fitness}
-  Analizziamo il caso nel quale l'attività fisica e lo stato di salute di un
-  individuo possano aumentare le probabilità di CVD.
-  
+    Analizziamo il caso nel quale l'attività fisica e lo stato di salute di un
+    individuo possano aumentare le probabilità di CVD.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione PA e Fitness}
-\hlstd{fit.sexsmoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                    \hlstd{nmc}\hlopt{$}\hlstd{pa}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{fitness,}
-                    \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.sexsmoke} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{pa}\hlopt{*}\hlstd{fitness,}
+                    \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.sexsmoke)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$pa * nmc$fitness, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + pa * 
+##     fitness, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.6172  -0.3387  -0.1939  -0.0944   3.6542  
 ## 
 ## Coefficients:
-##                    Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)        -7.66807    0.19391 -39.545  < 2e-16 ***
-## nmc$sexMale         0.78531    0.05400  14.543  < 2e-16 ***
-## nmc$age             0.09301    0.00244  38.121  < 2e-16 ***
-## nmc$bmi             0.23582    0.09706   2.430 0.015113 *  
-## nmc$fitness        -0.17257    0.03220  -5.358  8.4e-08 ***
-## nmc$smokeFormer    -0.33083    0.11115  -2.976 0.002917 ** 
-## nmc$smokeNO        -0.34965    0.10557  -3.312 0.000926 ***
-## nmc$pa              0.44155    0.31777   1.390 0.164666    
-## nmc$fitness:nmc$pa -0.14624    0.10964  -1.334 0.182252    
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.66807    0.19391 -39.545  < 2e-16 ***
+## sexMale      0.78531    0.05400  14.543  < 2e-16 ***
+## age          0.09301    0.00244  38.121  < 2e-16 ***
+## bmi          0.23582    0.09706   2.430 0.015113 *  
+## fitness     -0.17257    0.03220  -5.358  8.4e-08 ***
+## smokeFormer -0.33083    0.11115  -2.976 0.002917 ** 
+## smokeNO     -0.34965    0.10557  -3.312 0.000926 ***
+## pa           0.44155    0.31777   1.390 0.164666    
+## fitness:pa  -0.14624    0.10964  -1.334 0.182252    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1553,8 +1499,10 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+    
+    Il modello mostra come non ci sia interazione fra le variabili PA e FITNESS.
   
-  Il modello mostra come non ci sia interazione fra le variabili PA e FITNESS.
+  \clearpage
   
   \subsection{Modello con interazioni}
     Analizziamo ora il modello con solo variabili significative aggiungendo
@@ -1566,35 +1514,32 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Modello con interazione: Sex*Age + Smoke*BMI}
-\hlstd{fit.int} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{bmi}\hlopt{+}
-                 \hlstd{nmc}\hlopt{$}\hlstd{fitness}\hlopt{+}\hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{+}
-                 \hlstd{nmc}\hlopt{$}\hlstd{sex}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{age}\hlopt{+}
-                 \hlstd{nmc}\hlopt{$}\hlstd{smoke}\hlopt{*}\hlstd{nmc}\hlopt{$}\hlstd{bmi,}
-                 \hlkwc{family}\hlstd{=binomial)}
+\hlstd{fit.int} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlstd{sex}\hlopt{+}\hlstd{age}\hlopt{+}\hlstd{bmi}\hlopt{+}\hlstd{fitness}\hlopt{+}\hlstd{smoke}\hlopt{+}\hlstd{sex}\hlopt{*}\hlstd{age}\hlopt{+}\hlstd{smoke}\hlopt{*}\hlstd{bmi,}
+               \hlkwc{family}\hlstd{=binomial,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.int)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$sex * nmc$age + nmc$smoke * nmc$bmi, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + sex * 
+##     age + smoke * bmi, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5214  -0.3437  -0.1885  -0.0913   3.7412  
 ## 
 ## Coefficients:
-##                          Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)             -7.994945   0.248199 -32.212  < 2e-16 ***
-## nmc$sexMale              1.684991   0.307149   5.486 4.11e-08 ***
-## nmc$age                  0.100260   0.003532  28.386  < 2e-16 ***
-## nmc$bmi                 -1.494470   0.726361  -2.057 0.039641 *  
-## nmc$fitness             -0.185813   0.030262  -6.140 8.24e-10 ***
-## nmc$smokeFormer         -0.396574   0.113345  -3.499 0.000467 ***
-## nmc$smokeNO             -0.450336   0.107284  -4.198 2.70e-05 ***
-## nmc$sexMale:nmc$age     -0.014114   0.004764  -2.963 0.003050 ** 
-## nmc$bmi:nmc$smokeFormer  1.656064   0.744884   2.223 0.026199 *  
-## nmc$bmi:nmc$smokeNO      1.867843   0.735274   2.540 0.011075 *  
+##                  Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)     -7.994945   0.248199 -32.212  < 2e-16 ***
+## sexMale          1.684991   0.307149   5.486 4.11e-08 ***
+## age              0.100260   0.003532  28.386  < 2e-16 ***
+## bmi             -1.494470   0.726361  -2.057 0.039641 *  
+## fitness         -0.185813   0.030262  -6.140 8.24e-10 ***
+## smokeFormer     -0.396574   0.113345  -3.499 0.000467 ***
+## smokeNO         -0.450336   0.107284  -4.198 2.70e-05 ***
+## sexMale:age     -0.014114   0.004764  -2.963 0.003050 ** 
+## bmi:smokeFormer  1.656064   0.744884   2.223 0.026199 *  
+## bmi:smokeNO      1.867843   0.735274   2.540 0.011075 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1614,9 +1559,9 @@
     significativo, vediamo come questo si comporti in maniera differente dalle
     valutazioni che abbiamo analizzato precedentemente.\par
     Il modello con interazioni mostra una minor probabilità per un individuo che
-    fuma e con alto indice di massa corporea (SMOKE x BMI) non risultando 
+    fuma e con alto indice di massa corporea (SMOKE*BMI) non risultando 
     veritiero dato che esistono molti studi che affermano come l'utilizzo della 
-    sigaretta possa far rallentare il metabolismo.\par
+    sigaretta possa far aumentare il proprio peso corporeo.\par
     Inoltre il significato della variabile BMI varia rispetto al modello con 
     solo variabili significative e al modello con la sola regressione logistica 
     semplice, diminuendone anche la significatività. \par
@@ -1627,9 +1572,9 @@
 \clearpage
 
 
-\section{Selezione del Modello}
+\section{Selezione dei Modelli}
   Utilizziamo adesso i metodi Backward, Forward e Both basati sui criteri di 
-  penalizzazione AIC e BIC per un'ulteriore selezione del modello.\par
+  penalizzazione AIC e BIC per un'ulteriore selezione del modello.
   Per eseguire le varie procedure, prenderemo in considerazione la formula base 
   con solo l'intercetta e il modello che comprende tutte le variabili fornite 
   dal Dataset.
@@ -1638,25 +1583,23 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Inizializziamo la formula base con intercetta}
-\hlstd{fit.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(nmc}\hlopt{$}\hlstd{cvd} \hlopt{~} \hlnum{1}\hlstd{,} \hlkwc{family}\hlstd{=} \hlstr{"binomial"}\hlstd{)}
+\hlstd{fit.0} \hlkwb{<-} \hlkwd{glm}\hlstd{(cvd}\hlopt{~}\hlnum{1}\hlstd{,} \hlkwc{family}\hlstd{=}\hlstr{"binomial"}\hlstd{,} \hlkwc{data}\hlstd{=nmc)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
    \subsection{Backward}
-      Verifichiamo le formule della procedura Backward con AIC e BIC.
-        \subsubsection{AIC}
+      \subsubsection{AIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Backward: AIC}
-\hlstd{backward.AIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.all,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{,}
-                     \hlkwc{k}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\hlstd{backward.AIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.all,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{,} \hlkwc{k}\hlstd{=}\hlnum{2}\hlstd{,}
+                     \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(backward.AIC)}
 \end{alltt}
 \begin{verbatim}
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + nmc$smoke + 
-##     nmc$alc
+## cvd ~ sex + age + bmi + fitness + smoke + alc
 \end{verbatim}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(backward.AIC)}
@@ -1664,23 +1607,23 @@
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$bmi + nmc$fitness + 
-##     nmc$smoke + nmc$alc, family = binomial)
+## glm(formula = cvd ~ sex + age + bmi + fitness + smoke + alc, 
+##     family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5978  -0.3371  -0.1941  -0.0950   3.6471  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.462934   0.209921 -35.551  < 2e-16 ***
-## nmc$sexMale      0.799887   0.054643  14.638  < 2e-16 ***
-## nmc$age          0.092640   0.002442  37.930  < 2e-16 ***
-## nmc$bmi          0.235857   0.096958   2.433 0.014992 *  
-## nmc$fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
-## nmc$smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
-## nmc$smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
-## nmc$alc         -0.056553   0.035625  -1.587 0.112413    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.462934   0.209921 -35.551  < 2e-16 ***
+## sexMale      0.799887   0.054643  14.638  < 2e-16 ***
+## age          0.092640   0.002442  37.930  < 2e-16 ***
+## bmi          0.235857   0.096958   2.433 0.014992 *  
+## fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
+## smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
+## smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
+## alc         -0.056553   0.035625  -1.587 0.112413    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1694,18 +1637,18 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-          
-        \subsubsection{BIC}
+        
+      \subsubsection{BIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Backward: BIC }
 \hlstd{backward.BIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.all,} \hlkwc{direction}\hlstd{=}\hlstr{"backward"}\hlstd{,}
-                    \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+                     \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(backward.BIC)}
 \end{alltt}
 \begin{verbatim}
-## nmc$cvd ~ nmc$sex + nmc$age + nmc$fitness
+## cvd ~ sex + age + fitness
 \end{verbatim}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(backward.BIC)}
@@ -1713,7 +1656,7 @@
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$sex + nmc$age + nmc$fitness, family = binomial)
+## glm(formula = cvd ~ sex + age + fitness, family = binomial, data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -1722,9 +1665,9 @@
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -7.771416   0.170954  -45.46  < 2e-16 ***
-## nmc$sexMale  0.783860   0.053038   14.78  < 2e-16 ***
-## nmc$age      0.091980   0.002398   38.35  < 2e-16 ***
-## nmc$fitness -0.209655   0.029570   -7.09 1.34e-12 ***
+## sexMale      0.783860   0.053038   14.78  < 2e-16 ***
+## age          0.091980   0.002398   38.35  < 2e-16 ***
+## fitness     -0.209655   0.029570   -7.09 1.34e-12 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1740,8 +1683,7 @@
 \end{knitrout}
           
     \subsection{Forward} 
-      Verifichiamo adesso le formule della procedura Forward con AIC e BIC.
-        \subsubsection{AIC}
+      \subsubsection{AIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -1751,8 +1693,7 @@
 \hlkwd{formula}\hlstd{(forward.AIC)}
 \end{alltt}
 \begin{verbatim}
-## nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness + nmc$smoke + nmc$bmi + 
-##     nmc$alc
+## cvd ~ age + sex + fitness + smoke + bmi + alc
 \end{verbatim}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(forward.AIC)}
@@ -1760,23 +1701,23 @@
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness + nmc$smoke + 
-##     nmc$bmi + nmc$alc, family = "binomial")
+## glm(formula = cvd ~ age + sex + fitness + smoke + bmi + alc, 
+##     family = "binomial", data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5978  -0.3371  -0.1941  -0.0950   3.6471  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.462934   0.209921 -35.551  < 2e-16 ***
-## nmc$age          0.092640   0.002442  37.930  < 2e-16 ***
-## nmc$sexMale      0.799887   0.054643  14.638  < 2e-16 ***
-## nmc$fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
-## nmc$smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
-## nmc$smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
-## nmc$bmi          0.235857   0.096958   2.433 0.014992 *  
-## nmc$alc         -0.056553   0.035625  -1.587 0.112413    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.462934   0.209921 -35.551  < 2e-16 ***
+## age          0.092640   0.002442  37.930  < 2e-16 ***
+## sexMale      0.799887   0.054643  14.638  < 2e-16 ***
+## fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
+## smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
+## smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
+## bmi          0.235857   0.096958   2.433 0.014992 *  
+## alc         -0.056553   0.035625  -1.587 0.112413    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1790,20 +1731,21 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-          
-        \subsubsection{BIC}
+        
+      \clearpage 
+      
+      \subsubsection{BIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Forward: BIC}
 \hlstd{forward.BIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.0,} \hlkwc{scope}\hlstd{=}\hlkwd{formula}\hlstd{(fit.all),}
-                   \hlkwc{direction}\hlstd{=}\hlstr{"forward"}\hlstd{,}
-                   \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
+                   \hlkwc{direction}\hlstd{=}\hlstr{"forward"}\hlstd{,} \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
                    \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(forward.BIC)}
 \end{alltt}
 \begin{verbatim}
-## nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness
+## cvd ~ age + sex + fitness
 \end{verbatim}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(forward.BIC)}
@@ -1811,7 +1753,8 @@
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness, family = "binomial")
+## glm(formula = cvd ~ age + sex + fitness, family = "binomial", 
+##     data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -1820,9 +1763,9 @@
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -7.771416   0.170954  -45.46  < 2e-16 ***
-## nmc$age      0.091980   0.002398   38.35  < 2e-16 ***
-## nmc$sexMale  0.783860   0.053038   14.78  < 2e-16 ***
-## nmc$fitness -0.209655   0.029570   -7.09 1.34e-12 ***
+## age          0.091980   0.002398   38.35  < 2e-16 ***
+## sexMale      0.783860   0.053038   14.78  < 2e-16 ***
+## fitness     -0.209655   0.029570   -7.09 1.34e-12 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1836,22 +1779,21 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-          
+        
+    \clearpage 
+      
     \subsection{Both}
-      Infine vediamo le formule della procedura Both con AIC e BIC.
-        \subsubsection{AIC}
+      \subsubsection{AIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Both: AIC }
-\hlstd{both.AIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.0,} \hlkwc{scope}\hlstd{=}\hlkwd{formula}\hlstd{(fit.all),}
-                 \hlkwc{direction}\hlstd{=}\hlstr{"both"}\hlstd{,}
+\hlstd{both.AIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.0,} \hlkwc{scope}\hlstd{=}\hlkwd{formula}\hlstd{(fit.all),} \hlkwc{direction}\hlstd{=}\hlstr{"both"}\hlstd{,}
                  \hlkwc{k}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(both.AIC)}
 \end{alltt}
 \begin{verbatim}
-## nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness + nmc$smoke + nmc$bmi + 
-##     nmc$alc
+## cvd ~ age + sex + fitness + smoke + bmi + alc
 \end{verbatim}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(both.AIC)}
@@ -1859,23 +1801,23 @@
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness + nmc$smoke + 
-##     nmc$bmi + nmc$alc, family = "binomial")
+## glm(formula = cvd ~ age + sex + fitness + smoke + bmi + alc, 
+##     family = "binomial", data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
 ## -1.5978  -0.3371  -0.1941  -0.0950   3.6471  
 ## 
 ## Coefficients:
-##                  Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)     -7.462934   0.209921 -35.551  < 2e-16 ***
-## nmc$age          0.092640   0.002442  37.930  < 2e-16 ***
-## nmc$sexMale      0.799887   0.054643  14.638  < 2e-16 ***
-## nmc$fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
-## nmc$smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
-## nmc$smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
-## nmc$bmi          0.235857   0.096958   2.433 0.014992 *  
-## nmc$alc         -0.056553   0.035625  -1.587 0.112413    
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -7.462934   0.209921 -35.551  < 2e-16 ***
+## age          0.092640   0.002442  37.930  < 2e-16 ***
+## sexMale      0.799887   0.054643  14.638  < 2e-16 ***
+## fitness     -0.183877   0.030378  -6.053 1.42e-09 ***
+## smokeFormer -0.332592   0.111097  -2.994 0.002756 ** 
+## smokeNO     -0.374525   0.106476  -3.517 0.000436 ***
+## bmi          0.235857   0.096958   2.433 0.014992 *  
+## alc         -0.056553   0.035625  -1.587 0.112413    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1889,20 +1831,18 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-          
-        \subsubsection{BIC}
+      \clearpage
+      \subsubsection{BIC}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Both: BIC}
-\hlstd{both.BIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.0,} \hlkwc{scope}\hlstd{=}\hlkwd{formula}\hlstd{(fit.all),}
-                 \hlkwc{direction}\hlstd{=}\hlstr{"both"}\hlstd{,}
-                 \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),}
-                 \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\hlstd{both.BIC} \hlkwb{<-} \hlkwd{step}\hlstd{(fit.0,} \hlkwc{scope}\hlstd{=}\hlkwd{formula}\hlstd{(fit.all),} \hlkwc{direction}\hlstd{=}\hlstr{"both"}\hlstd{,}
+                 \hlkwc{k}\hlstd{=}\hlkwd{log}\hlstd{(}\hlkwd{length}\hlstd{(nmc}\hlopt{$}\hlstd{cvd)),} \hlkwc{trace}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \hlkwd{formula}\hlstd{(both.BIC)}
 \end{alltt}
 \begin{verbatim}
-## nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness
+## cvd ~ age + sex + fitness
 \end{verbatim}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(both.BIC)}
@@ -1910,7 +1850,8 @@
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = nmc$cvd ~ nmc$age + nmc$sex + nmc$fitness, family = "binomial")
+## glm(formula = cvd ~ age + sex + fitness, family = "binomial", 
+##     data = nmc)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -1919,9 +1860,9 @@
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -7.771416   0.170954  -45.46  < 2e-16 ***
-## nmc$age      0.091980   0.002398   38.35  < 2e-16 ***
-## nmc$sexMale  0.783860   0.053038   14.78  < 2e-16 ***
-## nmc$fitness -0.209655   0.029570   -7.09 1.34e-12 ***
+## age          0.091980   0.002398   38.35  < 2e-16 ***
+## sexMale      0.783860   0.053038   14.78  < 2e-16 ***
+## fitness     -0.209655   0.029570   -7.09 1.34e-12 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1936,16 +1877,14 @@
 \end{kframe}
 \end{knitrout}
     
-    \clearpage
-    
     \subsection{Commento}
       Le formule ottenute dalle tre procedure sono:
-        \begin{itemize}
-          \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
-                CVD $\sim$ AGE + SEX + FITNESS + SMOKE + BMI + ALCHOL
-          \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
-                CVD $\sim$ AGE + SEX + FITNESS
-        \end{itemize}
+      \begin{itemize}
+        \item Le procedure FORWARD, BACKWARD e BOTH AIC: \\
+              CVD $\sim$ AGE + SEX + FITNESS + SMOKE + BMI + ALCHOL
+        \item Le procedure FORWARD, BACKWARD e BOTH BIC: \\
+              CVD $\sim$ AGE + SEX + FITNESS
+      \end{itemize}
 
 \clearpage
 
@@ -2077,43 +2016,16 @@
             sempre direttamente connessa con la variabile AGE e in modo molto
             forte con la variabile SEX.
       \item In tutte le procedure, le variabili PA e FITNESS risultano
-            direttamente connesse e legate alla variabile SEX.
+            non direttamente connesse e alla variabile CVD.
     \end{itemize}
     
 \clearpage
 
 
-  \section{Reti Bayesiane}
-    Prima di poter individuare una prima rete bayesiana dobbiamo adattare i
-    numeri affinché la funzione hc possa essere eseguita.
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Adattamento del dataset}
-\hlstd{nmc.bn} \hlkwb{<-} \hlstd{nmc}
-\hlstd{nmc.bn}\hlopt{$}\hlstd{sex} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{sex} \hlopt{==} \hlstr{"Male"}\hlstd{)}
-\hlstd{nmc.bn}\hlopt{$}\hlstd{age} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{age)}
-\hlstd{nmc.bn}\hlopt{$}\hlstd{cvd} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{cvd)}
-\hlstd{nmc.bn}\hlopt{$}\hlstd{pa} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(nmc.bn}\hlopt{$}\hlstd{pa)}
-\hlstd{nmc.bn}\hlopt{$}\hlstd{smoke} \hlkwb{=} \hlstd{smoke.ord}
-\hlkwd{str}\hlstd{(nmc.bn)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	33327 obs. of  8 variables:
-##  $ sex    : num  1 0 1 0 1 0 1 1 1 1 ...
-##  $ age    : num  94 93 92 92 91 90 89 89 89 89 ...
-##  $ bmi    : num  0 0 0 0 0 0 0 0 1 0 ...
-##  $ cvd    : num  0 0 0 1 0 0 0 1 0 1 ...
-##  $ fitness: num  3 1 4 3 4 4 4 4 4 4 ...
-##  $ pa     : num  0 1 1 0 0 0 0 0 0 0 ...
-##  $ smoke  : num  1 1 2 2 2 2 1 2 1 1 ...
-##  $ alc    : num  3 2 1 1 3 2 1 3 3 1 ...
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
-    Visualizziamo la prima rete bayesiana tramite la funzione hc. 
+
+
+\section{Reti Bayesiane}
+  Visualizziamo una prima rete bayesiana risultante dalla funzione hc. 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2124,26 +2036,30 @@
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/Rete_Bayesiana-1} 
 \end{knitrout}
+  
+  La rete mostra degli archi non realistici, per esempio abbiamo che le variabili
+  FITNESS e PA (Attività Fisica) influenzano in qualche modo la determinazione del
+  SEX dell'individuo. Per risolvere questo problema dobbiamo generare una 
+  gerarchia tra le variabili, tramite un loro ordinamento, in modo tale da non 
+  avere incoerenze tra i vari archi. Nonostante ciò, è importante osservare
+  come all'interno di questa rete è presente comunque una relazione tra le
+  variabili FITNESS, SMOKE e ALCHOL.
+  
+  \subsection{Ordinamento delle Variabili}
+    L'ordinamento che andrò ad utilizzare sarà:
+    \begin{enumerate}
+      \item Variabili di background: SEX, AGE
+      \item Attività che influenzano il CVD: ALCHOL, SMOKE, PA
+      \item Condizione fisica del paziente: BMI, FITNESS
+      \item CVD
+    \end{enumerate}
     
-    Questa prima rete mostra delle dipendenze non realistiche, come ad esempio
-    l'influenza che ha il FITNESS e il PA (Attività Fisica) nella determinazione
-    del SEX. Per questo motivo dobbiamo dare un ordinamento alle variabili
-    permettendo di non avere incoerenze tra i vari archi.
-    
-    \subsection{Ordinamento delle Variabili}
-      L'ordinamento che andrò ad utilizzare sarà:
-      \begin{itemize}
-        \item Variabili di background: SEX, AGE
-        \item Attività che influenzano il CVD: ALCHOL, SMOKE, PA
-        \item Condizione fisica del paziente: BMI, FITNESS
-        \item CVD
-      \end{itemize}
-      
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{#Ordinamento delle variabili}
 \hlcom{#1-SEX, 1-AGE, 3-BMI, 4-CVD, 3-FITNESS, 2-PA, 2-SMOKE, 2-ALC}
+\hlcom{#Generazione matrice di adiacenza}
 \hlstd{block}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{)}
 \hlstd{blnmc.bn} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{8}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{8}\hlstd{)}
 \hlkwd{rownames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(blnmc.bn)} \hlkwb{<-} \hlkwd{names}\hlstd{(nmc.bn)}
@@ -2153,22 +2069,23 @@
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-      
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Rete Bayesiana con ordinamento}
+\hlcom{#Rete Bayesiana gerarchica}
 \hlstd{bn.o} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn,} \hlkwc{blacklist}\hlstd{=blackL)}
 \hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(bn.o),} \hlstr{"graphNEL"}\hlstd{))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/Rete_bayesiana_con_ordinamento-1} 
+\includegraphics[width=\maxwidth]{figure/Rete_bayesiana_gerarchica-1} 
 \end{knitrout}
-      
-      Anche in questo caso la rete risultante mostra un incongruenza nell'arco
-      tra SEX e AGE (il Sesso non può essere condizionata dall'età della persona).
-      Rimuoviamo allora l'arco e rieseguiamo la funzione hc.
-      
+    
+    Anche in questo caso la rete con gerarchia mostra un incongruenza cioè una
+    relazione tra la variabile SEX e la variabile AGE, come se il Sesso possa
+    influire sull'età dell'individuo. Per questo motivo, rimuoviamo quest arco
+    e rieseguiamo la funzione hc.
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2184,30 +2101,32 @@
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
+  
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Bayesian Network finale}
+\hlcom{#Bayesian Network}
 \hlstd{m.bn} \hlkwb{<-} \hlkwd{hc}\hlstd{(nmc.bn,} \hlkwc{blacklist}\hlstd{=blackL)}
 \hlkwd{plot}\hlstd{(}\hlkwd{as}\hlstd{(}\hlkwd{amat}\hlstd{(m.bn),} \hlstr{"graphNEL"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/Bayesian_Network_finale-1} 
 \end{knitrout}
-      
-      In questo ultimo grafo, possiamo notare come ci sia una relazione diretta
-      tra le variabili AGE, SEX, FITNESS e ALCHOL. Viceversa la variabile di 
-      risposta CVD risulta indipendente dalle variabili SMOKE, PA e BMI.
+    
+    In questa ultima rete notiamo come ci sia una relazione diretta
+    tra le variabili AGE, SEX, FITNESS e ALCHOL alla variabile di risposta CVD. 
+    Viceversa la CVD sembra indipendente dalle variabili SMOKE, PA e BMI.
     
   \clearpage
 
 
 \section{Considerazioni sul Modello}
-  Effuiamo qualche considerazione su un possibile modello finale.
+  Data le reti e le analisi fatte precedentemente, effettuiamo adesso qualche
+  considerazione su un possibile modello per la valutazione delle cause nella
+  comparsa di una malattia cardiovascolare.
   
   \subsection{Fitness e PA}
-    Durante l'analisi abbiamo visto come le variabili FITNESS e PA fossero 
+    Abbiamo visto nelle precedenti reti come le variabili FITNESS e PA fossero 
     direttamente connessa tra di loro. Valutiamo questa connessione tramite
     un Barplot per la visualizzazione tra le varie categorie di FITNESS e la 
     loro attività fisica.
@@ -2217,91 +2136,56 @@
 \begin{alltt}
 \hlcom{#Barplot Fitness e PA}
 \hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(nmc}\hlopt{$}\hlstd{fitness, nmc}\hlopt{$}\hlstd{pa),}
-        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"PA=0 Attività Fisica"}\hlstd{,} \hlstr{"PA=1 Non Attività Fisica"}\hlstd{),}
+        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Attività Fisica"}\hlstd{,} \hlstr{"Non Attività Fisica"}\hlstd{),}
         \hlkwc{legend.text}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Much Worse"}\hlstd{,} \hlstr{"Little Worse"}\hlstd{,}\hlstr{"Just as good"}\hlstd{,}
                 \hlstr{"A bit better"}\hlstd{,} \hlstr{"Much better"}\hlstd{),}
-        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#36352e"}\hlstd{,}\hlstr{"#912933"}\hlstd{,} \hlstr{"#c9723c"}\hlstd{,} \hlstr{"#e3dc76"}\hlstd{,} \hlstr{"#408552"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(black,red,orange,yellow,green),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/Barplot_Fitness_PA-1} 
 \end{knitrout}
       
     Come possiamo vedere, la variabile FITNESS e PA risultano connesse anche 
-    all'interno dell'istogramma, mostrandoci come l'attività fisica induca
+    all'interno del Barplot, mostrandoci come l'attività fisica induca
     maggiormente ad una miglior condizione di salute rispetto a chi non la
-    pratica. \par
-    Dicotomizzo la variabile FITNESS per effettuare una regressione e valutare
-    meglio all'interno di un Barplot.\par
-    La dicotomizzazione che ho utilizzato è:
-    \begin{enumerate}
-      \setcounter{enumi}{-1}
-        \item FITNESS:Little Worse, Much Worse
-        \item FITNESS:Just as Good, A bit Better, Much Better 
-    \end{enumerate}
+    pratica.
+    Effettuiamo una regressione lineare per PA nella valutazione sul FITNESS.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Dicotomizzazione Fitness}
-\hlstd{fitness.dic} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(fitness} \hlopt{==} \hlstr{"Just as good"}\hlopt{|}
-                            \hlstd{fitness} \hlopt{==} \hlstr{"A bit better"}\hlopt{|}
-                            \hlstd{fitness} \hlopt{==} \hlstr{"Much better"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Regressione tra Fitness e PA}
-\hlstd{fit.fitness} \hlkwb{<-} \hlkwd{glm}\hlstd{(fitness.dic}\hlopt{~}\hlstd{nmc}\hlopt{$}\hlstd{pa,} \hlkwc{family}\hlstd{=binomial)}
+\hlcom{#Regressione Lineare tra Fitness e PA}
+\hlstd{fit.fitness} \hlkwb{<-} \hlkwd{lm}\hlstd{(fitness}\hlopt{~}\hlstd{pa,} \hlkwc{data}\hlstd{=nmc)}
 \hlkwd{summary}\hlstd{(fit.fitness)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## glm(formula = fitness.dic ~ nmc$pa, family = binomial)
+## lm(formula = fitness ~ pa, data = nmc)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.1227   0.4712   0.4712   0.4712   0.9715  
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5208 -0.5208  0.3059  0.4792  2.3059 
 ## 
 ## Coefficients:
-##             Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)  2.14195    0.01855  115.49   <2e-16 ***
-## nmc$pa      -1.63619    0.04589  -35.66   <2e-16 ***
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  3.520836   0.005101  690.22   <2e-16 ***
+## pa          -0.826748   0.018934  -43.66   <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 25083  on 33326  degrees of freedom
-## Residual deviance: 23981  on 33325  degrees of freedom
-## AIC: 23985
-## 
-## Number of Fisher Scoring iterations: 4
+## Residual standard error: 0.8968 on 33325 degrees of freedom
+## Multiple R-squared:  0.05412,	Adjusted R-squared:  0.05409 
+## F-statistic:  1907 on 1 and 33325 DF,  p-value: < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
     
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Barplot Fitness Dicotomizzata e PA}
-\hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(fitness.dic, nmc}\hlopt{$}\hlstd{pa),}
-        \hlkwc{names.arg}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"PA=0 Attività Fisica"}\hlstd{,} \hlstr{"PA=1 Non Attività Fisica"}\hlstd{),}
-        \hlkwc{legend.text}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Cattivo stato di salute"}\hlstd{,}\hlstr{"Buono stato di salute"}\hlstd{),}
-        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"#912933"}\hlstd{,} \hlstr{"#408552"}\hlstd{),} \hlkwc{beside}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/Barplot_Fitness_Dicotomizzata_e_PA-1} 
-\end{knitrout}
-    
-    Come è possibile vedere anche dalla semplice regressione logistica, l'attività
-    fisica influisce positivamente nello stato di salute dell'individuo. \par
+    Come è possibile vedere anche dalla semplice regressione lineare, l'attività
+    fisica influisce positivamente nello stato di salute dell'individuo.
     Dato che la variabile PA risulta a carattere più oggettivo rispetto a FITNESS,
     ritengo più valido dar importanza alla variabile PA rispetto a FITNESS per la
-    valutazione di insorgenza di CVD. \par
+    valutazione di insorgenza di CVD.
     Valutiamo ora la rete bayesiana associato al Dataset senza la presenza della
     variabile FITNESS, tenendo conto dell'ordinamento delle variabili fatto
     precedentemente.
@@ -2422,44 +2306,6 @@
     Dal Barplot possiamo vedere come ci sia una prevalenza di persone con basso
     indice BMI per ogni categoria di consumatori di alchol rispetto alle persone
     con un alto indice di BMI. \par
-    Analizziamo allora la percentuale tra queste due categorie di persone.
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#Percentuale persone con alto BMI che bevono molto alchol}
-\hlstd{n.alc.high} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}
-\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}\hlopt{/}\hlstd{n.alc.high}
-\end{alltt}
-\begin{verbatim}
-## [1] 0.0671875
-\end{verbatim}
-\begin{alltt}
-\hlcom{#Percentuale persone con alto BMI che bevono alchol nella media}
-\hlstd{n.alc.med} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}
-\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{1}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}\hlopt{/}\hlstd{n.alc.med}
-\end{alltt}
-\begin{verbatim}
-## [1] 0.05740756
-\end{verbatim}
-\begin{alltt}
-\hlcom{#Percentuale persone con basso BMI che bevono molto alchol}
-\hlstd{n.alc.high} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}
-\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{4}\hlstd{,])}\hlopt{/}\hlstd{n.alc.high}
-\end{alltt}
-\begin{verbatim}
-## [1] 0.9328125
-\end{verbatim}
-\begin{alltt}
-\hlcom{#Percentuale persone con bevono BMI che bevono alchol nella media}
-\hlstd{n.alc.med} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}
-\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{bmi}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{alc}\hlopt{==}\hlnum{3}\hlstd{,])}\hlopt{/}\hlstd{n.alc.med}
-\end{alltt}
-\begin{verbatim}
-## [1] 0.9425924
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-    
     Verifichiamo se togliendo la variabile ALCHOL per BMI risulti ancora
     significativo.
     
@@ -2601,22 +2447,35 @@
 \end{knitrout}
     
     Le reti risultanti risultano uguali se non consideriamo l'arco presente tra 
-    la variabile ALCHOL E BMI e quello tra ALCHOL e CVD. \par
-    Verifichiamo adesso la percentuale tra uomini e donne nelle varie categorie.
+    la variabile ALCHOL E BMI e quello tra ALCHOL e CVD per quello detto
+    precedentemente. \par
+    Visualizziamo adesso la percentuale tra uomini e donne nelle varie categorie.
     
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{#Numero di uomini e donne}
 \hlstd{n.male} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}
-\hlstd{n.female} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}
+\hlstd{n.male}
 \end{alltt}
+\begin{verbatim}
+## [1] 11130
+\end{verbatim}
+\begin{alltt}
+\hlstd{n.female} \hlkwb{=} \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}
+\hlstd{n.female}
+\end{alltt}
+\begin{verbatim}
+## [1] 22197
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
     
+    \subsubsection{Smoke}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#Percentuale degli uomini fumano}
+\hlcom{#Percentuale degli uomini fumatori}
 \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{3}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}\hlopt{/}\hlstd{n.male}
 \end{alltt}
 \begin{verbatim}
@@ -2629,9 +2488,16 @@
 \begin{verbatim}
 ## [1] 0.2915544
 \end{verbatim}
+\begin{alltt}
+\hlcom{#Percentuale degli uomini non fumatori}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{1}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{1}\hlstd{,])}\hlopt{/}\hlstd{n.male}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.64115
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
-    
+      
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2648,9 +2514,20 @@
 \begin{verbatim}
 ## [1] 0.2471055
 \end{verbatim}
+\begin{alltt}
+\hlcom{#Percentuale delle donne non fumatori}
+\hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{smoke}\hlopt{==}\hlnum{1}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}\hlopt{/}\hlstd{n.female}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.6662612
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
     
+      Dal rapporto tra le varie categorie di fumatori, risulta come in media
+      le donne fumano di più rispetto a gli uomini.
+      
+    \subsubsection{PA}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2662,10 +2539,11 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-    
+      
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{#Percentuale delle donne fanno attività fisica}
 \hlkwd{nrow}\hlstd{(nmc.bn[nmc.bn}\hlopt{$}\hlstd{pa}\hlopt{==}\hlnum{0}\hlopt{&}\hlstd{nmc.bn}\hlopt{$}\hlstd{sex}\hlopt{==}\hlnum{0}\hlstd{,])}\hlopt{/}\hlstd{n.female}
 \end{alltt}
 \begin{verbatim}
@@ -2673,12 +2551,16 @@
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+      
+      Anche in questo caso, le donne in media fanno più attività fisica rispetto
+      al sesso maschile.
+      
 \clearpage
 
 
 \section{Conclusioni}
-  In conclusione, il modello scelto che più si adatta meglio al problema per il 
-  calcolo della probabilità di un problema cardiovascolare è:\\
+  In conclusione, il modello scelto che più si adatta meglio alla comprensione
+  e alle cause di un problema cardiovascolare è:\\
   Modello: CVD $\sim$ SEX + AGE + BMI \par
   Infatti i fattori che aumentano la probabilità di CVD sono:
   \begin{itemize}
@@ -2686,11 +2568,9 @@
     \item Essere maschio.
     \item Avere un alto indice di massa corporea.
   \end{itemize}
-  Tuttavia dobbiamo tenere in considerazione che il fumare può aumentare l'indice
-  di massa corporea, andando ad influenzare negativamente l'indice di massa 
-  corporea. \par
-  Sempre per ridurre l'indice di massa corporea e quindi prevenire in qualche 
-  modo la CVD è consigliabile fare attività fisica.
+  Tuttavia dobbiamo tenere in considerazione che è consigliabile fare attività 
+  fisica per poter ridurre l'indice di massa corporea che è un fattore
+  importante nella comparsa o meno di un problema cardiovascolare.
   
 
 \end{document}

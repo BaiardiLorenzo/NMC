@@ -76,7 +76,7 @@ library(igraph)
             sempre direttamente connessa con la variabile AGE e in modo molto
             forte con la variabile SEX.
       \item In tutte le procedure, le variabili PA e FITNESS risultano
-            direttamente connesse e legate alla variabile SEX.
+            non direttamente connesse e alla variabile CVD.
     \end{itemize}
     
 \clearpage

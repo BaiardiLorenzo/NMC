@@ -1,16 +1,15 @@
 \section{Regressioni Logistiche Multiple}
   Consideriamo ora la regressione logistica multipla includendo tutte le variabili
   che sono presenti all'interno del Dataset, verificando quali di esse sono più 
-  o meno significative per la visualizzazione di un primo modello unico.
+  o meno significative.
   
   \subsection{Modello Completo}
     <<RLM Modello Completo>>=
     #Regressioni logistiche multiple
     #Modello Completo
     #Variabili: Sex, Age, BMI, Fitness, PA, Smoke, Alchol
-    fit.all <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
-                             nmc$pa+nmc$smoke+nmc$alc, 
-                             family=binomial)
+    fit.all <- glm(cvd~sex+age+bmi+fitness+pa+smoke+alc, data=nmc,
+                   family=binomial)
     summary(fit.all)
     @
     
@@ -45,9 +44,8 @@
     <<RLM NO PA>>=
     #Modello senza PA
     #Variabili: Sex, Age, BMI, Fitness, Smoke, Alchol
-    fit.npa <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
-                             nmc$smoke+nmc$alc, 
-                             family=binomial)
+    fit.npa <- glm(cvd~sex+age+bmi+fitness+smoke+alc, data=nmc,
+                   family=binomial)
     summary(fit.npa)
     @
     
@@ -59,8 +57,7 @@
     <<RLM Modello Significativo>>=
     #Modello significativo
     #Variabili: Sex, Age, BMI, Fitness, Smoke 
-    fit <- glm(nmc$cvd ~ nmc$sex+nmc$age+nmc$bmi+nmc$fitness+
-                         nmc$smoke, family=binomial)
+    fit <- glm(cvd~sex+age+bmi+fitness+smoke,data=nmc,family=binomial)
     summary(fit)
     @
     
@@ -74,16 +71,7 @@
     \end{itemize}
     
     Il modello con solo variabili significative sembra mostrare un buon 
-    adattamento.\par
-    Visualizziamo il grafico dell'andamento del modello stimato.
-    
-    <<RLM Plot ModelloSignificativo>>=
-    pstima <- fit$fitted.values
-    
-    #Plot
-    plot(nmc$age, nmc$cvd, xlab="AGE", ylab="CVD")
-    points(sort(nmc$age), pstima[order(nmc$age)], col="#123ba3")
-    @
+    adattamento.
   
   \subsection{Commento}
     \begin{itemize}

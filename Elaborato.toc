@@ -7,7 +7,7 @@
 \contentsline {section}{\numberline {3}Regressioni Logistiche Semplici}{10}{}%
 \contentsline {subsection}{\numberline {3.1}Age}{10}{}%
 \contentsline {subsection}{\numberline {3.2}Sex}{13}{}%
-\contentsline {subsection}{\numberline {3.3}BMI}{15}{}%
+\contentsline {subsection}{\numberline {3.3}BMI}{14}{}%
 \contentsline {subsection}{\numberline {3.4}Fitness}{17}{}%
 \contentsline {subsection}{\numberline {3.5}PA}{21}{}%
 \contentsline {subsection}{\numberline {3.6}Smoke}{21}{}%
@@ -16,41 +16,43 @@
 \contentsline {section}{\numberline {4}Regressioni Logistiche Multiple}{26}{}%
 \contentsline {subsection}{\numberline {4.1}Modello Completo}{26}{}%
 \contentsline {subsection}{\numberline {4.2}Modello Significativo}{27}{}%
-\contentsline {subsection}{\numberline {4.3}Commento}{30}{}%
-\contentsline {section}{\numberline {5}Interazioni fra le variabili}{31}{}%
-\contentsline {subsection}{\numberline {5.1}Smoke e Alchol}{31}{}%
-\contentsline {subsection}{\numberline {5.2}Smoke e BMI}{32}{}%
-\contentsline {subsection}{\numberline {5.3}Alchol e BMI}{33}{}%
-\contentsline {subsection}{\numberline {5.4}Sex e Smoke}{34}{}%
-\contentsline {subsection}{\numberline {5.5}Sex e Age}{35}{}%
-\contentsline {subsection}{\numberline {5.6}PA e Age}{36}{}%
-\contentsline {subsection}{\numberline {5.7}PA e Fitness}{37}{}%
-\contentsline {subsection}{\numberline {5.8}Modello con interazioni}{38}{}%
-\contentsline {subsection}{\numberline {5.9}Commento}{39}{}%
-\contentsline {section}{\numberline {6}Selezione del Modello}{40}{}%
-\contentsline {subsection}{\numberline {6.1}Backward}{40}{}%
-\contentsline {subsubsection}{\numberline {6.1.1}AIC}{40}{}%
-\contentsline {subsubsection}{\numberline {6.1.2}BIC}{41}{}%
-\contentsline {subsection}{\numberline {6.2}Forward}{42}{}%
-\contentsline {subsubsection}{\numberline {6.2.1}AIC}{42}{}%
-\contentsline {subsubsection}{\numberline {6.2.2}BIC}{43}{}%
-\contentsline {subsection}{\numberline {6.3}Both}{44}{}%
-\contentsline {subsubsection}{\numberline {6.3.1}AIC}{44}{}%
-\contentsline {subsubsection}{\numberline {6.3.2}BIC}{45}{}%
-\contentsline {subsection}{\numberline {6.4}Commento}{46}{}%
-\contentsline {section}{\numberline {7}Grafi non orientati}{47}{}%
-\contentsline {subsection}{\numberline {7.1}Backward}{47}{}%
-\contentsline {subsubsection}{\numberline {7.1.1}AIC}{47}{}%
-\contentsline {subsubsection}{\numberline {7.1.2}BIC}{48}{}%
-\contentsline {subsection}{\numberline {7.2}Forward}{49}{}%
-\contentsline {subsubsection}{\numberline {7.2.1}AIC}{49}{}%
-\contentsline {subsubsection}{\numberline {7.2.2}BIC}{50}{}%
-\contentsline {subsection}{\numberline {7.3}Commento}{51}{}%
-\contentsline {section}{\numberline {8}Reti Bayesiane}{52}{}%
-\contentsline {subsection}{\numberline {8.1}Ordinamento delle Variabili}{53}{}%
-\contentsline {section}{\numberline {9}Considerazioni sul Modello}{57}{}%
-\contentsline {subsection}{\numberline {9.1}Fitness e PA}{57}{}%
-\contentsline {subsection}{\numberline {9.2}BMI}{61}{}%
-\contentsline {subsection}{\numberline {9.3}Alchol}{66}{}%
-\contentsline {subsection}{\numberline {9.4}Maschio e Femmina}{67}{}%
-\contentsline {section}{\numberline {10}Conclusioni}{71}{}%
+\contentsline {subsection}{\numberline {4.3}Commento}{29}{}%
+\contentsline {section}{\numberline {5}Interazioni fra le variabili}{30}{}%
+\contentsline {subsection}{\numberline {5.1}Smoke e Alchol}{30}{}%
+\contentsline {subsection}{\numberline {5.2}Smoke e BMI}{31}{}%
+\contentsline {subsection}{\numberline {5.3}Alchol e BMI}{32}{}%
+\contentsline {subsection}{\numberline {5.4}Sex e Smoke}{33}{}%
+\contentsline {subsection}{\numberline {5.5}Sex e Age}{34}{}%
+\contentsline {subsection}{\numberline {5.6}PA e Age}{35}{}%
+\contentsline {subsection}{\numberline {5.7}PA e Fitness}{36}{}%
+\contentsline {subsection}{\numberline {5.8}Modello con interazioni}{37}{}%
+\contentsline {subsection}{\numberline {5.9}Commento}{38}{}%
+\contentsline {section}{\numberline {6}Selezione dei Modelli}{39}{}%
+\contentsline {subsection}{\numberline {6.1}Backward}{39}{}%
+\contentsline {subsubsection}{\numberline {6.1.1}AIC}{39}{}%
+\contentsline {subsubsection}{\numberline {6.1.2}BIC}{40}{}%
+\contentsline {subsection}{\numberline {6.2}Forward}{41}{}%
+\contentsline {subsubsection}{\numberline {6.2.1}AIC}{41}{}%
+\contentsline {subsubsection}{\numberline {6.2.2}BIC}{42}{}%
+\contentsline {subsection}{\numberline {6.3}Both}{43}{}%
+\contentsline {subsubsection}{\numberline {6.3.1}AIC}{43}{}%
+\contentsline {subsubsection}{\numberline {6.3.2}BIC}{44}{}%
+\contentsline {subsection}{\numberline {6.4}Commento}{44}{}%
+\contentsline {section}{\numberline {7}Grafi non orientati}{45}{}%
+\contentsline {subsection}{\numberline {7.1}Backward}{45}{}%
+\contentsline {subsubsection}{\numberline {7.1.1}AIC}{45}{}%
+\contentsline {subsubsection}{\numberline {7.1.2}BIC}{46}{}%
+\contentsline {subsection}{\numberline {7.2}Forward}{47}{}%
+\contentsline {subsubsection}{\numberline {7.2.1}AIC}{47}{}%
+\contentsline {subsubsection}{\numberline {7.2.2}BIC}{48}{}%
+\contentsline {subsection}{\numberline {7.3}Commento}{49}{}%
+\contentsline {section}{\numberline {8}Reti Bayesiane}{50}{}%
+\contentsline {subsection}{\numberline {8.1}Ordinamento delle Variabili}{51}{}%
+\contentsline {section}{\numberline {9}Considerazioni sul Modello}{54}{}%
+\contentsline {subsection}{\numberline {9.1}Fitness e PA}{54}{}%
+\contentsline {subsection}{\numberline {9.2}BMI}{57}{}%
+\contentsline {subsection}{\numberline {9.3}Alchol}{62}{}%
+\contentsline {subsection}{\numberline {9.4}Maschio e Femmina}{63}{}%
+\contentsline {subsubsection}{\numberline {9.4.1}Smoke}{66}{}%
+\contentsline {subsubsection}{\numberline {9.4.2}PA}{67}{}%
+\contentsline {section}{\numberline {10}Conclusioni}{68}{}%
