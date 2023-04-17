@@ -222,10 +222,9 @@ black = "#36352e"
     soggetta rispetto a tutte le altre. Viceversa la categoria FITNESS:LITTLEWORSE 
     ha più probabilità di incorrere in un problema cardiovascolare.
     Chi è della categoria FITNESS:MUCHWORSE ha meno probabilità rispetto alla 
-    categoria FITNESS:LITTLEWORSE evidenziando come un problema cardiovascolare
-    non è associato per forza a una pessima condizione di salute.
-    Dobbiamo comunque considerare che la variabile FITNESS sia una variabile
-    soggettiva a discrezione dell'individuo e per questo può l'idea di
+    categoria FITNESS:LITTLEWORSE.
+    Dobbiamo comunque considerare che la variabile FITNESS è una variabile
+    soggettiva a discrezione dell'individuo e per questo l'idea di
     benessere può variare da persona a persona.
     In conclusione, per il solo modello di regressione logistica semplice,
     consideriamo la variabile FITNESS come significativa.
@@ -303,9 +302,9 @@ black = "#36352e"
     @
     
     Possiamo notare come un fumatore, rispetto alle altre categorie, abbia una
-    maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
-    Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie di
-    incorrere nella malattia.
+    maggiore probabilità di incorrere nella malattia con il passare del tempo.
+    Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie
+    di incorrere nella malattia.
     
   \clearpage  
     

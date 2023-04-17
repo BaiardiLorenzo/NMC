@@ -30,8 +30,7 @@ library(igraph)
       
       In questo primo grafo, la variabile di risposta CVD risulta essere
       direttamente connessa con le variabili BMI, SMOKE, AGE, ALC e SEX mentre
-      risulta indipendente dalle variabili FITNESS e PA condizionatamente alle
-      altre.
+      risulta indipendente da FITNESS e PA condizionatamente a BMI, SMOKE e SEX.
       
     \subsubsection{BIC}
       <<Grafo BIC Backward>>=

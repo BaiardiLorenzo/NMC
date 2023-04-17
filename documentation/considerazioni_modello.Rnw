@@ -221,7 +221,7 @@
     @
     
     Le reti non presentano particolari differenze tranne nella rete del genere 
-    maschile dove è presente l'arco che va da ALCHOL a BMI. Se non consideriamo 
+    femminile dove è presente l'arco che va da ALCHOL a BMI. Se non consideriamo 
     quest arco per quello che abbiamo detto precedentemente (con l'aggiunta
     anche della diretta connessione che la BMI ha su la CVD) le due reti risultano
     identiche.

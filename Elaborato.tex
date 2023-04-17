@@ -721,10 +721,9 @@
     soggetta rispetto a tutte le altre. Viceversa la categoria FITNESS:LITTLEWORSE 
     ha più probabilità di incorrere in un problema cardiovascolare.
     Chi è della categoria FITNESS:MUCHWORSE ha meno probabilità rispetto alla 
-    categoria FITNESS:LITTLEWORSE evidenziando come un problema cardiovascolare
-    non è associato per forza a una pessima condizione di salute.
-    Dobbiamo comunque considerare che la variabile FITNESS sia una variabile
-    soggettiva a discrezione dell'individuo e per questo può l'idea di
+    categoria FITNESS:LITTLEWORSE.
+    Dobbiamo comunque considerare che la variabile FITNESS è una variabile
+    soggettiva a discrezione dell'individuo e per questo l'idea di
     benessere può variare da persona a persona.
     In conclusione, per il solo modello di regressione logistica semplice,
     consideriamo la variabile FITNESS come significativa.
@@ -892,9 +891,9 @@
 \end{knitrout}
     
     Possiamo notare come un fumatore, rispetto alle altre categorie, abbia una
-    maggiore probabilità di incorrere nella malattia con il passare del tempo.\par
-    Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie di
-    incorrere nella malattia.
+    maggiore probabilità di incorrere nella malattia con il passare del tempo.
+    Viceversa, il non fumatore ha meno probabilità rispetto alle altre categorie
+    di incorrere nella malattia.
     
   \clearpage  
     
@@ -1934,8 +1933,7 @@
       
       In questo primo grafo, la variabile di risposta CVD risulta essere
       direttamente connessa con le variabili BMI, SMOKE, AGE, ALC e SEX mentre
-      risulta indipendente dalle variabili FITNESS e PA condizionatamente alle
-      altre.
+      risulta indipendente da FITNESS e PA condizionatamente a BMI, SMOKE e SEX.
       
     \subsubsection{BIC}
 \begin{knitrout}
@@ -2531,7 +2529,7 @@
 \end{knitrout}
     
     Le reti non presentano particolari differenze tranne nella rete del genere 
-    maschile dove è presente l'arco che va da ALCHOL a BMI. Se non consideriamo 
+    femminile dove è presente l'arco che va da ALCHOL a BMI. Se non consideriamo 
     quest arco per quello che abbiamo detto precedentemente (con l'aggiunta
     anche della diretta connessione che la BMI ha su la CVD) le due reti risultano
     identiche.
@@ -2549,9 +2547,9 @@
     \item L'aumento dell'età.
     \item Avere un alto indice di massa corporea.
   \end{itemize}
-  Il fatto età però risulta particolarmente rilevante superata la soglia dei 40
-  anni, mostrando come la malattia si manifesti sopratutto nella fascia
-  più anziana della popolazione. L'uso della sigaretta può far aumentare 
+  Il fatto età però risulta particolarmente rilevante sopratutto superata la 
+  soglia dei 40 anni, mostrando come la malattia si manifesti sopratutto nella 
+  fascia più anziana della popolazione. L'uso della sigaretta può far aumentare 
   l'indice di massa corporea che è un fattore scatenante della CVD. Per quanto
   visto, per ridurre l'indice di massa corporea, è consigliabile fare attività.
   
